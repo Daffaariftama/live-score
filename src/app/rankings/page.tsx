@@ -1,0 +1,398 @@
+"use client";
+
+import { useEffect, useRef, useState } from "react";
+import { api } from "~/trpc/react";
+
+interface ScoreEntry {
+  id: number;
+  name: string;
+  score: number;
+}
+
+interface Delta {
+  id: string;
+  value: number;
+  ts: number;
+}
+
+// ─── Helpers ─────────────────────────────────────────────────────────────────
+function getInitials(name: string) {
+  return name.trim().split(/\s+/).map((w) => w[0]).join("").slice(0, 2).toUpperCase();
+}
+
+// Unified dark purple-charcoal color palette for all avatars
+function getAvatarColor() {
+  return "#2a273b";
+}
+
+// ─── Live delta badge ─────────────────────────────────────────────────────────
+function DeltaFlash({ delta }: { delta: Delta }) {
+  return (
+    <span
+      className={`fs-delta ${delta.value > 0 ? "fs-delta--up" : "fs-delta--down"}`}
+    >
+      {delta.value > 0 ? "+" : ""}{delta.value}
+    </span>
+  );
+}
+
+// ─── Score cell ───────────────────────────────────────────────────────────────
+function ScoreCell({ entry, rank }: { entry: ScoreEntry; rank: number }) {
+  const prevRef = useRef<number | null>(null);
+  const [deltas, setDeltas] = useState<Delta[]>([]);
+
+  useEffect(() => {
+    if (prevRef.current !== null && prevRef.current !== entry.score) {
+      const id = `${Date.now()}-${Math.random()}`;
+      setDeltas((d) => [...d, { id, value: entry.score - prevRef.current!, ts: Date.now() }]);
+      setTimeout(() => setDeltas((d) => d.filter((x) => x.id !== id)), 2500);
+    }
+    prevRef.current = entry.score;
+  }, [entry.score]);
+
+  const isTop3 = rank <= 3;
+
+  return (
+    <div className="fs-score-wrap">
+      {deltas.map((d) => <DeltaFlash key={d.id} delta={d} />)}
+      <span className={`fs-score ${isTop3 ? "fs-score--top" : ""}`}>
+        {entry.score.toLocaleString()}
+      </span>
+      <span className="fs-score-label">PTS</span>
+    </div>
+  );
+}
+
+function PodiumCard({ entry, rank, biddingActive }: { entry: ScoreEntry; rank: number; biddingActive: boolean }) {
+  const heights = ["h-[135px]", "h-[105px]", "h-[85px]"];
+  const orders  = [1, 0, 2]; // 2nd, 1st, 3rd display order
+  const labels  = ["🥇", "🥈", "🥉"];
+  const gradients = [
+    "from-yellow-400 to-amber-500",
+    "from-slate-300 to-slate-400",
+    "from-amber-600 to-orange-500",
+  ];
+
+  return (
+    <div
+      className="fs-podium-col"
+      style={{ order: orders[rank - 1] }}
+    >
+      {/* Avatar + name */}
+      <div className="fs-podium-info">
+        <div
+          className="fs-podium-avatar"
+          style={{ background: getAvatarColor() }}
+        >
+          {getInitials(entry.name)}
+        </div>
+        <p className="fs-podium-name">{entry.name}</p>
+        <p className="fs-podium-score">{entry.score.toLocaleString()} pts</p>
+      </div>
+
+      {/* Podium base */}
+      <div className={`fs-podium-base bg-gradient-to-b ${gradients[rank - 1]} ${heights[rank - 1]}`}>
+        <span className="fs-podium-medal">{labels[rank - 1]}</span>
+        <span className="fs-podium-rank">#{rank}</span>
+      </div>
+    </div>
+  );
+}
+
+// ─── Main Rankings Page ───────────────────────────────────────────────────────
+export default function RankingsPage() {
+  const { data: scores = [], isLoading, refetch } = api.score.getAll.useQuery(undefined, {
+    refetchInterval: 10_000,
+  });
+
+  const [now, setNow] = useState(() => new Date());
+  const [flashIds, setFlashIds] = useState<Set<number>>(new Set());
+  const prevScoresRef = useRef<Map<number, number>>(new Map());
+  const [isFullscreen, setIsFullscreen] = useState(false);
+
+  useEffect(() => {
+    const handleFullscreenChange = () => {
+      setIsFullscreen(!!document.fullscreenElement);
+    };
+    document.addEventListener("fullscreenchange", handleFullscreenChange);
+    return () => document.removeEventListener("fullscreenchange", handleFullscreenChange);
+  }, []);
+
+  const toggleFullscreen = () => {
+    if (!document.fullscreenElement) {
+      void document.documentElement.requestFullscreen().catch((err) => {
+        console.error("Error attempting to enable fullscreen:", err);
+      });
+    } else {
+      void document.exitFullscreen();
+    }
+  };
+
+  const { data: biddingActive = false, refetch: refetchBidding } = api.score.isBiddingActive.useQuery();
+  const [celebration, setCelebration] = useState<{ name: string; points: number } | null>(null);
+
+  const triggerCelebration = (name: string, points: number) => {
+    setCelebration({ name, points });
+    setTimeout(() => {
+      setCelebration(null);
+    }, 6000);
+  };
+
+  // SSE real-time
+  useEffect(() => {
+    const es = new EventSource("/api/scores/stream");
+    es.onmessage = (e) => {
+      if (e.data === "update") {
+        void refetch();
+        void refetchBidding();
+      } else if (e.data.startsWith("winner:")) {
+        void refetch();
+        void refetchBidding();
+        const [_, winnerName, winPoints] = e.data.split(":");
+        if (winnerName && winPoints) {
+          triggerCelebration(winnerName, parseInt(winPoints, 10));
+        }
+      }
+    };
+    return () => es.close();
+  }, [refetch, refetchBidding]);
+
+  // Clock
+  useEffect(() => {
+    const t = setInterval(() => setNow(new Date()), 1000);
+    return () => clearInterval(t);
+  }, []);
+
+  // Detect score changes → flash row
+  useEffect(() => {
+    const newFlash = new Set<number>();
+    scores.forEach((s) => {
+      const prev = prevScoresRef.current.get(s.id);
+      if (prev !== undefined && prev !== s.score) newFlash.add(s.id);
+      prevScoresRef.current.set(s.id, s.score);
+    });
+    if (newFlash.size > 0) {
+      setFlashIds(newFlash);
+      setTimeout(() => setFlashIds(new Set()), 1500);
+    }
+  }, [scores]);
+
+  const top3   = scores.slice(0, 3);
+  const topScore = scores[0]?.score ?? 0;
+
+  return (
+    <div className="fs-root">
+      {/* Atmospheric blobs */}
+      <div className="fs-blob fs-blob-1" />
+      <div className="fs-blob fs-blob-2" />
+      <div className="fs-blob fs-blob-3" />
+      <div className="fs-grid-lines" aria-hidden="true" />
+
+      {/* ── MAIN CONTENT ───────────────────────────────────────────────── */}
+      <main className="fs-main">
+        {isLoading ? (
+          <div className="fs-loading">
+            <div className="fs-spinner" />
+            <p>Memuat data...</p>
+          </div>
+        ) : scores.length === 0 ? (
+          <div className="fs-empty">
+            <span className="material-symbols-outlined" style={{ fontSize: 64, opacity: 0.3 }}>emoji_events</span>
+            <p>Belum ada peserta terdaftar</p>
+          </div>
+        ) : (
+          <div className="fs-layout">
+
+            {/* LEFT PANEL: Mascot, Brand title, Podium top 3 & Commentator box */}
+            <div className="fs-podium-section">
+              {/* Branding Header Block */}
+              <div className="fs-brand-block">
+                <div className="flex items-center gap-3 w-full">
+                  <img src="/api/mascot" alt="Mascot" className="fs-mascot" />
+                  <div className="flex-1 min-w-0">
+                    <h1 className="fs-brand-title truncate">LOMBA CEPAT TEPAT</h1>
+                    <p className="fs-brand-subtitle">Final Leaderboard</p>
+                  </div>
+                  <div className="flex items-center gap-1.5">
+                    <button
+                      onClick={toggleFullscreen}
+                      className="fs-brand-back-btn"
+                      title={isFullscreen ? "Keluar Layar Penuh" : "Layar Penuh"}
+                    >
+                      <span className="material-symbols-outlined" style={{ fontSize: 18 }}>
+                        {isFullscreen ? "fullscreen_exit" : "fullscreen"}
+                      </span>
+                    </button>
+                    <a href="/" className="fs-brand-back-btn" title="Kembali ke halaman utama">
+                      <span className="material-symbols-outlined" style={{ fontSize: 18 }}>arrow_back</span>
+                    </a>
+                  </div>
+                </div>
+              </div>
+
+              {/* Podium */}
+              {top3.length > 0 && (
+                <div className="fs-podium-wrapper">
+                  <p className="fs-section-label">🏆 Podium</p>
+                  <div className="fs-podium">
+                    {top3.map((entry, i) => (
+                      <PodiumCard key={entry.id} entry={entry} rank={i + 1} biddingActive={biddingActive} />
+                    ))}
+                  </div>
+                </div>
+              )}
+
+              {/* Commentator Box Space */}
+              <div className="fs-commentator-wrapper">
+                <p className="fs-section-label">🎤 Komentator</p>
+                <div className="fs-commentator-space" />
+              </div>
+            </div>
+
+            {/* RIGHT PANEL: Full ranking list */}
+            <div className="fs-list-section">
+              <div className="flex items-center justify-between px-md py-sm border-b border-black/5 bg-white/20">
+                <p className="fs-section-label !p-0">📋 Ranking Lengkap</p>
+                <span className="fs-clock-inline">
+                  {now.toLocaleTimeString("id-ID", { hour: "2-digit", minute: "2-digit", second: "2-digit" })}
+                </span>
+              </div>
+              
+              <div className="fs-list">
+                {scores.map((entry, idx) => {
+                  const rank = idx + 1;
+                  const isTop3 = rank <= 3;
+                  const barPct = Math.max(3, (entry.score / Math.max(topScore, 1)) * 100);
+                  const isFlashing = flashIds.has(entry.id);
+
+                  const rankColors: Record<number, string> = {
+                    1: "linear-gradient(135deg,#ffd700,#fbbf24)",
+                    2: "linear-gradient(135deg,#c0c0c0,#9ca3af)",
+                    3: "linear-gradient(135deg,#cd7f32,#d97706)",
+                  };
+
+                  return (
+                    <div
+                      key={entry.id}
+                      className={`fs-row ${isTop3 ? "fs-row--top" : ""} ${isFlashing ? "fs-row--flash" : ""}`}
+                    >
+                      {/* Rank */}
+                      <div className="fs-row-rank">
+                        {isTop3 ? (
+                          <div
+                            className="fs-rank-badge"
+                            style={{ background: rankColors[rank] }}
+                          >
+                            <div className="absolute inset-0 shimmer opacity-40 rounded-full" />
+                            <span className="relative z-10">{rank}</span>
+                          </div>
+                        ) : (
+                          <span className="fs-rank-num">{rank}</span>
+                        )}
+                      </div>
+
+                      {/* Avatar */}
+                      <div
+                        className="fs-row-avatar"
+                        style={{ background: getAvatarColor() }}
+                      >
+                        {getInitials(entry.name)}
+                      </div>
+
+                      {/* Name + bar */}
+                      <div className="fs-row-body">
+                        <div className="flex items-center gap-2 justify-between">
+                          <p className="fs-row-name truncate">{entry.name}</p>
+                          {biddingActive && (
+                            <span className="bg-amber-100 text-amber-800 font-extrabold text-[10px] px-2 py-0.5 rounded-full border border-amber-200 flex-shrink-0">
+                              Bid: {entry.bid ?? 10}
+                            </span>
+                          )}
+                        </div>
+                        <div className="fs-row-bar-wrap">
+                          <div
+                            className="fs-row-bar"
+                            style={{
+                              width: `${barPct}%`,
+                              background: isTop3 ? rankColors[rank] : "#f1b307", // Warm Yellow/Gold Palette
+                              boxShadow: isTop3 ? `0 0 8px ${rank === 1 ? '#ffd700' : rank === 2 ? '#c0c0c0' : '#cd7f32'}88` : "none",
+                            }}
+                          />
+                        </div>
+                      </div>
+
+                      {/* Score */}
+                      <ScoreCell entry={entry} rank={rank} />
+                    </div>
+                  );
+                })}
+              </div>
+            </div>
+          </div>
+        )}
+      </main>
+
+      {/* ── BOTTOM BAR ─────────────────────────────────────────────────── */}
+      <footer className="fs-footer">
+        <span>{scores.length} Instansi Peserta</span>
+        <span className="fs-footer-dot">·</span>
+        <span>Auto-refresh setiap 10 detik</span>
+        <span className="fs-footer-dot">·</span>
+        <span>Real-time via SSE</span>
+      </footer>
+
+      {/* ── VISUAL CELEBRATION OVERLAY ── */}
+      {celebration && (
+        <div className="fs-winner-overlay">
+          {/* Confetti Particles (Generated dynamically via inline classes) */}
+          <div className="fs-confetti-container">
+            {Array.from({ length: 30 }).map((_, i) => (
+              <div
+                key={i}
+                className={`fs-confetti fs-confetti--${(i % 5) + 1}`}
+                style={{
+                  left: `${Math.random() * 100}%`,
+                  animationDelay: `${Math.random() * 2}s`,
+                  animationDuration: `${3 + Math.random() * 3}s`,
+                  transform: `scale(${0.5 + Math.random()})`,
+                }}
+              />
+            ))}
+          </div>
+
+          {/* Winner Card Container */}
+          <div className="fs-winner-card">
+            <div className="fs-winner-header-icon">
+              <span className="material-symbols-outlined text-[48px] animate-bounce">emoji_events</span>
+            </div>
+            
+            <div className="fs-winner-mascot-wrap">
+              <img src="/api/mascot" alt="Mascot Bee" className="fs-winner-mascot animate-pulse" />
+            </div>
+
+            <p className="fs-winner-tag">ROUND COMPLETED</p>
+            <h2 className="fs-winner-title">BIDDING WINNER</h2>
+
+            <div className="fs-winner-avatar-wrap">
+              <div className="fs-winner-avatar">
+                {getInitials(celebration.name)}
+              </div>
+            </div>
+
+            <h3 className="fs-winner-name">{celebration.name}</h3>
+            
+            <div className="fs-winner-points">
+              <span className="material-symbols-outlined text-[20px] text-amber-500">add_circle</span>
+              <span>{celebration.points} POIN TARUHAN</span>
+            </div>
+
+            <div className="fs-winner-footer">
+              <span className="spinner border-amber-500 mr-2" style={{ width: 12, height: 12 }} />
+              <span>Memulai ronde baru dalam beberapa saat...</span>
+            </div>
+          </div>
+        </div>
+      )}
+    </div>
+  );
+}
