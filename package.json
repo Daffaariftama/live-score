@@ -9,6 +9,7 @@
     "db:migrate": "prisma migrate deploy",
     "db:push": "prisma db push",
     "db:studio": "prisma studio",
+    "db:add-50": "tsx prisma/add-50-points.ts",
     "dev": "next dev --turbo",
     "postinstall": "prisma generate",
     "preview": "next build && next start",

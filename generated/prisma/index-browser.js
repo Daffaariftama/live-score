@@ -126,6 +126,16 @@ exports.Prisma.ScoreScalarFieldEnum = {
   name: 'name',
   score: 'score',
   bid: 'bid',
+  groupId: 'groupId',
+  logoUrl: 'logoUrl',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+};
+
+exports.Prisma.GroupScalarFieldEnum = {
+  id: 'id',
+  name: 'name',
+  biddingActive: 'biddingActive',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt'
 };
@@ -145,9 +155,15 @@ exports.Prisma.QueryMode = {
   insensitive: 'insensitive'
 };
 
+exports.Prisma.NullsOrder = {
+  first: 'first',
+  last: 'last'
+};
+
 
 exports.Prisma.ModelName = {
   Score: 'Score',
+  Group: 'Group',
   Setting: 'Setting'
 };
 

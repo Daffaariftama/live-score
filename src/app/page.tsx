@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
+import { useSearchParams } from "next/navigation";
 import { api } from "~/trpc/react";
 
 // ─── Types ────────────────────────────────────────────────────────────────────
@@ -9,6 +10,7 @@ interface ScoreEntry {
   name: string;
   score: number;
   bid?: number;
+  logoUrl?: string | null;
 }
 
 interface Delta {
@@ -98,6 +100,24 @@ function SkeletonRow() {
 
 // ─── Main Page ────────────────────────────────────────────────────────────────
 export default function PublicPage() {
+  const searchParams = useSearchParams();
+  const [activeGroupId, setActiveGroupId] = useState<number | null>(null);
+  const { data: groups = [] } = api.group.getAll.useQuery();
+
+  useEffect(() => {
+    const paramId = searchParams.get("groupId");
+    if (paramId) {
+      const id = parseInt(paramId, 10);
+      if (!isNaN(id)) {
+        setActiveGroupId(id);
+        return;
+      }
+    }
+    if (groups.length > 0 && activeGroupId === null) {
+      setActiveGroupId(groups[0]!.id);
+    }
+  }, [groups, searchParams, activeGroupId]);
+
   const {
     data: scores,
     isLoading,
@@ -106,31 +126,43 @@ export default function PublicPage() {
     error,
     refetch,
   } = api.score.getAll.useQuery(
-    undefined,
+    { groupId: activeGroupId ?? 0 },
     {
+      enabled: activeGroupId !== null,
       refetchInterval: 10_000,
       retry: 3,
       retryDelay: (attempt) => Math.min(1000 * 2 ** attempt, 10_000),
     }
   );
 
-  const { data: biddingActive = false, refetch: refetchBidding } = api.score.isBiddingActive.useQuery();
+  const { data: biddingActive = false, refetch: refetchBidding } = api.score.isBiddingActive.useQuery(
+    { groupId: activeGroupId ?? 0 },
+    { enabled: activeGroupId !== null }
+  );
 
   // Listen for real-time updates via Server-Sent Events (SSE)
   useEffect(() => {
+    if (activeGroupId === null) return;
     const eventSource = new EventSource("/api/scores/stream");
 
     eventSource.onmessage = (event) => {
-      if (event.data === "update") {
+      const dataStr = event.data as string;
+      if (dataStr === "update") {
         void refetch();
         void refetchBidding();
+      } else if (dataStr.startsWith("update:")) {
+        const [_, evGroupId] = dataStr.split(":");
+        if (evGroupId && parseInt(evGroupId, 10) === activeGroupId) {
+          void refetch();
+          void refetchBidding();
+        }
       }
     };
 
     return () => {
       eventSource.close();
     };
-  }, [refetch, refetchBidding]);
+  }, [refetch, refetchBidding, activeGroupId]);
 
   const safeScores: ScoreEntry[] = scores ?? [];
   const topScore = safeScores[0]?.score ?? 0;
@@ -191,6 +223,40 @@ export default function PublicPage() {
       </header>
 
       <main className="mt-24 max-w-container-max mx-auto px-gutter">
+        {/* Group select dropdown */}
+        {groups.length > 0 && (
+          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pb-4 mb-6 border-b border-black/5">
+            <div className="flex items-center gap-3">
+              <div className="flex items-center gap-2 bg-white/50 backdrop-blur-sm border border-black/5 px-4 py-2.5 rounded-2xl text-xs font-bold text-on-surface-variant">
+                <span className="material-symbols-outlined text-[16px] text-primary">folder_shared</span>
+                <span className="text-[11px] uppercase tracking-wider text-outline font-extrabold mr-1">Pilih Grup:</span>
+                <select
+                  value={activeGroupId ?? ""}
+                  onChange={(e) => setActiveGroupId(parseInt(e.target.value, 10))}
+                  className="bg-transparent border-none outline-none font-bold text-on-surface cursor-pointer text-xs pr-2"
+                >
+                  {groups.map((g) => (
+                    <option key={g.id} value={g.id} className="text-on-surface font-semibold bg-white">
+                      {g.name}
+                    </option>
+                  ))}
+                </select>
+              </div>
+            </div>
+
+            {activeGroupId !== null && (
+              <a
+                href={`/rankings?groupId=${activeGroupId}`}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="px-5 py-2.5 bg-indigo-600 hover:bg-indigo-700 text-white rounded-2xl text-xs font-bold transition-all duration-300 flex items-center justify-center gap-2 shrink-0 shadow-lg shadow-indigo-600/10"
+              >
+                <span className="material-symbols-outlined text-[16px]">tv</span>
+                <span>Buka Layar Rankings ({groups.find((g) => g.id === activeGroupId)?.name})</span>
+              </a>
+            )}
+          </div>
+        )}
         
         {/* ── Error Banner ────────────────────────────────────────────── */}
         {isError && (
@@ -199,7 +265,7 @@ export default function PublicPage() {
             <div className="error-banner-body">
               <p className="error-banner-title">Gagal memuat data</p>
               <p className="error-banner-msg">
-                {(error as Error)?.message ?? "Tidak dapat terhubung ke server. Periksa koneksi atau database."}
+                {(error as any)?.message ?? "Tidak dapat terhubung ke server. Periksa koneksi atau database."}
               </p>
             </div>
             <button
@@ -226,7 +292,9 @@ export default function PublicPage() {
           <div className="md:col-span-8 glass-card p-md rounded-[24px] flex flex-col justify-between overflow-hidden relative min-h-[160px]">
             <div className="z-10">
               <h2 className="text-on-surface-variant font-semibold text-sm mb-1 uppercase tracking-wider">Competition Overview</h2>
-              <p className="font-extrabold text-2xl text-primary">Final Lomba Cepat Tepat</p>
+              <p className="font-extrabold text-2xl text-primary">
+                Final Lomba Cepat Tepat {groups.find((g) => g.id === activeGroupId)?.name ? `· ${groups.find((g) => g.id === activeGroupId)?.name}` : ""}
+              </p>
             </div>
             <div className="flex items-end justify-between z-10 mt-md">
               <div className="flex flex-col">
@@ -328,7 +396,7 @@ export default function PublicPage() {
               </div>
             ) : (
               safeScores.map((entry, idx) => {
-                const rank = idx + 1;
+                const rank = safeScores.findIndex((s) => s.score === entry.score) + 1;
                 const isTop3 = rank <= 3;
                 const barPct = Math.max(4, (entry.score / Math.max(topScore, 1)) * 100);
                 const rankGradientClass =
@@ -355,17 +423,21 @@ export default function PublicPage() {
                     </div>
 
                     {/* Avatar */}
-                    <div className={`lb-card-avatar ${getAvatarColor(idx)}`}>
-                      {getInitials(entry.name)}
+                    <div className={`lb-card-avatar overflow-hidden ${entry.logoUrl ? "bg-white border" : getAvatarColor(idx)}`}>
+                      {entry.logoUrl ? (
+                        <img src={entry.logoUrl} alt={entry.name} className="w-full h-full object-cover" />
+                      ) : (
+                        getInitials(entry.name)
+                      )}
                     </div>
 
                     {/* Name + progress bar */}
                     <div className="lb-card-body">
                       <div className="flex items-center gap-1.5 justify-between">
                         <p className="lb-card-name">{entry.name}</p>
-                        {biddingActive && (
+                        {biddingActive && entry.score > 0 && (
                           <span className="bg-amber-100 text-amber-800 font-extrabold text-[10px] px-2 py-0.5 rounded-full border border-amber-200 flex-shrink-0">
-                            Bid: {entry.bid ?? 10}
+                            Bid: {Math.min(entry.bid ?? 10, entry.score)}
                           </span>
                         )}
                       </div>
@@ -414,7 +486,7 @@ export default function PublicPage() {
                   </tr>
                 ) : (
                   safeScores.map((entry, idx) => {
-                    const rank = idx + 1;
+                    const rank = safeScores.findIndex((s) => s.score === entry.score) + 1;
                     const isTop3 = rank <= 3;
                     const barPct = Math.max(4, (entry.score / Math.max(topScore, 1)) * 100);
                     const rankGradientClass =
@@ -438,8 +510,12 @@ export default function PublicPage() {
                         </td>
                         <td className="px-md py-sm">
                           <div className="flex items-center gap-md">
-                            <div className={`w-12 h-12 rounded-full flex items-center justify-center font-bold text-sm border-2 border-white shadow-sm flex-shrink-0 ${getAvatarColor(idx)}`}>
-                              {getInitials(entry.name)}
+                            <div className={`w-12 h-12 rounded-full flex items-center justify-center font-bold text-sm border-2 border-white shadow-sm flex-shrink-0 overflow-hidden ${entry.logoUrl ? "bg-white" : getAvatarColor(idx)}`}>
+                              {entry.logoUrl ? (
+                                <img src={entry.logoUrl} alt={entry.name} className="w-full h-full object-cover" />
+                              ) : (
+                                getInitials(entry.name)
+                              )}
                             </div>
                             <div>
                               <p className="font-bold text-on-surface text-sm md:text-base">{entry.name}</p>
@@ -457,9 +533,13 @@ export default function PublicPage() {
                         </td>
                         {biddingActive && (
                           <td className="px-md py-sm text-center">
-                            <span className="bg-amber-100 text-amber-800 font-extrabold text-xs px-2.5 py-1 rounded-full border border-amber-200">
-                              {entry.bid ?? 10}
-                            </span>
+                            {entry.score > 0 ? (
+                              <span className="bg-amber-100 text-amber-800 font-extrabold text-xs px-2.5 py-1 rounded-full border border-amber-200">
+                                {Math.min(entry.bid ?? 10, entry.score)}
+                              </span>
+                            ) : (
+                              <span className="text-outline text-xs font-semibold">—</span>
+                            )}
                           </td>
                         )}
                         <td className="px-md py-sm text-right pr-8">

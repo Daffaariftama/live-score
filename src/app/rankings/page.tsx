@@ -1,12 +1,14 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
+import { useSearchParams } from "next/navigation";
 import { api } from "~/trpc/react";
 
 interface ScoreEntry {
   id: number;
   name: string;
   score: number;
+  logoUrl?: string | null;
 }
 
 interface Delta {
@@ -63,47 +65,46 @@ function ScoreCell({ entry, rank }: { entry: ScoreEntry; rank: number }) {
   );
 }
 
-function PodiumCard({ entry, rank, biddingActive }: { entry: ScoreEntry; rank: number; biddingActive: boolean }) {
-  const heights = ["h-[135px]", "h-[105px]", "h-[85px]"];
-  const orders  = [1, 0, 2]; // 2nd, 1st, 3rd display order
-  const labels  = ["🥇", "🥈", "🥉"];
-  const gradients = [
-    "from-yellow-400 to-amber-500",
-    "from-slate-300 to-slate-400",
-    "from-amber-600 to-orange-500",
-  ];
 
-  return (
-    <div
-      className="fs-podium-col"
-      style={{ order: orders[rank - 1] }}
-    >
-      {/* Avatar + name */}
-      <div className="fs-podium-info">
-        <div
-          className="fs-podium-avatar"
-          style={{ background: getAvatarColor() }}
-        >
-          {getInitials(entry.name)}
-        </div>
-        <p className="fs-podium-name">{entry.name}</p>
-        <p className="fs-podium-score">{entry.score.toLocaleString()} pts</p>
-      </div>
-
-      {/* Podium base */}
-      <div className={`fs-podium-base bg-gradient-to-b ${gradients[rank - 1]} ${heights[rank - 1]}`}>
-        <span className="fs-podium-medal">{labels[rank - 1]}</span>
-        <span className="fs-podium-rank">#{rank}</span>
-      </div>
-    </div>
-  );
-}
 
 // ─── Main Rankings Page ───────────────────────────────────────────────────────
 export default function RankingsPage() {
-  const { data: scores = [], isLoading, refetch } = api.score.getAll.useQuery(undefined, {
-    refetchInterval: 10_000,
-  });
+  const searchParams = useSearchParams();
+  const [activeGroupId, setActiveGroupId] = useState<number | null>(null);
+  const { data: groups = [] } = api.group.getAll.useQuery();
+  const [initialized, setInitialized] = useState(false);
+
+  useEffect(() => {
+    if (groups.length > 0 && !initialized) {
+      const paramId = searchParams.get("groupId");
+      if (paramId) {
+        const id = parseInt(paramId, 10);
+        if (!isNaN(id)) {
+          setActiveGroupId(id);
+          setInitialized(true);
+          return;
+        }
+      }
+      setActiveGroupId(groups[0]!.id);
+      setInitialized(true);
+    }
+  }, [groups, searchParams, initialized]);
+
+  const handleGroupChange = (id: number) => {
+    setActiveGroupId(id);
+    // Update the browser URL query parameter seamlessly
+    const url = new URL(window.location.href);
+    url.searchParams.set("groupId", id.toString());
+    window.history.pushState(null, "", url.toString());
+  };
+
+  const { data: scores = [], isLoading, refetch } = api.score.getAll.useQuery(
+    { groupId: activeGroupId ?? 0 },
+    {
+      enabled: activeGroupId !== null,
+      refetchInterval: 10_000,
+    }
+  );
 
   const [now, setNow] = useState(() => new Date());
   const [flashIds, setFlashIds] = useState<Set<number>>(new Set());
@@ -128,7 +129,10 @@ export default function RankingsPage() {
     }
   };
 
-  const { data: biddingActive = false, refetch: refetchBidding } = api.score.isBiddingActive.useQuery();
+  const { data: biddingActive = false, refetch: refetchBidding } = api.score.isBiddingActive.useQuery(
+    { groupId: activeGroupId ?? 0 },
+    { enabled: activeGroupId !== null }
+  );
   const [celebration, setCelebration] = useState<{ name: string; points: number } | null>(null);
 
   const triggerCelebration = (name: string, points: number) => {
@@ -140,22 +144,30 @@ export default function RankingsPage() {
 
   // SSE real-time
   useEffect(() => {
+    if (activeGroupId === null) return;
     const es = new EventSource("/api/scores/stream");
     es.onmessage = (e) => {
-      if (e.data === "update") {
+      const dataStr = e.data as string;
+      if (dataStr === "update") {
         void refetch();
         void refetchBidding();
-      } else if (e.data.startsWith("winner:")) {
-        void refetch();
-        void refetchBidding();
-        const [_, winnerName, winPoints] = e.data.split(":");
-        if (winnerName && winPoints) {
+      } else if (dataStr.startsWith("update:")) {
+        const [_, evGroupId] = dataStr.split(":");
+        if (evGroupId && parseInt(evGroupId, 10) === activeGroupId) {
+          void refetch();
+          void refetchBidding();
+        }
+      } else if (dataStr.startsWith("winner:")) {
+        const [_, evGroupId, winnerName, winPoints] = dataStr.split(":");
+        if (evGroupId && parseInt(evGroupId, 10) === activeGroupId && winnerName && winPoints) {
+          void refetch();
+          void refetchBidding();
           triggerCelebration(winnerName, parseInt(winPoints, 10));
         }
       }
     };
     return () => es.close();
-  }, [refetch, refetchBidding]);
+  }, [refetch, refetchBidding, activeGroupId]);
 
   // Clock
   useEffect(() => {
@@ -177,15 +189,10 @@ export default function RankingsPage() {
     }
   }, [scores]);
 
-  const top3   = scores.slice(0, 3);
   const topScore = scores[0]?.score ?? 0;
 
   return (
-    <div className="fs-root">
-      {/* Atmospheric blobs */}
-      <div className="fs-blob fs-blob-1" />
-      <div className="fs-blob fs-blob-2" />
-      <div className="fs-blob fs-blob-3" />
+    <div className="fs-root text-on-background min-h-screen relative">
       <div className="fs-grid-lines" aria-hidden="true" />
 
       {/* ── MAIN CONTENT ───────────────────────────────────────────────── */}
@@ -211,7 +218,9 @@ export default function RankingsPage() {
                   <img src="/api/mascot" alt="Mascot" className="fs-mascot" />
                   <div className="flex-1 min-w-0">
                     <h1 className="fs-brand-title truncate">LOMBA CEPAT TEPAT</h1>
-                    <p className="fs-brand-subtitle">Final Leaderboard</p>
+                    <p className="fs-brand-subtitle">
+                      Leaderboard {groups.find((g) => g.id === activeGroupId)?.name ? `· ${groups.find((g) => g.id === activeGroupId)?.name}` : ""}
+                    </p>
                   </div>
                   <div className="flex items-center gap-1.5">
                     <button
@@ -230,14 +239,29 @@ export default function RankingsPage() {
                 </div>
               </div>
 
-              {/* Podium */}
-              {top3.length > 0 && (
+              {/* Leader Spotlight */}
+              {scores.length > 0 && scores[0] && !scores.every((s) => s.score === scores[0]!.score) && (
                 <div className="fs-podium-wrapper">
-                  <p className="fs-section-label">🏆 Podium</p>
-                  <div className="fs-podium">
-                    {top3.map((entry, i) => (
-                      <PodiumCard key={entry.id} entry={entry} rank={i + 1} biddingActive={biddingActive} />
-                    ))}
+                  <p className="fs-section-label">🏆 Pimpinan Klasemen</p>
+                  <div className="flex flex-col items-center justify-center py-6 px-4">
+                    <div className="relative flex flex-col items-center">
+                      <span className="text-[32px] absolute -top-8 animate-bounce">👑</span>
+                      <div className={`w-28 h-28 rounded-full border-4 border-amber-400 shadow-xl overflow-hidden flex items-center justify-center flex-shrink-0 bg-white`}>
+                        {scores[0].logoUrl ? (
+                          <img src={scores[0].logoUrl} alt={scores[0].name} className="w-full h-full object-cover" />
+                        ) : (
+                          <span className="text-3xl font-extrabold text-slate-800">{getInitials(scores[0].name)}</span>
+                        )}
+                      </div>
+                      <span className="absolute -bottom-3 bg-amber-500 text-white font-extrabold px-3 py-1 rounded-full text-xs shadow-md border-2 border-white">
+                        Rank #1
+                      </span>
+                    </div>
+
+                    <div className="text-center mt-6">
+                      <p className="font-extrabold text-on-surface text-lg leading-snug max-w-[240px] mx-auto break-words">{scores[0].name}</p>
+                      <p className="text-2xl font-black text-amber-500 mt-2">{scores[0].score.toLocaleString()} PTS</p>
+                    </div>
                   </div>
                 </div>
               )}
@@ -252,15 +276,33 @@ export default function RankingsPage() {
             {/* RIGHT PANEL: Full ranking list */}
             <div className="fs-list-section">
               <div className="flex items-center justify-between px-md py-sm border-b border-black/5 bg-white/20">
-                <p className="fs-section-label !p-0">📋 Ranking Lengkap</p>
+                <div className="flex items-center gap-3">
+                  <p className="fs-section-label !p-0">📋 Ranking Lengkap</p>
+                  {groups.length > 0 && (
+                    <div className="fs-group-dropdown-wrap">
+                      <span className="material-symbols-outlined fs-group-icon">folder_shared</span>
+                      <select
+                        value={activeGroupId ?? ""}
+                        onChange={(e) => handleGroupChange(parseInt(e.target.value, 10))}
+                        className="fs-group-dropdown"
+                      >
+                        {groups.map((g) => (
+                          <option key={g.id} value={g.id}>
+                            {g.name}
+                          </option>
+                        ))}
+                      </select>
+                    </div>
+                  )}
+                </div>
                 <span className="fs-clock-inline">
                   {now.toLocaleTimeString("id-ID", { hour: "2-digit", minute: "2-digit", second: "2-digit" })}
                 </span>
               </div>
               
               <div className="fs-list">
-                {scores.map((entry, idx) => {
-                  const rank = idx + 1;
+                {scores.slice(0, 10).map((entry, idx) => {
+                  const rank = scores.findIndex((s) => s.score === entry.score) + 1;
                   const isTop3 = rank <= 3;
                   const barPct = Math.max(3, (entry.score / Math.max(topScore, 1)) * 100);
                   const isFlashing = flashIds.has(entry.id);
@@ -293,19 +335,23 @@ export default function RankingsPage() {
 
                       {/* Avatar */}
                       <div
-                        className="fs-row-avatar"
-                        style={{ background: getAvatarColor() }}
+                        className="fs-row-avatar overflow-hidden flex items-center justify-center border border-white/10"
+                        style={{ background: entry.logoUrl ? "#ffffff" : getAvatarColor() }}
                       >
-                        {getInitials(entry.name)}
+                        {entry.logoUrl ? (
+                          <img src={entry.logoUrl} alt={entry.name} className="w-full h-full object-cover" />
+                        ) : (
+                          getInitials(entry.name)
+                        )}
                       </div>
 
                       {/* Name + bar */}
                       <div className="fs-row-body">
                         <div className="flex items-center gap-2 justify-between">
                           <p className="fs-row-name truncate">{entry.name}</p>
-                          {biddingActive && (
+                          {biddingActive && entry.score > 0 && (
                             <span className="bg-amber-100 text-amber-800 font-extrabold text-[10px] px-2 py-0.5 rounded-full border border-amber-200 flex-shrink-0">
-                              Bid: {entry.bid ?? 10}
+                              Bid: {Math.min(entry.bid ?? 10, entry.score)}
                             </span>
                           )}
                         </div>
@@ -332,14 +378,7 @@ export default function RankingsPage() {
         )}
       </main>
 
-      {/* ── BOTTOM BAR ─────────────────────────────────────────────────── */}
-      <footer className="fs-footer">
-        <span>{scores.length} Instansi Peserta</span>
-        <span className="fs-footer-dot">·</span>
-        <span>Auto-refresh setiap 10 detik</span>
-        <span className="fs-footer-dot">·</span>
-        <span>Real-time via SSE</span>
-      </footer>
+
 
       {/* ── VISUAL CELEBRATION OVERLAY ── */}
       {celebration && (

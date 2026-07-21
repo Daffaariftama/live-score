@@ -98,6 +98,16 @@ exports.Prisma.ScoreScalarFieldEnum = {
   name: 'name',
   score: 'score',
   bid: 'bid',
+  groupId: 'groupId',
+  logoUrl: 'logoUrl',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+};
+
+exports.Prisma.GroupScalarFieldEnum = {
+  id: 'id',
+  name: 'name',
+  biddingActive: 'biddingActive',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt'
 };
@@ -117,9 +127,15 @@ exports.Prisma.QueryMode = {
   insensitive: 'insensitive'
 };
 
+exports.Prisma.NullsOrder = {
+  first: 'first',
+  last: 'last'
+};
+
 
 exports.Prisma.ModelName = {
   Score: 'Score',
+  Group: 'Group',
   Setting: 'Setting'
 };
 /**
@@ -169,13 +185,13 @@ const config = {
       }
     }
   },
-  "inlineSchema": "// This is your Prisma schema file,\n// learn more about it in the docs: https://pris.ly/d/prisma-schema\n\ngenerator client {\n  provider = \"prisma-client-js\"\n  output   = \"../generated/prisma\"\n}\n\ndatasource db {\n  provider = \"postgresql\"\n  url      = env(\"DATABASE_URL\")\n}\n\nmodel Score {\n  id        Int      @id @default(autoincrement())\n  name      String\n  score     Int      @default(0)\n  bid       Int      @default(10)\n  createdAt DateTime @default(now())\n  updatedAt DateTime @updatedAt\n\n  @@index([score(sort: Desc)])\n}\n\nmodel Setting {\n  key   String @id\n  value String\n}\n",
-  "inlineSchemaHash": "9d14aa50e668081a3d6be1d7e09677cc29a68d6b12b4832900df0a2a1d743ed1",
+  "inlineSchema": "// This is your Prisma schema file,\n// learn more about it in the docs: https://pris.ly/d/prisma-schema\n\ngenerator client {\n  provider = \"prisma-client-js\"\n  output   = \"../generated/prisma\"\n}\n\ndatasource db {\n  provider = \"postgresql\"\n  url      = env(\"DATABASE_URL\")\n}\n\nmodel Score {\n  id        Int      @id @default(autoincrement())\n  name      String\n  score     Int      @default(0)\n  bid       Int      @default(10)\n  groupId   Int\n  logoUrl   String?\n  group     Group    @relation(fields: [groupId], references: [id], onDelete: Cascade)\n  createdAt DateTime @default(now())\n  updatedAt DateTime @updatedAt\n\n  @@index([groupId, score(sort: Desc)])\n}\n\nmodel Group {\n  id            Int      @id @default(autoincrement())\n  name          String   @unique\n  biddingActive Boolean  @default(false)\n  scores        Score[]\n  createdAt     DateTime @default(now())\n  updatedAt     DateTime @updatedAt\n}\n\nmodel Setting {\n  key   String @id\n  value String\n}\n",
+  "inlineSchemaHash": "757ec3344aee48a49884f11ce57c8e482daf9a7d9404adbc8a60a01d420443d9",
   "copyEngine": true
 }
 config.dirname = '/'
 
-config.runtimeDataModel = JSON.parse("{\"models\":{\"Score\":{\"fields\":[{\"name\":\"id\",\"kind\":\"scalar\",\"type\":\"Int\"},{\"name\":\"name\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"score\",\"kind\":\"scalar\",\"type\":\"Int\"},{\"name\":\"bid\",\"kind\":\"scalar\",\"type\":\"Int\"},{\"name\":\"createdAt\",\"kind\":\"scalar\",\"type\":\"DateTime\"},{\"name\":\"updatedAt\",\"kind\":\"scalar\",\"type\":\"DateTime\"}],\"dbName\":null},\"Setting\":{\"fields\":[{\"name\":\"key\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"value\",\"kind\":\"scalar\",\"type\":\"String\"}],\"dbName\":null}},\"enums\":{},\"types\":{}}")
+config.runtimeDataModel = JSON.parse("{\"models\":{\"Score\":{\"fields\":[{\"name\":\"id\",\"kind\":\"scalar\",\"type\":\"Int\"},{\"name\":\"name\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"score\",\"kind\":\"scalar\",\"type\":\"Int\"},{\"name\":\"bid\",\"kind\":\"scalar\",\"type\":\"Int\"},{\"name\":\"groupId\",\"kind\":\"scalar\",\"type\":\"Int\"},{\"name\":\"logoUrl\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"group\",\"kind\":\"object\",\"type\":\"Group\",\"relationName\":\"GroupToScore\"},{\"name\":\"createdAt\",\"kind\":\"scalar\",\"type\":\"DateTime\"},{\"name\":\"updatedAt\",\"kind\":\"scalar\",\"type\":\"DateTime\"}],\"dbName\":null},\"Group\":{\"fields\":[{\"name\":\"id\",\"kind\":\"scalar\",\"type\":\"Int\"},{\"name\":\"name\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"biddingActive\",\"kind\":\"scalar\",\"type\":\"Boolean\"},{\"name\":\"scores\",\"kind\":\"object\",\"type\":\"Score\",\"relationName\":\"GroupToScore\"},{\"name\":\"createdAt\",\"kind\":\"scalar\",\"type\":\"DateTime\"},{\"name\":\"updatedAt\",\"kind\":\"scalar\",\"type\":\"DateTime\"}],\"dbName\":null},\"Setting\":{\"fields\":[{\"name\":\"key\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"value\",\"kind\":\"scalar\",\"type\":\"String\"}],\"dbName\":null}},\"enums\":{},\"types\":{}}")
 defineDmmfProperty(exports.Prisma, config.runtimeDataModel)
 config.engineWasm = {
   getRuntime: async () => require('./query_engine_bg.js'),
