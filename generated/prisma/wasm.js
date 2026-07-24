@@ -117,6 +117,39 @@ exports.Prisma.SettingScalarFieldEnum = {
   value: 'value'
 };
 
+exports.Prisma.CompetitionScalarFieldEnum = {
+  id: 'id',
+  groupId: 'groupId',
+  totalSoal: 'totalSoal',
+  currentSoal: 'currentSoal',
+  status: 'status',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+};
+
+exports.Prisma.RoundScalarFieldEnum = {
+  id: 'id',
+  competitionId: 'competitionId',
+  soalNumber: 'soalNumber',
+  isBidding: 'isBidding',
+  winnerId: 'winnerId',
+  winnerName: 'winnerName',
+  status: 'status',
+  createdAt: 'createdAt'
+};
+
+exports.Prisma.RoundEntryScalarFieldEnum = {
+  id: 'id',
+  roundId: 'roundId',
+  scoreId: 'scoreId',
+  name: 'name',
+  bidAmount: 'bidAmount',
+  pointChange: 'pointChange',
+  scoreAfter: 'scoreAfter',
+  result: 'result',
+  createdAt: 'createdAt'
+};
+
 exports.Prisma.SortOrder = {
   asc: 'asc',
   desc: 'desc'
@@ -136,7 +169,10 @@ exports.Prisma.NullsOrder = {
 exports.Prisma.ModelName = {
   Score: 'Score',
   Group: 'Group',
-  Setting: 'Setting'
+  Setting: 'Setting',
+  Competition: 'Competition',
+  Round: 'Round',
+  RoundEntry: 'RoundEntry'
 };
 /**
  * Create the Client
@@ -185,13 +221,13 @@ const config = {
       }
     }
   },
-  "inlineSchema": "// This is your Prisma schema file,\n// learn more about it in the docs: https://pris.ly/d/prisma-schema\n\ngenerator client {\n  provider = \"prisma-client-js\"\n  output   = \"../generated/prisma\"\n}\n\ndatasource db {\n  provider = \"postgresql\"\n  url      = env(\"DATABASE_URL\")\n}\n\nmodel Score {\n  id        Int      @id @default(autoincrement())\n  name      String\n  score     Int      @default(0)\n  bid       Int      @default(10)\n  groupId   Int\n  logoUrl   String?\n  group     Group    @relation(fields: [groupId], references: [id], onDelete: Cascade)\n  createdAt DateTime @default(now())\n  updatedAt DateTime @updatedAt\n\n  @@index([groupId, score(sort: Desc)])\n}\n\nmodel Group {\n  id            Int      @id @default(autoincrement())\n  name          String   @unique\n  biddingActive Boolean  @default(false)\n  scores        Score[]\n  createdAt     DateTime @default(now())\n  updatedAt     DateTime @updatedAt\n}\n\nmodel Setting {\n  key   String @id\n  value String\n}\n",
-  "inlineSchemaHash": "757ec3344aee48a49884f11ce57c8e482daf9a7d9404adbc8a60a01d420443d9",
+  "inlineSchema": "// This is your Prisma schema file,\n// learn more about it in the docs: https://pris.ly/d/prisma-schema\n\ngenerator client {\n  provider = \"prisma-client-js\"\n  output   = \"../generated/prisma\"\n}\n\ndatasource db {\n  provider = \"postgresql\"\n  url      = env(\"DATABASE_URL\")\n}\n\nmodel Score {\n  id        Int      @id @default(autoincrement())\n  name      String\n  score     Int      @default(0)\n  bid       Int      @default(10)\n  groupId   Int\n  logoUrl   String?\n  group     Group    @relation(fields: [groupId], references: [id], onDelete: Cascade)\n  createdAt DateTime @default(now())\n  updatedAt DateTime @updatedAt\n\n  @@index([groupId, score(sort: Desc)])\n}\n\nmodel Group {\n  id            Int           @id @default(autoincrement())\n  name          String        @unique\n  biddingActive Boolean       @default(false)\n  scores        Score[]\n  competitions  Competition[]\n  createdAt     DateTime      @default(now())\n  updatedAt     DateTime      @updatedAt\n}\n\nmodel Setting {\n  key   String @id\n  value String\n}\n\n// ─── Competition (Lomba) ──────────────────────────────────────────────────────\nmodel Competition {\n  id          Int      @id @default(autoincrement())\n  groupId     Int\n  group       Group    @relation(fields: [groupId], references: [id], onDelete: Cascade)\n  totalSoal   Int\n  currentSoal Int      @default(0)\n  status      String   @default(\"active\") // \"active\" | \"completed\"\n  rounds      Round[]\n  createdAt   DateTime @default(now())\n  updatedAt   DateTime @updatedAt\n\n  @@index([groupId, status])\n}\n\nmodel Round {\n  id            Int          @id @default(autoincrement())\n  competitionId Int\n  competition   Competition  @relation(fields: [competitionId], references: [id], onDelete: Cascade)\n  soalNumber    Int\n  isBidding     Boolean      @default(false)\n  winnerId      Int?\n  winnerName    String?\n  status        String       @default(\"active\") // \"active\" | \"completed\"\n  entries       RoundEntry[]\n  createdAt     DateTime     @default(now())\n\n  @@index([competitionId, soalNumber])\n}\n\nmodel RoundEntry {\n  id          Int      @id @default(autoincrement())\n  roundId     Int\n  round       Round    @relation(fields: [roundId], references: [id], onDelete: Cascade)\n  scoreId     Int\n  name        String\n  bidAmount   Int      @default(0)\n  pointChange Int\n  scoreAfter  Int      @default(0)\n  result      String // \"correct\" | \"wrong\" | \"skip\" | \"win\" | \"lose\" | \"no_contest\" | \"ineligible\"\n  createdAt   DateTime @default(now())\n\n  @@index([roundId])\n}\n",
+  "inlineSchemaHash": "f38e078ee8be55962e9cf3c7ebee708451c56e58d0b5c8731a9db250d7334478",
   "copyEngine": true
 }
 config.dirname = '/'
 
-config.runtimeDataModel = JSON.parse("{\"models\":{\"Score\":{\"fields\":[{\"name\":\"id\",\"kind\":\"scalar\",\"type\":\"Int\"},{\"name\":\"name\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"score\",\"kind\":\"scalar\",\"type\":\"Int\"},{\"name\":\"bid\",\"kind\":\"scalar\",\"type\":\"Int\"},{\"name\":\"groupId\",\"kind\":\"scalar\",\"type\":\"Int\"},{\"name\":\"logoUrl\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"group\",\"kind\":\"object\",\"type\":\"Group\",\"relationName\":\"GroupToScore\"},{\"name\":\"createdAt\",\"kind\":\"scalar\",\"type\":\"DateTime\"},{\"name\":\"updatedAt\",\"kind\":\"scalar\",\"type\":\"DateTime\"}],\"dbName\":null},\"Group\":{\"fields\":[{\"name\":\"id\",\"kind\":\"scalar\",\"type\":\"Int\"},{\"name\":\"name\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"biddingActive\",\"kind\":\"scalar\",\"type\":\"Boolean\"},{\"name\":\"scores\",\"kind\":\"object\",\"type\":\"Score\",\"relationName\":\"GroupToScore\"},{\"name\":\"createdAt\",\"kind\":\"scalar\",\"type\":\"DateTime\"},{\"name\":\"updatedAt\",\"kind\":\"scalar\",\"type\":\"DateTime\"}],\"dbName\":null},\"Setting\":{\"fields\":[{\"name\":\"key\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"value\",\"kind\":\"scalar\",\"type\":\"String\"}],\"dbName\":null}},\"enums\":{},\"types\":{}}")
+config.runtimeDataModel = JSON.parse("{\"models\":{\"Score\":{\"fields\":[{\"name\":\"id\",\"kind\":\"scalar\",\"type\":\"Int\"},{\"name\":\"name\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"score\",\"kind\":\"scalar\",\"type\":\"Int\"},{\"name\":\"bid\",\"kind\":\"scalar\",\"type\":\"Int\"},{\"name\":\"groupId\",\"kind\":\"scalar\",\"type\":\"Int\"},{\"name\":\"logoUrl\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"group\",\"kind\":\"object\",\"type\":\"Group\",\"relationName\":\"GroupToScore\"},{\"name\":\"createdAt\",\"kind\":\"scalar\",\"type\":\"DateTime\"},{\"name\":\"updatedAt\",\"kind\":\"scalar\",\"type\":\"DateTime\"}],\"dbName\":null},\"Group\":{\"fields\":[{\"name\":\"id\",\"kind\":\"scalar\",\"type\":\"Int\"},{\"name\":\"name\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"biddingActive\",\"kind\":\"scalar\",\"type\":\"Boolean\"},{\"name\":\"scores\",\"kind\":\"object\",\"type\":\"Score\",\"relationName\":\"GroupToScore\"},{\"name\":\"competitions\",\"kind\":\"object\",\"type\":\"Competition\",\"relationName\":\"CompetitionToGroup\"},{\"name\":\"createdAt\",\"kind\":\"scalar\",\"type\":\"DateTime\"},{\"name\":\"updatedAt\",\"kind\":\"scalar\",\"type\":\"DateTime\"}],\"dbName\":null},\"Setting\":{\"fields\":[{\"name\":\"key\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"value\",\"kind\":\"scalar\",\"type\":\"String\"}],\"dbName\":null},\"Competition\":{\"fields\":[{\"name\":\"id\",\"kind\":\"scalar\",\"type\":\"Int\"},{\"name\":\"groupId\",\"kind\":\"scalar\",\"type\":\"Int\"},{\"name\":\"group\",\"kind\":\"object\",\"type\":\"Group\",\"relationName\":\"CompetitionToGroup\"},{\"name\":\"totalSoal\",\"kind\":\"scalar\",\"type\":\"Int\"},{\"name\":\"currentSoal\",\"kind\":\"scalar\",\"type\":\"Int\"},{\"name\":\"status\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"rounds\",\"kind\":\"object\",\"type\":\"Round\",\"relationName\":\"CompetitionToRound\"},{\"name\":\"createdAt\",\"kind\":\"scalar\",\"type\":\"DateTime\"},{\"name\":\"updatedAt\",\"kind\":\"scalar\",\"type\":\"DateTime\"}],\"dbName\":null},\"Round\":{\"fields\":[{\"name\":\"id\",\"kind\":\"scalar\",\"type\":\"Int\"},{\"name\":\"competitionId\",\"kind\":\"scalar\",\"type\":\"Int\"},{\"name\":\"competition\",\"kind\":\"object\",\"type\":\"Competition\",\"relationName\":\"CompetitionToRound\"},{\"name\":\"soalNumber\",\"kind\":\"scalar\",\"type\":\"Int\"},{\"name\":\"isBidding\",\"kind\":\"scalar\",\"type\":\"Boolean\"},{\"name\":\"winnerId\",\"kind\":\"scalar\",\"type\":\"Int\"},{\"name\":\"winnerName\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"status\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"entries\",\"kind\":\"object\",\"type\":\"RoundEntry\",\"relationName\":\"RoundToRoundEntry\"},{\"name\":\"createdAt\",\"kind\":\"scalar\",\"type\":\"DateTime\"}],\"dbName\":null},\"RoundEntry\":{\"fields\":[{\"name\":\"id\",\"kind\":\"scalar\",\"type\":\"Int\"},{\"name\":\"roundId\",\"kind\":\"scalar\",\"type\":\"Int\"},{\"name\":\"round\",\"kind\":\"object\",\"type\":\"Round\",\"relationName\":\"RoundToRoundEntry\"},{\"name\":\"scoreId\",\"kind\":\"scalar\",\"type\":\"Int\"},{\"name\":\"name\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"bidAmount\",\"kind\":\"scalar\",\"type\":\"Int\"},{\"name\":\"pointChange\",\"kind\":\"scalar\",\"type\":\"Int\"},{\"name\":\"scoreAfter\",\"kind\":\"scalar\",\"type\":\"Int\"},{\"name\":\"result\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"createdAt\",\"kind\":\"scalar\",\"type\":\"DateTime\"}],\"dbName\":null}},\"enums\":{},\"types\":{}}")
 defineDmmfProperty(exports.Prisma, config.runtimeDataModel)
 config.engineWasm = {
   getRuntime: async () => require('./query_engine_bg.js'),

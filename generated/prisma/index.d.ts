@@ -28,6 +28,21 @@ export type Group = $Result.DefaultSelection<Prisma.$GroupPayload>
  * 
  */
 export type Setting = $Result.DefaultSelection<Prisma.$SettingPayload>
+/**
+ * Model Competition
+ * 
+ */
+export type Competition = $Result.DefaultSelection<Prisma.$CompetitionPayload>
+/**
+ * Model Round
+ * 
+ */
+export type Round = $Result.DefaultSelection<Prisma.$RoundPayload>
+/**
+ * Model RoundEntry
+ * 
+ */
+export type RoundEntry = $Result.DefaultSelection<Prisma.$RoundEntryPayload>
 
 /**
  * ##  Prisma Client ʲˢ
@@ -176,6 +191,36 @@ export class PrismaClient<
     * ```
     */
   get setting(): Prisma.SettingDelegate<ExtArgs, ClientOptions>;
+
+  /**
+   * `prisma.competition`: Exposes CRUD operations for the **Competition** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more Competitions
+    * const competitions = await prisma.competition.findMany()
+    * ```
+    */
+  get competition(): Prisma.CompetitionDelegate<ExtArgs, ClientOptions>;
+
+  /**
+   * `prisma.round`: Exposes CRUD operations for the **Round** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more Rounds
+    * const rounds = await prisma.round.findMany()
+    * ```
+    */
+  get round(): Prisma.RoundDelegate<ExtArgs, ClientOptions>;
+
+  /**
+   * `prisma.roundEntry`: Exposes CRUD operations for the **RoundEntry** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more RoundEntries
+    * const roundEntries = await prisma.roundEntry.findMany()
+    * ```
+    */
+  get roundEntry(): Prisma.RoundEntryDelegate<ExtArgs, ClientOptions>;
 }
 
 export namespace Prisma {
@@ -619,7 +664,10 @@ export namespace Prisma {
   export const ModelName: {
     Score: 'Score',
     Group: 'Group',
-    Setting: 'Setting'
+    Setting: 'Setting',
+    Competition: 'Competition',
+    Round: 'Round',
+    RoundEntry: 'RoundEntry'
   };
 
   export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -638,7 +686,7 @@ export namespace Prisma {
       omit: GlobalOmitOptions
     }
     meta: {
-      modelProps: "score" | "group" | "setting"
+      modelProps: "score" | "group" | "setting" | "competition" | "round" | "roundEntry"
       txIsolationLevel: Prisma.TransactionIsolationLevel
     }
     model: {
@@ -864,6 +912,228 @@ export namespace Prisma {
           }
         }
       }
+      Competition: {
+        payload: Prisma.$CompetitionPayload<ExtArgs>
+        fields: Prisma.CompetitionFieldRefs
+        operations: {
+          findUnique: {
+            args: Prisma.CompetitionFindUniqueArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$CompetitionPayload> | null
+          }
+          findUniqueOrThrow: {
+            args: Prisma.CompetitionFindUniqueOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$CompetitionPayload>
+          }
+          findFirst: {
+            args: Prisma.CompetitionFindFirstArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$CompetitionPayload> | null
+          }
+          findFirstOrThrow: {
+            args: Prisma.CompetitionFindFirstOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$CompetitionPayload>
+          }
+          findMany: {
+            args: Prisma.CompetitionFindManyArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$CompetitionPayload>[]
+          }
+          create: {
+            args: Prisma.CompetitionCreateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$CompetitionPayload>
+          }
+          createMany: {
+            args: Prisma.CompetitionCreateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          createManyAndReturn: {
+            args: Prisma.CompetitionCreateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$CompetitionPayload>[]
+          }
+          delete: {
+            args: Prisma.CompetitionDeleteArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$CompetitionPayload>
+          }
+          update: {
+            args: Prisma.CompetitionUpdateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$CompetitionPayload>
+          }
+          deleteMany: {
+            args: Prisma.CompetitionDeleteManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateMany: {
+            args: Prisma.CompetitionUpdateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateManyAndReturn: {
+            args: Prisma.CompetitionUpdateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$CompetitionPayload>[]
+          }
+          upsert: {
+            args: Prisma.CompetitionUpsertArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$CompetitionPayload>
+          }
+          aggregate: {
+            args: Prisma.CompetitionAggregateArgs<ExtArgs>
+            result: $Utils.Optional<AggregateCompetition>
+          }
+          groupBy: {
+            args: Prisma.CompetitionGroupByArgs<ExtArgs>
+            result: $Utils.Optional<CompetitionGroupByOutputType>[]
+          }
+          count: {
+            args: Prisma.CompetitionCountArgs<ExtArgs>
+            result: $Utils.Optional<CompetitionCountAggregateOutputType> | number
+          }
+        }
+      }
+      Round: {
+        payload: Prisma.$RoundPayload<ExtArgs>
+        fields: Prisma.RoundFieldRefs
+        operations: {
+          findUnique: {
+            args: Prisma.RoundFindUniqueArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$RoundPayload> | null
+          }
+          findUniqueOrThrow: {
+            args: Prisma.RoundFindUniqueOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$RoundPayload>
+          }
+          findFirst: {
+            args: Prisma.RoundFindFirstArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$RoundPayload> | null
+          }
+          findFirstOrThrow: {
+            args: Prisma.RoundFindFirstOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$RoundPayload>
+          }
+          findMany: {
+            args: Prisma.RoundFindManyArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$RoundPayload>[]
+          }
+          create: {
+            args: Prisma.RoundCreateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$RoundPayload>
+          }
+          createMany: {
+            args: Prisma.RoundCreateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          createManyAndReturn: {
+            args: Prisma.RoundCreateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$RoundPayload>[]
+          }
+          delete: {
+            args: Prisma.RoundDeleteArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$RoundPayload>
+          }
+          update: {
+            args: Prisma.RoundUpdateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$RoundPayload>
+          }
+          deleteMany: {
+            args: Prisma.RoundDeleteManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateMany: {
+            args: Prisma.RoundUpdateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateManyAndReturn: {
+            args: Prisma.RoundUpdateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$RoundPayload>[]
+          }
+          upsert: {
+            args: Prisma.RoundUpsertArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$RoundPayload>
+          }
+          aggregate: {
+            args: Prisma.RoundAggregateArgs<ExtArgs>
+            result: $Utils.Optional<AggregateRound>
+          }
+          groupBy: {
+            args: Prisma.RoundGroupByArgs<ExtArgs>
+            result: $Utils.Optional<RoundGroupByOutputType>[]
+          }
+          count: {
+            args: Prisma.RoundCountArgs<ExtArgs>
+            result: $Utils.Optional<RoundCountAggregateOutputType> | number
+          }
+        }
+      }
+      RoundEntry: {
+        payload: Prisma.$RoundEntryPayload<ExtArgs>
+        fields: Prisma.RoundEntryFieldRefs
+        operations: {
+          findUnique: {
+            args: Prisma.RoundEntryFindUniqueArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$RoundEntryPayload> | null
+          }
+          findUniqueOrThrow: {
+            args: Prisma.RoundEntryFindUniqueOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$RoundEntryPayload>
+          }
+          findFirst: {
+            args: Prisma.RoundEntryFindFirstArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$RoundEntryPayload> | null
+          }
+          findFirstOrThrow: {
+            args: Prisma.RoundEntryFindFirstOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$RoundEntryPayload>
+          }
+          findMany: {
+            args: Prisma.RoundEntryFindManyArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$RoundEntryPayload>[]
+          }
+          create: {
+            args: Prisma.RoundEntryCreateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$RoundEntryPayload>
+          }
+          createMany: {
+            args: Prisma.RoundEntryCreateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          createManyAndReturn: {
+            args: Prisma.RoundEntryCreateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$RoundEntryPayload>[]
+          }
+          delete: {
+            args: Prisma.RoundEntryDeleteArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$RoundEntryPayload>
+          }
+          update: {
+            args: Prisma.RoundEntryUpdateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$RoundEntryPayload>
+          }
+          deleteMany: {
+            args: Prisma.RoundEntryDeleteManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateMany: {
+            args: Prisma.RoundEntryUpdateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateManyAndReturn: {
+            args: Prisma.RoundEntryUpdateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$RoundEntryPayload>[]
+          }
+          upsert: {
+            args: Prisma.RoundEntryUpsertArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$RoundEntryPayload>
+          }
+          aggregate: {
+            args: Prisma.RoundEntryAggregateArgs<ExtArgs>
+            result: $Utils.Optional<AggregateRoundEntry>
+          }
+          groupBy: {
+            args: Prisma.RoundEntryGroupByArgs<ExtArgs>
+            result: $Utils.Optional<RoundEntryGroupByOutputType>[]
+          }
+          count: {
+            args: Prisma.RoundEntryCountArgs<ExtArgs>
+            result: $Utils.Optional<RoundEntryCountAggregateOutputType> | number
+          }
+        }
+      }
     }
   } & {
     other: {
@@ -963,6 +1233,9 @@ export namespace Prisma {
     score?: ScoreOmit
     group?: GroupOmit
     setting?: SettingOmit
+    competition?: CompetitionOmit
+    round?: RoundOmit
+    roundEntry?: RoundEntryOmit
   }
 
   /* Types for Logging */
@@ -1044,10 +1317,12 @@ export namespace Prisma {
 
   export type GroupCountOutputType = {
     scores: number
+    competitions: number
   }
 
   export type GroupCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     scores?: boolean | GroupCountOutputTypeCountScoresArgs
+    competitions?: boolean | GroupCountOutputTypeCountCompetitionsArgs
   }
 
   // Custom InputTypes
@@ -1066,6 +1341,75 @@ export namespace Prisma {
    */
   export type GroupCountOutputTypeCountScoresArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     where?: ScoreWhereInput
+  }
+
+  /**
+   * GroupCountOutputType without action
+   */
+  export type GroupCountOutputTypeCountCompetitionsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: CompetitionWhereInput
+  }
+
+
+  /**
+   * Count Type CompetitionCountOutputType
+   */
+
+  export type CompetitionCountOutputType = {
+    rounds: number
+  }
+
+  export type CompetitionCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    rounds?: boolean | CompetitionCountOutputTypeCountRoundsArgs
+  }
+
+  // Custom InputTypes
+  /**
+   * CompetitionCountOutputType without action
+   */
+  export type CompetitionCountOutputTypeDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the CompetitionCountOutputType
+     */
+    select?: CompetitionCountOutputTypeSelect<ExtArgs> | null
+  }
+
+  /**
+   * CompetitionCountOutputType without action
+   */
+  export type CompetitionCountOutputTypeCountRoundsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: RoundWhereInput
+  }
+
+
+  /**
+   * Count Type RoundCountOutputType
+   */
+
+  export type RoundCountOutputType = {
+    entries: number
+  }
+
+  export type RoundCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    entries?: boolean | RoundCountOutputTypeCountEntriesArgs
+  }
+
+  // Custom InputTypes
+  /**
+   * RoundCountOutputType without action
+   */
+  export type RoundCountOutputTypeDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the RoundCountOutputType
+     */
+    select?: RoundCountOutputTypeSelect<ExtArgs> | null
+  }
+
+  /**
+   * RoundCountOutputType without action
+   */
+  export type RoundCountOutputTypeCountEntriesArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: RoundEntryWhereInput
   }
 
 
@@ -2415,6 +2759,7 @@ export namespace Prisma {
     createdAt?: boolean
     updatedAt?: boolean
     scores?: boolean | Group$scoresArgs<ExtArgs>
+    competitions?: boolean | Group$competitionsArgs<ExtArgs>
     _count?: boolean | GroupCountOutputTypeDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["group"]>
 
@@ -2445,6 +2790,7 @@ export namespace Prisma {
   export type GroupOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "name" | "biddingActive" | "createdAt" | "updatedAt", ExtArgs["result"]["group"]>
   export type GroupInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     scores?: boolean | Group$scoresArgs<ExtArgs>
+    competitions?: boolean | Group$competitionsArgs<ExtArgs>
     _count?: boolean | GroupCountOutputTypeDefaultArgs<ExtArgs>
   }
   export type GroupIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {}
@@ -2454,6 +2800,7 @@ export namespace Prisma {
     name: "Group"
     objects: {
       scores: Prisma.$ScorePayload<ExtArgs>[]
+      competitions: Prisma.$CompetitionPayload<ExtArgs>[]
     }
     scalars: $Extensions.GetPayloadResult<{
       id: number
@@ -2856,6 +3203,7 @@ export namespace Prisma {
   export interface Prisma__GroupClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
     readonly [Symbol.toStringTag]: "PrismaPromise"
     scores<T extends Group$scoresArgs<ExtArgs> = {}>(args?: Subset<T, Group$scoresArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$ScorePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    competitions<T extends Group$competitionsArgs<ExtArgs> = {}>(args?: Subset<T, Group$competitionsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$CompetitionPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
      * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -3299,6 +3647,30 @@ export namespace Prisma {
     take?: number
     skip?: number
     distinct?: ScoreScalarFieldEnum | ScoreScalarFieldEnum[]
+  }
+
+  /**
+   * Group.competitions
+   */
+  export type Group$competitionsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Competition
+     */
+    select?: CompetitionSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Competition
+     */
+    omit?: CompetitionOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: CompetitionInclude<ExtArgs> | null
+    where?: CompetitionWhereInput
+    orderBy?: CompetitionOrderByWithRelationInput | CompetitionOrderByWithRelationInput[]
+    cursor?: CompetitionWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: CompetitionScalarFieldEnum | CompetitionScalarFieldEnum[]
   }
 
   /**
@@ -4277,6 +4649,3503 @@ export namespace Prisma {
 
 
   /**
+   * Model Competition
+   */
+
+  export type AggregateCompetition = {
+    _count: CompetitionCountAggregateOutputType | null
+    _avg: CompetitionAvgAggregateOutputType | null
+    _sum: CompetitionSumAggregateOutputType | null
+    _min: CompetitionMinAggregateOutputType | null
+    _max: CompetitionMaxAggregateOutputType | null
+  }
+
+  export type CompetitionAvgAggregateOutputType = {
+    id: number | null
+    groupId: number | null
+    totalSoal: number | null
+    currentSoal: number | null
+  }
+
+  export type CompetitionSumAggregateOutputType = {
+    id: number | null
+    groupId: number | null
+    totalSoal: number | null
+    currentSoal: number | null
+  }
+
+  export type CompetitionMinAggregateOutputType = {
+    id: number | null
+    groupId: number | null
+    totalSoal: number | null
+    currentSoal: number | null
+    status: string | null
+    createdAt: Date | null
+    updatedAt: Date | null
+  }
+
+  export type CompetitionMaxAggregateOutputType = {
+    id: number | null
+    groupId: number | null
+    totalSoal: number | null
+    currentSoal: number | null
+    status: string | null
+    createdAt: Date | null
+    updatedAt: Date | null
+  }
+
+  export type CompetitionCountAggregateOutputType = {
+    id: number
+    groupId: number
+    totalSoal: number
+    currentSoal: number
+    status: number
+    createdAt: number
+    updatedAt: number
+    _all: number
+  }
+
+
+  export type CompetitionAvgAggregateInputType = {
+    id?: true
+    groupId?: true
+    totalSoal?: true
+    currentSoal?: true
+  }
+
+  export type CompetitionSumAggregateInputType = {
+    id?: true
+    groupId?: true
+    totalSoal?: true
+    currentSoal?: true
+  }
+
+  export type CompetitionMinAggregateInputType = {
+    id?: true
+    groupId?: true
+    totalSoal?: true
+    currentSoal?: true
+    status?: true
+    createdAt?: true
+    updatedAt?: true
+  }
+
+  export type CompetitionMaxAggregateInputType = {
+    id?: true
+    groupId?: true
+    totalSoal?: true
+    currentSoal?: true
+    status?: true
+    createdAt?: true
+    updatedAt?: true
+  }
+
+  export type CompetitionCountAggregateInputType = {
+    id?: true
+    groupId?: true
+    totalSoal?: true
+    currentSoal?: true
+    status?: true
+    createdAt?: true
+    updatedAt?: true
+    _all?: true
+  }
+
+  export type CompetitionAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which Competition to aggregate.
+     */
+    where?: CompetitionWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of Competitions to fetch.
+     */
+    orderBy?: CompetitionOrderByWithRelationInput | CompetitionOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the start position
+     */
+    cursor?: CompetitionWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` Competitions from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` Competitions.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Count returned Competitions
+    **/
+    _count?: true | CompetitionCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to average
+    **/
+    _avg?: CompetitionAvgAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to sum
+    **/
+    _sum?: CompetitionSumAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the minimum value
+    **/
+    _min?: CompetitionMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the maximum value
+    **/
+    _max?: CompetitionMaxAggregateInputType
+  }
+
+  export type GetCompetitionAggregateType<T extends CompetitionAggregateArgs> = {
+        [P in keyof T & keyof AggregateCompetition]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregateCompetition[P]>
+      : GetScalarType<T[P], AggregateCompetition[P]>
+  }
+
+
+
+
+  export type CompetitionGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: CompetitionWhereInput
+    orderBy?: CompetitionOrderByWithAggregationInput | CompetitionOrderByWithAggregationInput[]
+    by: CompetitionScalarFieldEnum[] | CompetitionScalarFieldEnum
+    having?: CompetitionScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: CompetitionCountAggregateInputType | true
+    _avg?: CompetitionAvgAggregateInputType
+    _sum?: CompetitionSumAggregateInputType
+    _min?: CompetitionMinAggregateInputType
+    _max?: CompetitionMaxAggregateInputType
+  }
+
+  export type CompetitionGroupByOutputType = {
+    id: number
+    groupId: number
+    totalSoal: number
+    currentSoal: number
+    status: string
+    createdAt: Date
+    updatedAt: Date
+    _count: CompetitionCountAggregateOutputType | null
+    _avg: CompetitionAvgAggregateOutputType | null
+    _sum: CompetitionSumAggregateOutputType | null
+    _min: CompetitionMinAggregateOutputType | null
+    _max: CompetitionMaxAggregateOutputType | null
+  }
+
+  type GetCompetitionGroupByPayload<T extends CompetitionGroupByArgs> = Prisma.PrismaPromise<
+    Array<
+      PickEnumerable<CompetitionGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof CompetitionGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], CompetitionGroupByOutputType[P]>
+            : GetScalarType<T[P], CompetitionGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type CompetitionSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    groupId?: boolean
+    totalSoal?: boolean
+    currentSoal?: boolean
+    status?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+    group?: boolean | GroupDefaultArgs<ExtArgs>
+    rounds?: boolean | Competition$roundsArgs<ExtArgs>
+    _count?: boolean | CompetitionCountOutputTypeDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["competition"]>
+
+  export type CompetitionSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    groupId?: boolean
+    totalSoal?: boolean
+    currentSoal?: boolean
+    status?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+    group?: boolean | GroupDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["competition"]>
+
+  export type CompetitionSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    groupId?: boolean
+    totalSoal?: boolean
+    currentSoal?: boolean
+    status?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+    group?: boolean | GroupDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["competition"]>
+
+  export type CompetitionSelectScalar = {
+    id?: boolean
+    groupId?: boolean
+    totalSoal?: boolean
+    currentSoal?: boolean
+    status?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+  }
+
+  export type CompetitionOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "groupId" | "totalSoal" | "currentSoal" | "status" | "createdAt" | "updatedAt", ExtArgs["result"]["competition"]>
+  export type CompetitionInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    group?: boolean | GroupDefaultArgs<ExtArgs>
+    rounds?: boolean | Competition$roundsArgs<ExtArgs>
+    _count?: boolean | CompetitionCountOutputTypeDefaultArgs<ExtArgs>
+  }
+  export type CompetitionIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    group?: boolean | GroupDefaultArgs<ExtArgs>
+  }
+  export type CompetitionIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    group?: boolean | GroupDefaultArgs<ExtArgs>
+  }
+
+  export type $CompetitionPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "Competition"
+    objects: {
+      group: Prisma.$GroupPayload<ExtArgs>
+      rounds: Prisma.$RoundPayload<ExtArgs>[]
+    }
+    scalars: $Extensions.GetPayloadResult<{
+      id: number
+      groupId: number
+      totalSoal: number
+      currentSoal: number
+      status: string
+      createdAt: Date
+      updatedAt: Date
+    }, ExtArgs["result"]["competition"]>
+    composites: {}
+  }
+
+  type CompetitionGetPayload<S extends boolean | null | undefined | CompetitionDefaultArgs> = $Result.GetResult<Prisma.$CompetitionPayload, S>
+
+  type CompetitionCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
+    Omit<CompetitionFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+      select?: CompetitionCountAggregateInputType | true
+    }
+
+  export interface CompetitionDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['Competition'], meta: { name: 'Competition' } }
+    /**
+     * Find zero or one Competition that matches the filter.
+     * @param {CompetitionFindUniqueArgs} args - Arguments to find a Competition
+     * @example
+     * // Get one Competition
+     * const competition = await prisma.competition.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUnique<T extends CompetitionFindUniqueArgs>(args: SelectSubset<T, CompetitionFindUniqueArgs<ExtArgs>>): Prisma__CompetitionClient<$Result.GetResult<Prisma.$CompetitionPayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find one Competition that matches the filter or throw an error with `error.code='P2025'`
+     * if no matches were found.
+     * @param {CompetitionFindUniqueOrThrowArgs} args - Arguments to find a Competition
+     * @example
+     * // Get one Competition
+     * const competition = await prisma.competition.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUniqueOrThrow<T extends CompetitionFindUniqueOrThrowArgs>(args: SelectSubset<T, CompetitionFindUniqueOrThrowArgs<ExtArgs>>): Prisma__CompetitionClient<$Result.GetResult<Prisma.$CompetitionPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first Competition that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {CompetitionFindFirstArgs} args - Arguments to find a Competition
+     * @example
+     * // Get one Competition
+     * const competition = await prisma.competition.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirst<T extends CompetitionFindFirstArgs>(args?: SelectSubset<T, CompetitionFindFirstArgs<ExtArgs>>): Prisma__CompetitionClient<$Result.GetResult<Prisma.$CompetitionPayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first Competition that matches the filter or
+     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {CompetitionFindFirstOrThrowArgs} args - Arguments to find a Competition
+     * @example
+     * // Get one Competition
+     * const competition = await prisma.competition.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirstOrThrow<T extends CompetitionFindFirstOrThrowArgs>(args?: SelectSubset<T, CompetitionFindFirstOrThrowArgs<ExtArgs>>): Prisma__CompetitionClient<$Result.GetResult<Prisma.$CompetitionPayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find zero or more Competitions that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {CompetitionFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all Competitions
+     * const competitions = await prisma.competition.findMany()
+     * 
+     * // Get first 10 Competitions
+     * const competitions = await prisma.competition.findMany({ take: 10 })
+     * 
+     * // Only select the `id`
+     * const competitionWithIdOnly = await prisma.competition.findMany({ select: { id: true } })
+     * 
+     */
+    findMany<T extends CompetitionFindManyArgs>(args?: SelectSubset<T, CompetitionFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$CompetitionPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
+
+    /**
+     * Create a Competition.
+     * @param {CompetitionCreateArgs} args - Arguments to create a Competition.
+     * @example
+     * // Create one Competition
+     * const Competition = await prisma.competition.create({
+     *   data: {
+     *     // ... data to create a Competition
+     *   }
+     * })
+     * 
+     */
+    create<T extends CompetitionCreateArgs>(args: SelectSubset<T, CompetitionCreateArgs<ExtArgs>>): Prisma__CompetitionClient<$Result.GetResult<Prisma.$CompetitionPayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Create many Competitions.
+     * @param {CompetitionCreateManyArgs} args - Arguments to create many Competitions.
+     * @example
+     * // Create many Competitions
+     * const competition = await prisma.competition.createMany({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *     
+     */
+    createMany<T extends CompetitionCreateManyArgs>(args?: SelectSubset<T, CompetitionCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create many Competitions and returns the data saved in the database.
+     * @param {CompetitionCreateManyAndReturnArgs} args - Arguments to create many Competitions.
+     * @example
+     * // Create many Competitions
+     * const competition = await prisma.competition.createManyAndReturn({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Create many Competitions and only return the `id`
+     * const competitionWithIdOnly = await prisma.competition.createManyAndReturn({
+     *   select: { id: true },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    createManyAndReturn<T extends CompetitionCreateManyAndReturnArgs>(args?: SelectSubset<T, CompetitionCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$CompetitionPayload<ExtArgs>, T, "createManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Delete a Competition.
+     * @param {CompetitionDeleteArgs} args - Arguments to delete one Competition.
+     * @example
+     * // Delete one Competition
+     * const Competition = await prisma.competition.delete({
+     *   where: {
+     *     // ... filter to delete one Competition
+     *   }
+     * })
+     * 
+     */
+    delete<T extends CompetitionDeleteArgs>(args: SelectSubset<T, CompetitionDeleteArgs<ExtArgs>>): Prisma__CompetitionClient<$Result.GetResult<Prisma.$CompetitionPayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Update one Competition.
+     * @param {CompetitionUpdateArgs} args - Arguments to update one Competition.
+     * @example
+     * // Update one Competition
+     * const competition = await prisma.competition.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    update<T extends CompetitionUpdateArgs>(args: SelectSubset<T, CompetitionUpdateArgs<ExtArgs>>): Prisma__CompetitionClient<$Result.GetResult<Prisma.$CompetitionPayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Delete zero or more Competitions.
+     * @param {CompetitionDeleteManyArgs} args - Arguments to filter Competitions to delete.
+     * @example
+     * // Delete a few Competitions
+     * const { count } = await prisma.competition.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     * 
+     */
+    deleteMany<T extends CompetitionDeleteManyArgs>(args?: SelectSubset<T, CompetitionDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more Competitions.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {CompetitionUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many Competitions
+     * const competition = await prisma.competition.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    updateMany<T extends CompetitionUpdateManyArgs>(args: SelectSubset<T, CompetitionUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more Competitions and returns the data updated in the database.
+     * @param {CompetitionUpdateManyAndReturnArgs} args - Arguments to update many Competitions.
+     * @example
+     * // Update many Competitions
+     * const competition = await prisma.competition.updateManyAndReturn({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Update zero or more Competitions and only return the `id`
+     * const competitionWithIdOnly = await prisma.competition.updateManyAndReturn({
+     *   select: { id: true },
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    updateManyAndReturn<T extends CompetitionUpdateManyAndReturnArgs>(args: SelectSubset<T, CompetitionUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$CompetitionPayload<ExtArgs>, T, "updateManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Create or update one Competition.
+     * @param {CompetitionUpsertArgs} args - Arguments to update or create a Competition.
+     * @example
+     * // Update or create a Competition
+     * const competition = await prisma.competition.upsert({
+     *   create: {
+     *     // ... data to create a Competition
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the Competition we want to update
+     *   }
+     * })
+     */
+    upsert<T extends CompetitionUpsertArgs>(args: SelectSubset<T, CompetitionUpsertArgs<ExtArgs>>): Prisma__CompetitionClient<$Result.GetResult<Prisma.$CompetitionPayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+
+    /**
+     * Count the number of Competitions.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {CompetitionCountArgs} args - Arguments to filter Competitions to count.
+     * @example
+     * // Count the number of Competitions
+     * const count = await prisma.competition.count({
+     *   where: {
+     *     // ... the filter for the Competitions we want to count
+     *   }
+     * })
+    **/
+    count<T extends CompetitionCountArgs>(
+      args?: Subset<T, CompetitionCountArgs>,
+    ): Prisma.PrismaPromise<
+      T extends $Utils.Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], CompetitionCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a Competition.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {CompetitionAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends CompetitionAggregateArgs>(args: Subset<T, CompetitionAggregateArgs>): Prisma.PrismaPromise<GetCompetitionAggregateType<T>>
+
+    /**
+     * Group by Competition.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {CompetitionGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     * 
+    **/
+    groupBy<
+      T extends CompetitionGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: CompetitionGroupByArgs['orderBy'] }
+        : { orderBy?: CompetitionGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends MaybeTupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, CompetitionGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetCompetitionGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+  /**
+   * Fields of the Competition model
+   */
+  readonly fields: CompetitionFieldRefs;
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for Competition.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export interface Prisma__CompetitionClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
+    readonly [Symbol.toStringTag]: "PrismaPromise"
+    group<T extends GroupDefaultArgs<ExtArgs> = {}>(args?: Subset<T, GroupDefaultArgs<ExtArgs>>): Prisma__GroupClient<$Result.GetResult<Prisma.$GroupPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    rounds<T extends Competition$roundsArgs<ExtArgs> = {}>(args?: Subset<T, Competition$roundsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$RoundPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
+  }
+
+
+
+
+  /**
+   * Fields of the Competition model
+   */
+  interface CompetitionFieldRefs {
+    readonly id: FieldRef<"Competition", 'Int'>
+    readonly groupId: FieldRef<"Competition", 'Int'>
+    readonly totalSoal: FieldRef<"Competition", 'Int'>
+    readonly currentSoal: FieldRef<"Competition", 'Int'>
+    readonly status: FieldRef<"Competition", 'String'>
+    readonly createdAt: FieldRef<"Competition", 'DateTime'>
+    readonly updatedAt: FieldRef<"Competition", 'DateTime'>
+  }
+    
+
+  // Custom InputTypes
+  /**
+   * Competition findUnique
+   */
+  export type CompetitionFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Competition
+     */
+    select?: CompetitionSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Competition
+     */
+    omit?: CompetitionOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: CompetitionInclude<ExtArgs> | null
+    /**
+     * Filter, which Competition to fetch.
+     */
+    where: CompetitionWhereUniqueInput
+  }
+
+  /**
+   * Competition findUniqueOrThrow
+   */
+  export type CompetitionFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Competition
+     */
+    select?: CompetitionSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Competition
+     */
+    omit?: CompetitionOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: CompetitionInclude<ExtArgs> | null
+    /**
+     * Filter, which Competition to fetch.
+     */
+    where: CompetitionWhereUniqueInput
+  }
+
+  /**
+   * Competition findFirst
+   */
+  export type CompetitionFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Competition
+     */
+    select?: CompetitionSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Competition
+     */
+    omit?: CompetitionOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: CompetitionInclude<ExtArgs> | null
+    /**
+     * Filter, which Competition to fetch.
+     */
+    where?: CompetitionWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of Competitions to fetch.
+     */
+    orderBy?: CompetitionOrderByWithRelationInput | CompetitionOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for Competitions.
+     */
+    cursor?: CompetitionWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` Competitions from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` Competitions.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of Competitions.
+     */
+    distinct?: CompetitionScalarFieldEnum | CompetitionScalarFieldEnum[]
+  }
+
+  /**
+   * Competition findFirstOrThrow
+   */
+  export type CompetitionFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Competition
+     */
+    select?: CompetitionSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Competition
+     */
+    omit?: CompetitionOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: CompetitionInclude<ExtArgs> | null
+    /**
+     * Filter, which Competition to fetch.
+     */
+    where?: CompetitionWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of Competitions to fetch.
+     */
+    orderBy?: CompetitionOrderByWithRelationInput | CompetitionOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for Competitions.
+     */
+    cursor?: CompetitionWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` Competitions from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` Competitions.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of Competitions.
+     */
+    distinct?: CompetitionScalarFieldEnum | CompetitionScalarFieldEnum[]
+  }
+
+  /**
+   * Competition findMany
+   */
+  export type CompetitionFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Competition
+     */
+    select?: CompetitionSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Competition
+     */
+    omit?: CompetitionOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: CompetitionInclude<ExtArgs> | null
+    /**
+     * Filter, which Competitions to fetch.
+     */
+    where?: CompetitionWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of Competitions to fetch.
+     */
+    orderBy?: CompetitionOrderByWithRelationInput | CompetitionOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for listing Competitions.
+     */
+    cursor?: CompetitionWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` Competitions from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` Competitions.
+     */
+    skip?: number
+    distinct?: CompetitionScalarFieldEnum | CompetitionScalarFieldEnum[]
+  }
+
+  /**
+   * Competition create
+   */
+  export type CompetitionCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Competition
+     */
+    select?: CompetitionSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Competition
+     */
+    omit?: CompetitionOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: CompetitionInclude<ExtArgs> | null
+    /**
+     * The data needed to create a Competition.
+     */
+    data: XOR<CompetitionCreateInput, CompetitionUncheckedCreateInput>
+  }
+
+  /**
+   * Competition createMany
+   */
+  export type CompetitionCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to create many Competitions.
+     */
+    data: CompetitionCreateManyInput | CompetitionCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * Competition createManyAndReturn
+   */
+  export type CompetitionCreateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Competition
+     */
+    select?: CompetitionSelectCreateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the Competition
+     */
+    omit?: CompetitionOmit<ExtArgs> | null
+    /**
+     * The data used to create many Competitions.
+     */
+    data: CompetitionCreateManyInput | CompetitionCreateManyInput[]
+    skipDuplicates?: boolean
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: CompetitionIncludeCreateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * Competition update
+   */
+  export type CompetitionUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Competition
+     */
+    select?: CompetitionSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Competition
+     */
+    omit?: CompetitionOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: CompetitionInclude<ExtArgs> | null
+    /**
+     * The data needed to update a Competition.
+     */
+    data: XOR<CompetitionUpdateInput, CompetitionUncheckedUpdateInput>
+    /**
+     * Choose, which Competition to update.
+     */
+    where: CompetitionWhereUniqueInput
+  }
+
+  /**
+   * Competition updateMany
+   */
+  export type CompetitionUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to update Competitions.
+     */
+    data: XOR<CompetitionUpdateManyMutationInput, CompetitionUncheckedUpdateManyInput>
+    /**
+     * Filter which Competitions to update
+     */
+    where?: CompetitionWhereInput
+    /**
+     * Limit how many Competitions to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * Competition updateManyAndReturn
+   */
+  export type CompetitionUpdateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Competition
+     */
+    select?: CompetitionSelectUpdateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the Competition
+     */
+    omit?: CompetitionOmit<ExtArgs> | null
+    /**
+     * The data used to update Competitions.
+     */
+    data: XOR<CompetitionUpdateManyMutationInput, CompetitionUncheckedUpdateManyInput>
+    /**
+     * Filter which Competitions to update
+     */
+    where?: CompetitionWhereInput
+    /**
+     * Limit how many Competitions to update.
+     */
+    limit?: number
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: CompetitionIncludeUpdateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * Competition upsert
+   */
+  export type CompetitionUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Competition
+     */
+    select?: CompetitionSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Competition
+     */
+    omit?: CompetitionOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: CompetitionInclude<ExtArgs> | null
+    /**
+     * The filter to search for the Competition to update in case it exists.
+     */
+    where: CompetitionWhereUniqueInput
+    /**
+     * In case the Competition found by the `where` argument doesn't exist, create a new Competition with this data.
+     */
+    create: XOR<CompetitionCreateInput, CompetitionUncheckedCreateInput>
+    /**
+     * In case the Competition was found with the provided `where` argument, update it with this data.
+     */
+    update: XOR<CompetitionUpdateInput, CompetitionUncheckedUpdateInput>
+  }
+
+  /**
+   * Competition delete
+   */
+  export type CompetitionDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Competition
+     */
+    select?: CompetitionSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Competition
+     */
+    omit?: CompetitionOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: CompetitionInclude<ExtArgs> | null
+    /**
+     * Filter which Competition to delete.
+     */
+    where: CompetitionWhereUniqueInput
+  }
+
+  /**
+   * Competition deleteMany
+   */
+  export type CompetitionDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which Competitions to delete
+     */
+    where?: CompetitionWhereInput
+    /**
+     * Limit how many Competitions to delete.
+     */
+    limit?: number
+  }
+
+  /**
+   * Competition.rounds
+   */
+  export type Competition$roundsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Round
+     */
+    select?: RoundSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Round
+     */
+    omit?: RoundOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: RoundInclude<ExtArgs> | null
+    where?: RoundWhereInput
+    orderBy?: RoundOrderByWithRelationInput | RoundOrderByWithRelationInput[]
+    cursor?: RoundWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: RoundScalarFieldEnum | RoundScalarFieldEnum[]
+  }
+
+  /**
+   * Competition without action
+   */
+  export type CompetitionDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Competition
+     */
+    select?: CompetitionSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Competition
+     */
+    omit?: CompetitionOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: CompetitionInclude<ExtArgs> | null
+  }
+
+
+  /**
+   * Model Round
+   */
+
+  export type AggregateRound = {
+    _count: RoundCountAggregateOutputType | null
+    _avg: RoundAvgAggregateOutputType | null
+    _sum: RoundSumAggregateOutputType | null
+    _min: RoundMinAggregateOutputType | null
+    _max: RoundMaxAggregateOutputType | null
+  }
+
+  export type RoundAvgAggregateOutputType = {
+    id: number | null
+    competitionId: number | null
+    soalNumber: number | null
+    winnerId: number | null
+  }
+
+  export type RoundSumAggregateOutputType = {
+    id: number | null
+    competitionId: number | null
+    soalNumber: number | null
+    winnerId: number | null
+  }
+
+  export type RoundMinAggregateOutputType = {
+    id: number | null
+    competitionId: number | null
+    soalNumber: number | null
+    isBidding: boolean | null
+    winnerId: number | null
+    winnerName: string | null
+    status: string | null
+    createdAt: Date | null
+  }
+
+  export type RoundMaxAggregateOutputType = {
+    id: number | null
+    competitionId: number | null
+    soalNumber: number | null
+    isBidding: boolean | null
+    winnerId: number | null
+    winnerName: string | null
+    status: string | null
+    createdAt: Date | null
+  }
+
+  export type RoundCountAggregateOutputType = {
+    id: number
+    competitionId: number
+    soalNumber: number
+    isBidding: number
+    winnerId: number
+    winnerName: number
+    status: number
+    createdAt: number
+    _all: number
+  }
+
+
+  export type RoundAvgAggregateInputType = {
+    id?: true
+    competitionId?: true
+    soalNumber?: true
+    winnerId?: true
+  }
+
+  export type RoundSumAggregateInputType = {
+    id?: true
+    competitionId?: true
+    soalNumber?: true
+    winnerId?: true
+  }
+
+  export type RoundMinAggregateInputType = {
+    id?: true
+    competitionId?: true
+    soalNumber?: true
+    isBidding?: true
+    winnerId?: true
+    winnerName?: true
+    status?: true
+    createdAt?: true
+  }
+
+  export type RoundMaxAggregateInputType = {
+    id?: true
+    competitionId?: true
+    soalNumber?: true
+    isBidding?: true
+    winnerId?: true
+    winnerName?: true
+    status?: true
+    createdAt?: true
+  }
+
+  export type RoundCountAggregateInputType = {
+    id?: true
+    competitionId?: true
+    soalNumber?: true
+    isBidding?: true
+    winnerId?: true
+    winnerName?: true
+    status?: true
+    createdAt?: true
+    _all?: true
+  }
+
+  export type RoundAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which Round to aggregate.
+     */
+    where?: RoundWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of Rounds to fetch.
+     */
+    orderBy?: RoundOrderByWithRelationInput | RoundOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the start position
+     */
+    cursor?: RoundWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` Rounds from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` Rounds.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Count returned Rounds
+    **/
+    _count?: true | RoundCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to average
+    **/
+    _avg?: RoundAvgAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to sum
+    **/
+    _sum?: RoundSumAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the minimum value
+    **/
+    _min?: RoundMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the maximum value
+    **/
+    _max?: RoundMaxAggregateInputType
+  }
+
+  export type GetRoundAggregateType<T extends RoundAggregateArgs> = {
+        [P in keyof T & keyof AggregateRound]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregateRound[P]>
+      : GetScalarType<T[P], AggregateRound[P]>
+  }
+
+
+
+
+  export type RoundGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: RoundWhereInput
+    orderBy?: RoundOrderByWithAggregationInput | RoundOrderByWithAggregationInput[]
+    by: RoundScalarFieldEnum[] | RoundScalarFieldEnum
+    having?: RoundScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: RoundCountAggregateInputType | true
+    _avg?: RoundAvgAggregateInputType
+    _sum?: RoundSumAggregateInputType
+    _min?: RoundMinAggregateInputType
+    _max?: RoundMaxAggregateInputType
+  }
+
+  export type RoundGroupByOutputType = {
+    id: number
+    competitionId: number
+    soalNumber: number
+    isBidding: boolean
+    winnerId: number | null
+    winnerName: string | null
+    status: string
+    createdAt: Date
+    _count: RoundCountAggregateOutputType | null
+    _avg: RoundAvgAggregateOutputType | null
+    _sum: RoundSumAggregateOutputType | null
+    _min: RoundMinAggregateOutputType | null
+    _max: RoundMaxAggregateOutputType | null
+  }
+
+  type GetRoundGroupByPayload<T extends RoundGroupByArgs> = Prisma.PrismaPromise<
+    Array<
+      PickEnumerable<RoundGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof RoundGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], RoundGroupByOutputType[P]>
+            : GetScalarType<T[P], RoundGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type RoundSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    competitionId?: boolean
+    soalNumber?: boolean
+    isBidding?: boolean
+    winnerId?: boolean
+    winnerName?: boolean
+    status?: boolean
+    createdAt?: boolean
+    competition?: boolean | CompetitionDefaultArgs<ExtArgs>
+    entries?: boolean | Round$entriesArgs<ExtArgs>
+    _count?: boolean | RoundCountOutputTypeDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["round"]>
+
+  export type RoundSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    competitionId?: boolean
+    soalNumber?: boolean
+    isBidding?: boolean
+    winnerId?: boolean
+    winnerName?: boolean
+    status?: boolean
+    createdAt?: boolean
+    competition?: boolean | CompetitionDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["round"]>
+
+  export type RoundSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    competitionId?: boolean
+    soalNumber?: boolean
+    isBidding?: boolean
+    winnerId?: boolean
+    winnerName?: boolean
+    status?: boolean
+    createdAt?: boolean
+    competition?: boolean | CompetitionDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["round"]>
+
+  export type RoundSelectScalar = {
+    id?: boolean
+    competitionId?: boolean
+    soalNumber?: boolean
+    isBidding?: boolean
+    winnerId?: boolean
+    winnerName?: boolean
+    status?: boolean
+    createdAt?: boolean
+  }
+
+  export type RoundOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "competitionId" | "soalNumber" | "isBidding" | "winnerId" | "winnerName" | "status" | "createdAt", ExtArgs["result"]["round"]>
+  export type RoundInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    competition?: boolean | CompetitionDefaultArgs<ExtArgs>
+    entries?: boolean | Round$entriesArgs<ExtArgs>
+    _count?: boolean | RoundCountOutputTypeDefaultArgs<ExtArgs>
+  }
+  export type RoundIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    competition?: boolean | CompetitionDefaultArgs<ExtArgs>
+  }
+  export type RoundIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    competition?: boolean | CompetitionDefaultArgs<ExtArgs>
+  }
+
+  export type $RoundPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "Round"
+    objects: {
+      competition: Prisma.$CompetitionPayload<ExtArgs>
+      entries: Prisma.$RoundEntryPayload<ExtArgs>[]
+    }
+    scalars: $Extensions.GetPayloadResult<{
+      id: number
+      competitionId: number
+      soalNumber: number
+      isBidding: boolean
+      winnerId: number | null
+      winnerName: string | null
+      status: string
+      createdAt: Date
+    }, ExtArgs["result"]["round"]>
+    composites: {}
+  }
+
+  type RoundGetPayload<S extends boolean | null | undefined | RoundDefaultArgs> = $Result.GetResult<Prisma.$RoundPayload, S>
+
+  type RoundCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
+    Omit<RoundFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+      select?: RoundCountAggregateInputType | true
+    }
+
+  export interface RoundDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['Round'], meta: { name: 'Round' } }
+    /**
+     * Find zero or one Round that matches the filter.
+     * @param {RoundFindUniqueArgs} args - Arguments to find a Round
+     * @example
+     * // Get one Round
+     * const round = await prisma.round.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUnique<T extends RoundFindUniqueArgs>(args: SelectSubset<T, RoundFindUniqueArgs<ExtArgs>>): Prisma__RoundClient<$Result.GetResult<Prisma.$RoundPayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find one Round that matches the filter or throw an error with `error.code='P2025'`
+     * if no matches were found.
+     * @param {RoundFindUniqueOrThrowArgs} args - Arguments to find a Round
+     * @example
+     * // Get one Round
+     * const round = await prisma.round.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUniqueOrThrow<T extends RoundFindUniqueOrThrowArgs>(args: SelectSubset<T, RoundFindUniqueOrThrowArgs<ExtArgs>>): Prisma__RoundClient<$Result.GetResult<Prisma.$RoundPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first Round that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {RoundFindFirstArgs} args - Arguments to find a Round
+     * @example
+     * // Get one Round
+     * const round = await prisma.round.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirst<T extends RoundFindFirstArgs>(args?: SelectSubset<T, RoundFindFirstArgs<ExtArgs>>): Prisma__RoundClient<$Result.GetResult<Prisma.$RoundPayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first Round that matches the filter or
+     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {RoundFindFirstOrThrowArgs} args - Arguments to find a Round
+     * @example
+     * // Get one Round
+     * const round = await prisma.round.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirstOrThrow<T extends RoundFindFirstOrThrowArgs>(args?: SelectSubset<T, RoundFindFirstOrThrowArgs<ExtArgs>>): Prisma__RoundClient<$Result.GetResult<Prisma.$RoundPayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find zero or more Rounds that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {RoundFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all Rounds
+     * const rounds = await prisma.round.findMany()
+     * 
+     * // Get first 10 Rounds
+     * const rounds = await prisma.round.findMany({ take: 10 })
+     * 
+     * // Only select the `id`
+     * const roundWithIdOnly = await prisma.round.findMany({ select: { id: true } })
+     * 
+     */
+    findMany<T extends RoundFindManyArgs>(args?: SelectSubset<T, RoundFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$RoundPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
+
+    /**
+     * Create a Round.
+     * @param {RoundCreateArgs} args - Arguments to create a Round.
+     * @example
+     * // Create one Round
+     * const Round = await prisma.round.create({
+     *   data: {
+     *     // ... data to create a Round
+     *   }
+     * })
+     * 
+     */
+    create<T extends RoundCreateArgs>(args: SelectSubset<T, RoundCreateArgs<ExtArgs>>): Prisma__RoundClient<$Result.GetResult<Prisma.$RoundPayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Create many Rounds.
+     * @param {RoundCreateManyArgs} args - Arguments to create many Rounds.
+     * @example
+     * // Create many Rounds
+     * const round = await prisma.round.createMany({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *     
+     */
+    createMany<T extends RoundCreateManyArgs>(args?: SelectSubset<T, RoundCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create many Rounds and returns the data saved in the database.
+     * @param {RoundCreateManyAndReturnArgs} args - Arguments to create many Rounds.
+     * @example
+     * // Create many Rounds
+     * const round = await prisma.round.createManyAndReturn({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Create many Rounds and only return the `id`
+     * const roundWithIdOnly = await prisma.round.createManyAndReturn({
+     *   select: { id: true },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    createManyAndReturn<T extends RoundCreateManyAndReturnArgs>(args?: SelectSubset<T, RoundCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$RoundPayload<ExtArgs>, T, "createManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Delete a Round.
+     * @param {RoundDeleteArgs} args - Arguments to delete one Round.
+     * @example
+     * // Delete one Round
+     * const Round = await prisma.round.delete({
+     *   where: {
+     *     // ... filter to delete one Round
+     *   }
+     * })
+     * 
+     */
+    delete<T extends RoundDeleteArgs>(args: SelectSubset<T, RoundDeleteArgs<ExtArgs>>): Prisma__RoundClient<$Result.GetResult<Prisma.$RoundPayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Update one Round.
+     * @param {RoundUpdateArgs} args - Arguments to update one Round.
+     * @example
+     * // Update one Round
+     * const round = await prisma.round.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    update<T extends RoundUpdateArgs>(args: SelectSubset<T, RoundUpdateArgs<ExtArgs>>): Prisma__RoundClient<$Result.GetResult<Prisma.$RoundPayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Delete zero or more Rounds.
+     * @param {RoundDeleteManyArgs} args - Arguments to filter Rounds to delete.
+     * @example
+     * // Delete a few Rounds
+     * const { count } = await prisma.round.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     * 
+     */
+    deleteMany<T extends RoundDeleteManyArgs>(args?: SelectSubset<T, RoundDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more Rounds.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {RoundUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many Rounds
+     * const round = await prisma.round.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    updateMany<T extends RoundUpdateManyArgs>(args: SelectSubset<T, RoundUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more Rounds and returns the data updated in the database.
+     * @param {RoundUpdateManyAndReturnArgs} args - Arguments to update many Rounds.
+     * @example
+     * // Update many Rounds
+     * const round = await prisma.round.updateManyAndReturn({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Update zero or more Rounds and only return the `id`
+     * const roundWithIdOnly = await prisma.round.updateManyAndReturn({
+     *   select: { id: true },
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    updateManyAndReturn<T extends RoundUpdateManyAndReturnArgs>(args: SelectSubset<T, RoundUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$RoundPayload<ExtArgs>, T, "updateManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Create or update one Round.
+     * @param {RoundUpsertArgs} args - Arguments to update or create a Round.
+     * @example
+     * // Update or create a Round
+     * const round = await prisma.round.upsert({
+     *   create: {
+     *     // ... data to create a Round
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the Round we want to update
+     *   }
+     * })
+     */
+    upsert<T extends RoundUpsertArgs>(args: SelectSubset<T, RoundUpsertArgs<ExtArgs>>): Prisma__RoundClient<$Result.GetResult<Prisma.$RoundPayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+
+    /**
+     * Count the number of Rounds.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {RoundCountArgs} args - Arguments to filter Rounds to count.
+     * @example
+     * // Count the number of Rounds
+     * const count = await prisma.round.count({
+     *   where: {
+     *     // ... the filter for the Rounds we want to count
+     *   }
+     * })
+    **/
+    count<T extends RoundCountArgs>(
+      args?: Subset<T, RoundCountArgs>,
+    ): Prisma.PrismaPromise<
+      T extends $Utils.Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], RoundCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a Round.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {RoundAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends RoundAggregateArgs>(args: Subset<T, RoundAggregateArgs>): Prisma.PrismaPromise<GetRoundAggregateType<T>>
+
+    /**
+     * Group by Round.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {RoundGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     * 
+    **/
+    groupBy<
+      T extends RoundGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: RoundGroupByArgs['orderBy'] }
+        : { orderBy?: RoundGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends MaybeTupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, RoundGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetRoundGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+  /**
+   * Fields of the Round model
+   */
+  readonly fields: RoundFieldRefs;
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for Round.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export interface Prisma__RoundClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
+    readonly [Symbol.toStringTag]: "PrismaPromise"
+    competition<T extends CompetitionDefaultArgs<ExtArgs> = {}>(args?: Subset<T, CompetitionDefaultArgs<ExtArgs>>): Prisma__CompetitionClient<$Result.GetResult<Prisma.$CompetitionPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    entries<T extends Round$entriesArgs<ExtArgs> = {}>(args?: Subset<T, Round$entriesArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$RoundEntryPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
+  }
+
+
+
+
+  /**
+   * Fields of the Round model
+   */
+  interface RoundFieldRefs {
+    readonly id: FieldRef<"Round", 'Int'>
+    readonly competitionId: FieldRef<"Round", 'Int'>
+    readonly soalNumber: FieldRef<"Round", 'Int'>
+    readonly isBidding: FieldRef<"Round", 'Boolean'>
+    readonly winnerId: FieldRef<"Round", 'Int'>
+    readonly winnerName: FieldRef<"Round", 'String'>
+    readonly status: FieldRef<"Round", 'String'>
+    readonly createdAt: FieldRef<"Round", 'DateTime'>
+  }
+    
+
+  // Custom InputTypes
+  /**
+   * Round findUnique
+   */
+  export type RoundFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Round
+     */
+    select?: RoundSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Round
+     */
+    omit?: RoundOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: RoundInclude<ExtArgs> | null
+    /**
+     * Filter, which Round to fetch.
+     */
+    where: RoundWhereUniqueInput
+  }
+
+  /**
+   * Round findUniqueOrThrow
+   */
+  export type RoundFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Round
+     */
+    select?: RoundSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Round
+     */
+    omit?: RoundOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: RoundInclude<ExtArgs> | null
+    /**
+     * Filter, which Round to fetch.
+     */
+    where: RoundWhereUniqueInput
+  }
+
+  /**
+   * Round findFirst
+   */
+  export type RoundFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Round
+     */
+    select?: RoundSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Round
+     */
+    omit?: RoundOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: RoundInclude<ExtArgs> | null
+    /**
+     * Filter, which Round to fetch.
+     */
+    where?: RoundWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of Rounds to fetch.
+     */
+    orderBy?: RoundOrderByWithRelationInput | RoundOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for Rounds.
+     */
+    cursor?: RoundWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` Rounds from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` Rounds.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of Rounds.
+     */
+    distinct?: RoundScalarFieldEnum | RoundScalarFieldEnum[]
+  }
+
+  /**
+   * Round findFirstOrThrow
+   */
+  export type RoundFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Round
+     */
+    select?: RoundSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Round
+     */
+    omit?: RoundOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: RoundInclude<ExtArgs> | null
+    /**
+     * Filter, which Round to fetch.
+     */
+    where?: RoundWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of Rounds to fetch.
+     */
+    orderBy?: RoundOrderByWithRelationInput | RoundOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for Rounds.
+     */
+    cursor?: RoundWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` Rounds from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` Rounds.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of Rounds.
+     */
+    distinct?: RoundScalarFieldEnum | RoundScalarFieldEnum[]
+  }
+
+  /**
+   * Round findMany
+   */
+  export type RoundFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Round
+     */
+    select?: RoundSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Round
+     */
+    omit?: RoundOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: RoundInclude<ExtArgs> | null
+    /**
+     * Filter, which Rounds to fetch.
+     */
+    where?: RoundWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of Rounds to fetch.
+     */
+    orderBy?: RoundOrderByWithRelationInput | RoundOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for listing Rounds.
+     */
+    cursor?: RoundWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` Rounds from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` Rounds.
+     */
+    skip?: number
+    distinct?: RoundScalarFieldEnum | RoundScalarFieldEnum[]
+  }
+
+  /**
+   * Round create
+   */
+  export type RoundCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Round
+     */
+    select?: RoundSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Round
+     */
+    omit?: RoundOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: RoundInclude<ExtArgs> | null
+    /**
+     * The data needed to create a Round.
+     */
+    data: XOR<RoundCreateInput, RoundUncheckedCreateInput>
+  }
+
+  /**
+   * Round createMany
+   */
+  export type RoundCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to create many Rounds.
+     */
+    data: RoundCreateManyInput | RoundCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * Round createManyAndReturn
+   */
+  export type RoundCreateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Round
+     */
+    select?: RoundSelectCreateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the Round
+     */
+    omit?: RoundOmit<ExtArgs> | null
+    /**
+     * The data used to create many Rounds.
+     */
+    data: RoundCreateManyInput | RoundCreateManyInput[]
+    skipDuplicates?: boolean
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: RoundIncludeCreateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * Round update
+   */
+  export type RoundUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Round
+     */
+    select?: RoundSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Round
+     */
+    omit?: RoundOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: RoundInclude<ExtArgs> | null
+    /**
+     * The data needed to update a Round.
+     */
+    data: XOR<RoundUpdateInput, RoundUncheckedUpdateInput>
+    /**
+     * Choose, which Round to update.
+     */
+    where: RoundWhereUniqueInput
+  }
+
+  /**
+   * Round updateMany
+   */
+  export type RoundUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to update Rounds.
+     */
+    data: XOR<RoundUpdateManyMutationInput, RoundUncheckedUpdateManyInput>
+    /**
+     * Filter which Rounds to update
+     */
+    where?: RoundWhereInput
+    /**
+     * Limit how many Rounds to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * Round updateManyAndReturn
+   */
+  export type RoundUpdateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Round
+     */
+    select?: RoundSelectUpdateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the Round
+     */
+    omit?: RoundOmit<ExtArgs> | null
+    /**
+     * The data used to update Rounds.
+     */
+    data: XOR<RoundUpdateManyMutationInput, RoundUncheckedUpdateManyInput>
+    /**
+     * Filter which Rounds to update
+     */
+    where?: RoundWhereInput
+    /**
+     * Limit how many Rounds to update.
+     */
+    limit?: number
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: RoundIncludeUpdateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * Round upsert
+   */
+  export type RoundUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Round
+     */
+    select?: RoundSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Round
+     */
+    omit?: RoundOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: RoundInclude<ExtArgs> | null
+    /**
+     * The filter to search for the Round to update in case it exists.
+     */
+    where: RoundWhereUniqueInput
+    /**
+     * In case the Round found by the `where` argument doesn't exist, create a new Round with this data.
+     */
+    create: XOR<RoundCreateInput, RoundUncheckedCreateInput>
+    /**
+     * In case the Round was found with the provided `where` argument, update it with this data.
+     */
+    update: XOR<RoundUpdateInput, RoundUncheckedUpdateInput>
+  }
+
+  /**
+   * Round delete
+   */
+  export type RoundDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Round
+     */
+    select?: RoundSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Round
+     */
+    omit?: RoundOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: RoundInclude<ExtArgs> | null
+    /**
+     * Filter which Round to delete.
+     */
+    where: RoundWhereUniqueInput
+  }
+
+  /**
+   * Round deleteMany
+   */
+  export type RoundDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which Rounds to delete
+     */
+    where?: RoundWhereInput
+    /**
+     * Limit how many Rounds to delete.
+     */
+    limit?: number
+  }
+
+  /**
+   * Round.entries
+   */
+  export type Round$entriesArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the RoundEntry
+     */
+    select?: RoundEntrySelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the RoundEntry
+     */
+    omit?: RoundEntryOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: RoundEntryInclude<ExtArgs> | null
+    where?: RoundEntryWhereInput
+    orderBy?: RoundEntryOrderByWithRelationInput | RoundEntryOrderByWithRelationInput[]
+    cursor?: RoundEntryWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: RoundEntryScalarFieldEnum | RoundEntryScalarFieldEnum[]
+  }
+
+  /**
+   * Round without action
+   */
+  export type RoundDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Round
+     */
+    select?: RoundSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Round
+     */
+    omit?: RoundOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: RoundInclude<ExtArgs> | null
+  }
+
+
+  /**
+   * Model RoundEntry
+   */
+
+  export type AggregateRoundEntry = {
+    _count: RoundEntryCountAggregateOutputType | null
+    _avg: RoundEntryAvgAggregateOutputType | null
+    _sum: RoundEntrySumAggregateOutputType | null
+    _min: RoundEntryMinAggregateOutputType | null
+    _max: RoundEntryMaxAggregateOutputType | null
+  }
+
+  export type RoundEntryAvgAggregateOutputType = {
+    id: number | null
+    roundId: number | null
+    scoreId: number | null
+    bidAmount: number | null
+    pointChange: number | null
+    scoreAfter: number | null
+  }
+
+  export type RoundEntrySumAggregateOutputType = {
+    id: number | null
+    roundId: number | null
+    scoreId: number | null
+    bidAmount: number | null
+    pointChange: number | null
+    scoreAfter: number | null
+  }
+
+  export type RoundEntryMinAggregateOutputType = {
+    id: number | null
+    roundId: number | null
+    scoreId: number | null
+    name: string | null
+    bidAmount: number | null
+    pointChange: number | null
+    scoreAfter: number | null
+    result: string | null
+    createdAt: Date | null
+  }
+
+  export type RoundEntryMaxAggregateOutputType = {
+    id: number | null
+    roundId: number | null
+    scoreId: number | null
+    name: string | null
+    bidAmount: number | null
+    pointChange: number | null
+    scoreAfter: number | null
+    result: string | null
+    createdAt: Date | null
+  }
+
+  export type RoundEntryCountAggregateOutputType = {
+    id: number
+    roundId: number
+    scoreId: number
+    name: number
+    bidAmount: number
+    pointChange: number
+    scoreAfter: number
+    result: number
+    createdAt: number
+    _all: number
+  }
+
+
+  export type RoundEntryAvgAggregateInputType = {
+    id?: true
+    roundId?: true
+    scoreId?: true
+    bidAmount?: true
+    pointChange?: true
+    scoreAfter?: true
+  }
+
+  export type RoundEntrySumAggregateInputType = {
+    id?: true
+    roundId?: true
+    scoreId?: true
+    bidAmount?: true
+    pointChange?: true
+    scoreAfter?: true
+  }
+
+  export type RoundEntryMinAggregateInputType = {
+    id?: true
+    roundId?: true
+    scoreId?: true
+    name?: true
+    bidAmount?: true
+    pointChange?: true
+    scoreAfter?: true
+    result?: true
+    createdAt?: true
+  }
+
+  export type RoundEntryMaxAggregateInputType = {
+    id?: true
+    roundId?: true
+    scoreId?: true
+    name?: true
+    bidAmount?: true
+    pointChange?: true
+    scoreAfter?: true
+    result?: true
+    createdAt?: true
+  }
+
+  export type RoundEntryCountAggregateInputType = {
+    id?: true
+    roundId?: true
+    scoreId?: true
+    name?: true
+    bidAmount?: true
+    pointChange?: true
+    scoreAfter?: true
+    result?: true
+    createdAt?: true
+    _all?: true
+  }
+
+  export type RoundEntryAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which RoundEntry to aggregate.
+     */
+    where?: RoundEntryWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of RoundEntries to fetch.
+     */
+    orderBy?: RoundEntryOrderByWithRelationInput | RoundEntryOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the start position
+     */
+    cursor?: RoundEntryWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` RoundEntries from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` RoundEntries.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Count returned RoundEntries
+    **/
+    _count?: true | RoundEntryCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to average
+    **/
+    _avg?: RoundEntryAvgAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to sum
+    **/
+    _sum?: RoundEntrySumAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the minimum value
+    **/
+    _min?: RoundEntryMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the maximum value
+    **/
+    _max?: RoundEntryMaxAggregateInputType
+  }
+
+  export type GetRoundEntryAggregateType<T extends RoundEntryAggregateArgs> = {
+        [P in keyof T & keyof AggregateRoundEntry]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregateRoundEntry[P]>
+      : GetScalarType<T[P], AggregateRoundEntry[P]>
+  }
+
+
+
+
+  export type RoundEntryGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: RoundEntryWhereInput
+    orderBy?: RoundEntryOrderByWithAggregationInput | RoundEntryOrderByWithAggregationInput[]
+    by: RoundEntryScalarFieldEnum[] | RoundEntryScalarFieldEnum
+    having?: RoundEntryScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: RoundEntryCountAggregateInputType | true
+    _avg?: RoundEntryAvgAggregateInputType
+    _sum?: RoundEntrySumAggregateInputType
+    _min?: RoundEntryMinAggregateInputType
+    _max?: RoundEntryMaxAggregateInputType
+  }
+
+  export type RoundEntryGroupByOutputType = {
+    id: number
+    roundId: number
+    scoreId: number
+    name: string
+    bidAmount: number
+    pointChange: number
+    scoreAfter: number
+    result: string
+    createdAt: Date
+    _count: RoundEntryCountAggregateOutputType | null
+    _avg: RoundEntryAvgAggregateOutputType | null
+    _sum: RoundEntrySumAggregateOutputType | null
+    _min: RoundEntryMinAggregateOutputType | null
+    _max: RoundEntryMaxAggregateOutputType | null
+  }
+
+  type GetRoundEntryGroupByPayload<T extends RoundEntryGroupByArgs> = Prisma.PrismaPromise<
+    Array<
+      PickEnumerable<RoundEntryGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof RoundEntryGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], RoundEntryGroupByOutputType[P]>
+            : GetScalarType<T[P], RoundEntryGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type RoundEntrySelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    roundId?: boolean
+    scoreId?: boolean
+    name?: boolean
+    bidAmount?: boolean
+    pointChange?: boolean
+    scoreAfter?: boolean
+    result?: boolean
+    createdAt?: boolean
+    round?: boolean | RoundDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["roundEntry"]>
+
+  export type RoundEntrySelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    roundId?: boolean
+    scoreId?: boolean
+    name?: boolean
+    bidAmount?: boolean
+    pointChange?: boolean
+    scoreAfter?: boolean
+    result?: boolean
+    createdAt?: boolean
+    round?: boolean | RoundDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["roundEntry"]>
+
+  export type RoundEntrySelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    roundId?: boolean
+    scoreId?: boolean
+    name?: boolean
+    bidAmount?: boolean
+    pointChange?: boolean
+    scoreAfter?: boolean
+    result?: boolean
+    createdAt?: boolean
+    round?: boolean | RoundDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["roundEntry"]>
+
+  export type RoundEntrySelectScalar = {
+    id?: boolean
+    roundId?: boolean
+    scoreId?: boolean
+    name?: boolean
+    bidAmount?: boolean
+    pointChange?: boolean
+    scoreAfter?: boolean
+    result?: boolean
+    createdAt?: boolean
+  }
+
+  export type RoundEntryOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "roundId" | "scoreId" | "name" | "bidAmount" | "pointChange" | "scoreAfter" | "result" | "createdAt", ExtArgs["result"]["roundEntry"]>
+  export type RoundEntryInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    round?: boolean | RoundDefaultArgs<ExtArgs>
+  }
+  export type RoundEntryIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    round?: boolean | RoundDefaultArgs<ExtArgs>
+  }
+  export type RoundEntryIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    round?: boolean | RoundDefaultArgs<ExtArgs>
+  }
+
+  export type $RoundEntryPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "RoundEntry"
+    objects: {
+      round: Prisma.$RoundPayload<ExtArgs>
+    }
+    scalars: $Extensions.GetPayloadResult<{
+      id: number
+      roundId: number
+      scoreId: number
+      name: string
+      bidAmount: number
+      pointChange: number
+      scoreAfter: number
+      result: string
+      createdAt: Date
+    }, ExtArgs["result"]["roundEntry"]>
+    composites: {}
+  }
+
+  type RoundEntryGetPayload<S extends boolean | null | undefined | RoundEntryDefaultArgs> = $Result.GetResult<Prisma.$RoundEntryPayload, S>
+
+  type RoundEntryCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
+    Omit<RoundEntryFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+      select?: RoundEntryCountAggregateInputType | true
+    }
+
+  export interface RoundEntryDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['RoundEntry'], meta: { name: 'RoundEntry' } }
+    /**
+     * Find zero or one RoundEntry that matches the filter.
+     * @param {RoundEntryFindUniqueArgs} args - Arguments to find a RoundEntry
+     * @example
+     * // Get one RoundEntry
+     * const roundEntry = await prisma.roundEntry.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUnique<T extends RoundEntryFindUniqueArgs>(args: SelectSubset<T, RoundEntryFindUniqueArgs<ExtArgs>>): Prisma__RoundEntryClient<$Result.GetResult<Prisma.$RoundEntryPayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find one RoundEntry that matches the filter or throw an error with `error.code='P2025'`
+     * if no matches were found.
+     * @param {RoundEntryFindUniqueOrThrowArgs} args - Arguments to find a RoundEntry
+     * @example
+     * // Get one RoundEntry
+     * const roundEntry = await prisma.roundEntry.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUniqueOrThrow<T extends RoundEntryFindUniqueOrThrowArgs>(args: SelectSubset<T, RoundEntryFindUniqueOrThrowArgs<ExtArgs>>): Prisma__RoundEntryClient<$Result.GetResult<Prisma.$RoundEntryPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first RoundEntry that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {RoundEntryFindFirstArgs} args - Arguments to find a RoundEntry
+     * @example
+     * // Get one RoundEntry
+     * const roundEntry = await prisma.roundEntry.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirst<T extends RoundEntryFindFirstArgs>(args?: SelectSubset<T, RoundEntryFindFirstArgs<ExtArgs>>): Prisma__RoundEntryClient<$Result.GetResult<Prisma.$RoundEntryPayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first RoundEntry that matches the filter or
+     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {RoundEntryFindFirstOrThrowArgs} args - Arguments to find a RoundEntry
+     * @example
+     * // Get one RoundEntry
+     * const roundEntry = await prisma.roundEntry.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirstOrThrow<T extends RoundEntryFindFirstOrThrowArgs>(args?: SelectSubset<T, RoundEntryFindFirstOrThrowArgs<ExtArgs>>): Prisma__RoundEntryClient<$Result.GetResult<Prisma.$RoundEntryPayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find zero or more RoundEntries that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {RoundEntryFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all RoundEntries
+     * const roundEntries = await prisma.roundEntry.findMany()
+     * 
+     * // Get first 10 RoundEntries
+     * const roundEntries = await prisma.roundEntry.findMany({ take: 10 })
+     * 
+     * // Only select the `id`
+     * const roundEntryWithIdOnly = await prisma.roundEntry.findMany({ select: { id: true } })
+     * 
+     */
+    findMany<T extends RoundEntryFindManyArgs>(args?: SelectSubset<T, RoundEntryFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$RoundEntryPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
+
+    /**
+     * Create a RoundEntry.
+     * @param {RoundEntryCreateArgs} args - Arguments to create a RoundEntry.
+     * @example
+     * // Create one RoundEntry
+     * const RoundEntry = await prisma.roundEntry.create({
+     *   data: {
+     *     // ... data to create a RoundEntry
+     *   }
+     * })
+     * 
+     */
+    create<T extends RoundEntryCreateArgs>(args: SelectSubset<T, RoundEntryCreateArgs<ExtArgs>>): Prisma__RoundEntryClient<$Result.GetResult<Prisma.$RoundEntryPayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Create many RoundEntries.
+     * @param {RoundEntryCreateManyArgs} args - Arguments to create many RoundEntries.
+     * @example
+     * // Create many RoundEntries
+     * const roundEntry = await prisma.roundEntry.createMany({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *     
+     */
+    createMany<T extends RoundEntryCreateManyArgs>(args?: SelectSubset<T, RoundEntryCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create many RoundEntries and returns the data saved in the database.
+     * @param {RoundEntryCreateManyAndReturnArgs} args - Arguments to create many RoundEntries.
+     * @example
+     * // Create many RoundEntries
+     * const roundEntry = await prisma.roundEntry.createManyAndReturn({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Create many RoundEntries and only return the `id`
+     * const roundEntryWithIdOnly = await prisma.roundEntry.createManyAndReturn({
+     *   select: { id: true },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    createManyAndReturn<T extends RoundEntryCreateManyAndReturnArgs>(args?: SelectSubset<T, RoundEntryCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$RoundEntryPayload<ExtArgs>, T, "createManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Delete a RoundEntry.
+     * @param {RoundEntryDeleteArgs} args - Arguments to delete one RoundEntry.
+     * @example
+     * // Delete one RoundEntry
+     * const RoundEntry = await prisma.roundEntry.delete({
+     *   where: {
+     *     // ... filter to delete one RoundEntry
+     *   }
+     * })
+     * 
+     */
+    delete<T extends RoundEntryDeleteArgs>(args: SelectSubset<T, RoundEntryDeleteArgs<ExtArgs>>): Prisma__RoundEntryClient<$Result.GetResult<Prisma.$RoundEntryPayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Update one RoundEntry.
+     * @param {RoundEntryUpdateArgs} args - Arguments to update one RoundEntry.
+     * @example
+     * // Update one RoundEntry
+     * const roundEntry = await prisma.roundEntry.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    update<T extends RoundEntryUpdateArgs>(args: SelectSubset<T, RoundEntryUpdateArgs<ExtArgs>>): Prisma__RoundEntryClient<$Result.GetResult<Prisma.$RoundEntryPayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Delete zero or more RoundEntries.
+     * @param {RoundEntryDeleteManyArgs} args - Arguments to filter RoundEntries to delete.
+     * @example
+     * // Delete a few RoundEntries
+     * const { count } = await prisma.roundEntry.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     * 
+     */
+    deleteMany<T extends RoundEntryDeleteManyArgs>(args?: SelectSubset<T, RoundEntryDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more RoundEntries.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {RoundEntryUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many RoundEntries
+     * const roundEntry = await prisma.roundEntry.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    updateMany<T extends RoundEntryUpdateManyArgs>(args: SelectSubset<T, RoundEntryUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more RoundEntries and returns the data updated in the database.
+     * @param {RoundEntryUpdateManyAndReturnArgs} args - Arguments to update many RoundEntries.
+     * @example
+     * // Update many RoundEntries
+     * const roundEntry = await prisma.roundEntry.updateManyAndReturn({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Update zero or more RoundEntries and only return the `id`
+     * const roundEntryWithIdOnly = await prisma.roundEntry.updateManyAndReturn({
+     *   select: { id: true },
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    updateManyAndReturn<T extends RoundEntryUpdateManyAndReturnArgs>(args: SelectSubset<T, RoundEntryUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$RoundEntryPayload<ExtArgs>, T, "updateManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Create or update one RoundEntry.
+     * @param {RoundEntryUpsertArgs} args - Arguments to update or create a RoundEntry.
+     * @example
+     * // Update or create a RoundEntry
+     * const roundEntry = await prisma.roundEntry.upsert({
+     *   create: {
+     *     // ... data to create a RoundEntry
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the RoundEntry we want to update
+     *   }
+     * })
+     */
+    upsert<T extends RoundEntryUpsertArgs>(args: SelectSubset<T, RoundEntryUpsertArgs<ExtArgs>>): Prisma__RoundEntryClient<$Result.GetResult<Prisma.$RoundEntryPayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+
+    /**
+     * Count the number of RoundEntries.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {RoundEntryCountArgs} args - Arguments to filter RoundEntries to count.
+     * @example
+     * // Count the number of RoundEntries
+     * const count = await prisma.roundEntry.count({
+     *   where: {
+     *     // ... the filter for the RoundEntries we want to count
+     *   }
+     * })
+    **/
+    count<T extends RoundEntryCountArgs>(
+      args?: Subset<T, RoundEntryCountArgs>,
+    ): Prisma.PrismaPromise<
+      T extends $Utils.Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], RoundEntryCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a RoundEntry.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {RoundEntryAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends RoundEntryAggregateArgs>(args: Subset<T, RoundEntryAggregateArgs>): Prisma.PrismaPromise<GetRoundEntryAggregateType<T>>
+
+    /**
+     * Group by RoundEntry.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {RoundEntryGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     * 
+    **/
+    groupBy<
+      T extends RoundEntryGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: RoundEntryGroupByArgs['orderBy'] }
+        : { orderBy?: RoundEntryGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends MaybeTupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, RoundEntryGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetRoundEntryGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+  /**
+   * Fields of the RoundEntry model
+   */
+  readonly fields: RoundEntryFieldRefs;
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for RoundEntry.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export interface Prisma__RoundEntryClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
+    readonly [Symbol.toStringTag]: "PrismaPromise"
+    round<T extends RoundDefaultArgs<ExtArgs> = {}>(args?: Subset<T, RoundDefaultArgs<ExtArgs>>): Prisma__RoundClient<$Result.GetResult<Prisma.$RoundPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
+  }
+
+
+
+
+  /**
+   * Fields of the RoundEntry model
+   */
+  interface RoundEntryFieldRefs {
+    readonly id: FieldRef<"RoundEntry", 'Int'>
+    readonly roundId: FieldRef<"RoundEntry", 'Int'>
+    readonly scoreId: FieldRef<"RoundEntry", 'Int'>
+    readonly name: FieldRef<"RoundEntry", 'String'>
+    readonly bidAmount: FieldRef<"RoundEntry", 'Int'>
+    readonly pointChange: FieldRef<"RoundEntry", 'Int'>
+    readonly scoreAfter: FieldRef<"RoundEntry", 'Int'>
+    readonly result: FieldRef<"RoundEntry", 'String'>
+    readonly createdAt: FieldRef<"RoundEntry", 'DateTime'>
+  }
+    
+
+  // Custom InputTypes
+  /**
+   * RoundEntry findUnique
+   */
+  export type RoundEntryFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the RoundEntry
+     */
+    select?: RoundEntrySelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the RoundEntry
+     */
+    omit?: RoundEntryOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: RoundEntryInclude<ExtArgs> | null
+    /**
+     * Filter, which RoundEntry to fetch.
+     */
+    where: RoundEntryWhereUniqueInput
+  }
+
+  /**
+   * RoundEntry findUniqueOrThrow
+   */
+  export type RoundEntryFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the RoundEntry
+     */
+    select?: RoundEntrySelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the RoundEntry
+     */
+    omit?: RoundEntryOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: RoundEntryInclude<ExtArgs> | null
+    /**
+     * Filter, which RoundEntry to fetch.
+     */
+    where: RoundEntryWhereUniqueInput
+  }
+
+  /**
+   * RoundEntry findFirst
+   */
+  export type RoundEntryFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the RoundEntry
+     */
+    select?: RoundEntrySelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the RoundEntry
+     */
+    omit?: RoundEntryOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: RoundEntryInclude<ExtArgs> | null
+    /**
+     * Filter, which RoundEntry to fetch.
+     */
+    where?: RoundEntryWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of RoundEntries to fetch.
+     */
+    orderBy?: RoundEntryOrderByWithRelationInput | RoundEntryOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for RoundEntries.
+     */
+    cursor?: RoundEntryWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` RoundEntries from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` RoundEntries.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of RoundEntries.
+     */
+    distinct?: RoundEntryScalarFieldEnum | RoundEntryScalarFieldEnum[]
+  }
+
+  /**
+   * RoundEntry findFirstOrThrow
+   */
+  export type RoundEntryFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the RoundEntry
+     */
+    select?: RoundEntrySelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the RoundEntry
+     */
+    omit?: RoundEntryOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: RoundEntryInclude<ExtArgs> | null
+    /**
+     * Filter, which RoundEntry to fetch.
+     */
+    where?: RoundEntryWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of RoundEntries to fetch.
+     */
+    orderBy?: RoundEntryOrderByWithRelationInput | RoundEntryOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for RoundEntries.
+     */
+    cursor?: RoundEntryWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` RoundEntries from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` RoundEntries.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of RoundEntries.
+     */
+    distinct?: RoundEntryScalarFieldEnum | RoundEntryScalarFieldEnum[]
+  }
+
+  /**
+   * RoundEntry findMany
+   */
+  export type RoundEntryFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the RoundEntry
+     */
+    select?: RoundEntrySelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the RoundEntry
+     */
+    omit?: RoundEntryOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: RoundEntryInclude<ExtArgs> | null
+    /**
+     * Filter, which RoundEntries to fetch.
+     */
+    where?: RoundEntryWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of RoundEntries to fetch.
+     */
+    orderBy?: RoundEntryOrderByWithRelationInput | RoundEntryOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for listing RoundEntries.
+     */
+    cursor?: RoundEntryWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` RoundEntries from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` RoundEntries.
+     */
+    skip?: number
+    distinct?: RoundEntryScalarFieldEnum | RoundEntryScalarFieldEnum[]
+  }
+
+  /**
+   * RoundEntry create
+   */
+  export type RoundEntryCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the RoundEntry
+     */
+    select?: RoundEntrySelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the RoundEntry
+     */
+    omit?: RoundEntryOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: RoundEntryInclude<ExtArgs> | null
+    /**
+     * The data needed to create a RoundEntry.
+     */
+    data: XOR<RoundEntryCreateInput, RoundEntryUncheckedCreateInput>
+  }
+
+  /**
+   * RoundEntry createMany
+   */
+  export type RoundEntryCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to create many RoundEntries.
+     */
+    data: RoundEntryCreateManyInput | RoundEntryCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * RoundEntry createManyAndReturn
+   */
+  export type RoundEntryCreateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the RoundEntry
+     */
+    select?: RoundEntrySelectCreateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the RoundEntry
+     */
+    omit?: RoundEntryOmit<ExtArgs> | null
+    /**
+     * The data used to create many RoundEntries.
+     */
+    data: RoundEntryCreateManyInput | RoundEntryCreateManyInput[]
+    skipDuplicates?: boolean
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: RoundEntryIncludeCreateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * RoundEntry update
+   */
+  export type RoundEntryUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the RoundEntry
+     */
+    select?: RoundEntrySelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the RoundEntry
+     */
+    omit?: RoundEntryOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: RoundEntryInclude<ExtArgs> | null
+    /**
+     * The data needed to update a RoundEntry.
+     */
+    data: XOR<RoundEntryUpdateInput, RoundEntryUncheckedUpdateInput>
+    /**
+     * Choose, which RoundEntry to update.
+     */
+    where: RoundEntryWhereUniqueInput
+  }
+
+  /**
+   * RoundEntry updateMany
+   */
+  export type RoundEntryUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to update RoundEntries.
+     */
+    data: XOR<RoundEntryUpdateManyMutationInput, RoundEntryUncheckedUpdateManyInput>
+    /**
+     * Filter which RoundEntries to update
+     */
+    where?: RoundEntryWhereInput
+    /**
+     * Limit how many RoundEntries to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * RoundEntry updateManyAndReturn
+   */
+  export type RoundEntryUpdateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the RoundEntry
+     */
+    select?: RoundEntrySelectUpdateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the RoundEntry
+     */
+    omit?: RoundEntryOmit<ExtArgs> | null
+    /**
+     * The data used to update RoundEntries.
+     */
+    data: XOR<RoundEntryUpdateManyMutationInput, RoundEntryUncheckedUpdateManyInput>
+    /**
+     * Filter which RoundEntries to update
+     */
+    where?: RoundEntryWhereInput
+    /**
+     * Limit how many RoundEntries to update.
+     */
+    limit?: number
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: RoundEntryIncludeUpdateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * RoundEntry upsert
+   */
+  export type RoundEntryUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the RoundEntry
+     */
+    select?: RoundEntrySelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the RoundEntry
+     */
+    omit?: RoundEntryOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: RoundEntryInclude<ExtArgs> | null
+    /**
+     * The filter to search for the RoundEntry to update in case it exists.
+     */
+    where: RoundEntryWhereUniqueInput
+    /**
+     * In case the RoundEntry found by the `where` argument doesn't exist, create a new RoundEntry with this data.
+     */
+    create: XOR<RoundEntryCreateInput, RoundEntryUncheckedCreateInput>
+    /**
+     * In case the RoundEntry was found with the provided `where` argument, update it with this data.
+     */
+    update: XOR<RoundEntryUpdateInput, RoundEntryUncheckedUpdateInput>
+  }
+
+  /**
+   * RoundEntry delete
+   */
+  export type RoundEntryDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the RoundEntry
+     */
+    select?: RoundEntrySelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the RoundEntry
+     */
+    omit?: RoundEntryOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: RoundEntryInclude<ExtArgs> | null
+    /**
+     * Filter which RoundEntry to delete.
+     */
+    where: RoundEntryWhereUniqueInput
+  }
+
+  /**
+   * RoundEntry deleteMany
+   */
+  export type RoundEntryDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which RoundEntries to delete
+     */
+    where?: RoundEntryWhereInput
+    /**
+     * Limit how many RoundEntries to delete.
+     */
+    limit?: number
+  }
+
+  /**
+   * RoundEntry without action
+   */
+  export type RoundEntryDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the RoundEntry
+     */
+    select?: RoundEntrySelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the RoundEntry
+     */
+    omit?: RoundEntryOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: RoundEntryInclude<ExtArgs> | null
+  }
+
+
+  /**
    * Enums
    */
 
@@ -4321,6 +8190,48 @@ export namespace Prisma {
   };
 
   export type SettingScalarFieldEnum = (typeof SettingScalarFieldEnum)[keyof typeof SettingScalarFieldEnum]
+
+
+  export const CompetitionScalarFieldEnum: {
+    id: 'id',
+    groupId: 'groupId',
+    totalSoal: 'totalSoal',
+    currentSoal: 'currentSoal',
+    status: 'status',
+    createdAt: 'createdAt',
+    updatedAt: 'updatedAt'
+  };
+
+  export type CompetitionScalarFieldEnum = (typeof CompetitionScalarFieldEnum)[keyof typeof CompetitionScalarFieldEnum]
+
+
+  export const RoundScalarFieldEnum: {
+    id: 'id',
+    competitionId: 'competitionId',
+    soalNumber: 'soalNumber',
+    isBidding: 'isBidding',
+    winnerId: 'winnerId',
+    winnerName: 'winnerName',
+    status: 'status',
+    createdAt: 'createdAt'
+  };
+
+  export type RoundScalarFieldEnum = (typeof RoundScalarFieldEnum)[keyof typeof RoundScalarFieldEnum]
+
+
+  export const RoundEntryScalarFieldEnum: {
+    id: 'id',
+    roundId: 'roundId',
+    scoreId: 'scoreId',
+    name: 'name',
+    bidAmount: 'bidAmount',
+    pointChange: 'pointChange',
+    scoreAfter: 'scoreAfter',
+    result: 'result',
+    createdAt: 'createdAt'
+  };
+
+  export type RoundEntryScalarFieldEnum = (typeof RoundEntryScalarFieldEnum)[keyof typeof RoundEntryScalarFieldEnum]
 
 
   export const SortOrder: {
@@ -4500,6 +8411,7 @@ export namespace Prisma {
     createdAt?: DateTimeFilter<"Group"> | Date | string
     updatedAt?: DateTimeFilter<"Group"> | Date | string
     scores?: ScoreListRelationFilter
+    competitions?: CompetitionListRelationFilter
   }
 
   export type GroupOrderByWithRelationInput = {
@@ -4509,6 +8421,7 @@ export namespace Prisma {
     createdAt?: SortOrder
     updatedAt?: SortOrder
     scores?: ScoreOrderByRelationAggregateInput
+    competitions?: CompetitionOrderByRelationAggregateInput
   }
 
   export type GroupWhereUniqueInput = Prisma.AtLeast<{
@@ -4521,6 +8434,7 @@ export namespace Prisma {
     createdAt?: DateTimeFilter<"Group"> | Date | string
     updatedAt?: DateTimeFilter<"Group"> | Date | string
     scores?: ScoreListRelationFilter
+    competitions?: CompetitionListRelationFilter
   }, "id" | "name">
 
   export type GroupOrderByWithAggregationInput = {
@@ -4582,6 +8496,228 @@ export namespace Prisma {
     NOT?: SettingScalarWhereWithAggregatesInput | SettingScalarWhereWithAggregatesInput[]
     key?: StringWithAggregatesFilter<"Setting"> | string
     value?: StringWithAggregatesFilter<"Setting"> | string
+  }
+
+  export type CompetitionWhereInput = {
+    AND?: CompetitionWhereInput | CompetitionWhereInput[]
+    OR?: CompetitionWhereInput[]
+    NOT?: CompetitionWhereInput | CompetitionWhereInput[]
+    id?: IntFilter<"Competition"> | number
+    groupId?: IntFilter<"Competition"> | number
+    totalSoal?: IntFilter<"Competition"> | number
+    currentSoal?: IntFilter<"Competition"> | number
+    status?: StringFilter<"Competition"> | string
+    createdAt?: DateTimeFilter<"Competition"> | Date | string
+    updatedAt?: DateTimeFilter<"Competition"> | Date | string
+    group?: XOR<GroupScalarRelationFilter, GroupWhereInput>
+    rounds?: RoundListRelationFilter
+  }
+
+  export type CompetitionOrderByWithRelationInput = {
+    id?: SortOrder
+    groupId?: SortOrder
+    totalSoal?: SortOrder
+    currentSoal?: SortOrder
+    status?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    group?: GroupOrderByWithRelationInput
+    rounds?: RoundOrderByRelationAggregateInput
+  }
+
+  export type CompetitionWhereUniqueInput = Prisma.AtLeast<{
+    id?: number
+    AND?: CompetitionWhereInput | CompetitionWhereInput[]
+    OR?: CompetitionWhereInput[]
+    NOT?: CompetitionWhereInput | CompetitionWhereInput[]
+    groupId?: IntFilter<"Competition"> | number
+    totalSoal?: IntFilter<"Competition"> | number
+    currentSoal?: IntFilter<"Competition"> | number
+    status?: StringFilter<"Competition"> | string
+    createdAt?: DateTimeFilter<"Competition"> | Date | string
+    updatedAt?: DateTimeFilter<"Competition"> | Date | string
+    group?: XOR<GroupScalarRelationFilter, GroupWhereInput>
+    rounds?: RoundListRelationFilter
+  }, "id">
+
+  export type CompetitionOrderByWithAggregationInput = {
+    id?: SortOrder
+    groupId?: SortOrder
+    totalSoal?: SortOrder
+    currentSoal?: SortOrder
+    status?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    _count?: CompetitionCountOrderByAggregateInput
+    _avg?: CompetitionAvgOrderByAggregateInput
+    _max?: CompetitionMaxOrderByAggregateInput
+    _min?: CompetitionMinOrderByAggregateInput
+    _sum?: CompetitionSumOrderByAggregateInput
+  }
+
+  export type CompetitionScalarWhereWithAggregatesInput = {
+    AND?: CompetitionScalarWhereWithAggregatesInput | CompetitionScalarWhereWithAggregatesInput[]
+    OR?: CompetitionScalarWhereWithAggregatesInput[]
+    NOT?: CompetitionScalarWhereWithAggregatesInput | CompetitionScalarWhereWithAggregatesInput[]
+    id?: IntWithAggregatesFilter<"Competition"> | number
+    groupId?: IntWithAggregatesFilter<"Competition"> | number
+    totalSoal?: IntWithAggregatesFilter<"Competition"> | number
+    currentSoal?: IntWithAggregatesFilter<"Competition"> | number
+    status?: StringWithAggregatesFilter<"Competition"> | string
+    createdAt?: DateTimeWithAggregatesFilter<"Competition"> | Date | string
+    updatedAt?: DateTimeWithAggregatesFilter<"Competition"> | Date | string
+  }
+
+  export type RoundWhereInput = {
+    AND?: RoundWhereInput | RoundWhereInput[]
+    OR?: RoundWhereInput[]
+    NOT?: RoundWhereInput | RoundWhereInput[]
+    id?: IntFilter<"Round"> | number
+    competitionId?: IntFilter<"Round"> | number
+    soalNumber?: IntFilter<"Round"> | number
+    isBidding?: BoolFilter<"Round"> | boolean
+    winnerId?: IntNullableFilter<"Round"> | number | null
+    winnerName?: StringNullableFilter<"Round"> | string | null
+    status?: StringFilter<"Round"> | string
+    createdAt?: DateTimeFilter<"Round"> | Date | string
+    competition?: XOR<CompetitionScalarRelationFilter, CompetitionWhereInput>
+    entries?: RoundEntryListRelationFilter
+  }
+
+  export type RoundOrderByWithRelationInput = {
+    id?: SortOrder
+    competitionId?: SortOrder
+    soalNumber?: SortOrder
+    isBidding?: SortOrder
+    winnerId?: SortOrderInput | SortOrder
+    winnerName?: SortOrderInput | SortOrder
+    status?: SortOrder
+    createdAt?: SortOrder
+    competition?: CompetitionOrderByWithRelationInput
+    entries?: RoundEntryOrderByRelationAggregateInput
+  }
+
+  export type RoundWhereUniqueInput = Prisma.AtLeast<{
+    id?: number
+    AND?: RoundWhereInput | RoundWhereInput[]
+    OR?: RoundWhereInput[]
+    NOT?: RoundWhereInput | RoundWhereInput[]
+    competitionId?: IntFilter<"Round"> | number
+    soalNumber?: IntFilter<"Round"> | number
+    isBidding?: BoolFilter<"Round"> | boolean
+    winnerId?: IntNullableFilter<"Round"> | number | null
+    winnerName?: StringNullableFilter<"Round"> | string | null
+    status?: StringFilter<"Round"> | string
+    createdAt?: DateTimeFilter<"Round"> | Date | string
+    competition?: XOR<CompetitionScalarRelationFilter, CompetitionWhereInput>
+    entries?: RoundEntryListRelationFilter
+  }, "id">
+
+  export type RoundOrderByWithAggregationInput = {
+    id?: SortOrder
+    competitionId?: SortOrder
+    soalNumber?: SortOrder
+    isBidding?: SortOrder
+    winnerId?: SortOrderInput | SortOrder
+    winnerName?: SortOrderInput | SortOrder
+    status?: SortOrder
+    createdAt?: SortOrder
+    _count?: RoundCountOrderByAggregateInput
+    _avg?: RoundAvgOrderByAggregateInput
+    _max?: RoundMaxOrderByAggregateInput
+    _min?: RoundMinOrderByAggregateInput
+    _sum?: RoundSumOrderByAggregateInput
+  }
+
+  export type RoundScalarWhereWithAggregatesInput = {
+    AND?: RoundScalarWhereWithAggregatesInput | RoundScalarWhereWithAggregatesInput[]
+    OR?: RoundScalarWhereWithAggregatesInput[]
+    NOT?: RoundScalarWhereWithAggregatesInput | RoundScalarWhereWithAggregatesInput[]
+    id?: IntWithAggregatesFilter<"Round"> | number
+    competitionId?: IntWithAggregatesFilter<"Round"> | number
+    soalNumber?: IntWithAggregatesFilter<"Round"> | number
+    isBidding?: BoolWithAggregatesFilter<"Round"> | boolean
+    winnerId?: IntNullableWithAggregatesFilter<"Round"> | number | null
+    winnerName?: StringNullableWithAggregatesFilter<"Round"> | string | null
+    status?: StringWithAggregatesFilter<"Round"> | string
+    createdAt?: DateTimeWithAggregatesFilter<"Round"> | Date | string
+  }
+
+  export type RoundEntryWhereInput = {
+    AND?: RoundEntryWhereInput | RoundEntryWhereInput[]
+    OR?: RoundEntryWhereInput[]
+    NOT?: RoundEntryWhereInput | RoundEntryWhereInput[]
+    id?: IntFilter<"RoundEntry"> | number
+    roundId?: IntFilter<"RoundEntry"> | number
+    scoreId?: IntFilter<"RoundEntry"> | number
+    name?: StringFilter<"RoundEntry"> | string
+    bidAmount?: IntFilter<"RoundEntry"> | number
+    pointChange?: IntFilter<"RoundEntry"> | number
+    scoreAfter?: IntFilter<"RoundEntry"> | number
+    result?: StringFilter<"RoundEntry"> | string
+    createdAt?: DateTimeFilter<"RoundEntry"> | Date | string
+    round?: XOR<RoundScalarRelationFilter, RoundWhereInput>
+  }
+
+  export type RoundEntryOrderByWithRelationInput = {
+    id?: SortOrder
+    roundId?: SortOrder
+    scoreId?: SortOrder
+    name?: SortOrder
+    bidAmount?: SortOrder
+    pointChange?: SortOrder
+    scoreAfter?: SortOrder
+    result?: SortOrder
+    createdAt?: SortOrder
+    round?: RoundOrderByWithRelationInput
+  }
+
+  export type RoundEntryWhereUniqueInput = Prisma.AtLeast<{
+    id?: number
+    AND?: RoundEntryWhereInput | RoundEntryWhereInput[]
+    OR?: RoundEntryWhereInput[]
+    NOT?: RoundEntryWhereInput | RoundEntryWhereInput[]
+    roundId?: IntFilter<"RoundEntry"> | number
+    scoreId?: IntFilter<"RoundEntry"> | number
+    name?: StringFilter<"RoundEntry"> | string
+    bidAmount?: IntFilter<"RoundEntry"> | number
+    pointChange?: IntFilter<"RoundEntry"> | number
+    scoreAfter?: IntFilter<"RoundEntry"> | number
+    result?: StringFilter<"RoundEntry"> | string
+    createdAt?: DateTimeFilter<"RoundEntry"> | Date | string
+    round?: XOR<RoundScalarRelationFilter, RoundWhereInput>
+  }, "id">
+
+  export type RoundEntryOrderByWithAggregationInput = {
+    id?: SortOrder
+    roundId?: SortOrder
+    scoreId?: SortOrder
+    name?: SortOrder
+    bidAmount?: SortOrder
+    pointChange?: SortOrder
+    scoreAfter?: SortOrder
+    result?: SortOrder
+    createdAt?: SortOrder
+    _count?: RoundEntryCountOrderByAggregateInput
+    _avg?: RoundEntryAvgOrderByAggregateInput
+    _max?: RoundEntryMaxOrderByAggregateInput
+    _min?: RoundEntryMinOrderByAggregateInput
+    _sum?: RoundEntrySumOrderByAggregateInput
+  }
+
+  export type RoundEntryScalarWhereWithAggregatesInput = {
+    AND?: RoundEntryScalarWhereWithAggregatesInput | RoundEntryScalarWhereWithAggregatesInput[]
+    OR?: RoundEntryScalarWhereWithAggregatesInput[]
+    NOT?: RoundEntryScalarWhereWithAggregatesInput | RoundEntryScalarWhereWithAggregatesInput[]
+    id?: IntWithAggregatesFilter<"RoundEntry"> | number
+    roundId?: IntWithAggregatesFilter<"RoundEntry"> | number
+    scoreId?: IntWithAggregatesFilter<"RoundEntry"> | number
+    name?: StringWithAggregatesFilter<"RoundEntry"> | string
+    bidAmount?: IntWithAggregatesFilter<"RoundEntry"> | number
+    pointChange?: IntWithAggregatesFilter<"RoundEntry"> | number
+    scoreAfter?: IntWithAggregatesFilter<"RoundEntry"> | number
+    result?: StringWithAggregatesFilter<"RoundEntry"> | string
+    createdAt?: DateTimeWithAggregatesFilter<"RoundEntry"> | Date | string
   }
 
   export type ScoreCreateInput = {
@@ -4663,6 +8799,7 @@ export namespace Prisma {
     createdAt?: Date | string
     updatedAt?: Date | string
     scores?: ScoreCreateNestedManyWithoutGroupInput
+    competitions?: CompetitionCreateNestedManyWithoutGroupInput
   }
 
   export type GroupUncheckedCreateInput = {
@@ -4672,6 +8809,7 @@ export namespace Prisma {
     createdAt?: Date | string
     updatedAt?: Date | string
     scores?: ScoreUncheckedCreateNestedManyWithoutGroupInput
+    competitions?: CompetitionUncheckedCreateNestedManyWithoutGroupInput
   }
 
   export type GroupUpdateInput = {
@@ -4680,6 +8818,7 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     scores?: ScoreUpdateManyWithoutGroupNestedInput
+    competitions?: CompetitionUpdateManyWithoutGroupNestedInput
   }
 
   export type GroupUncheckedUpdateInput = {
@@ -4689,6 +8828,7 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     scores?: ScoreUncheckedUpdateManyWithoutGroupNestedInput
+    competitions?: CompetitionUncheckedUpdateManyWithoutGroupNestedInput
   }
 
   export type GroupCreateManyInput = {
@@ -4747,6 +8887,233 @@ export namespace Prisma {
   export type SettingUncheckedUpdateManyInput = {
     key?: StringFieldUpdateOperationsInput | string
     value?: StringFieldUpdateOperationsInput | string
+  }
+
+  export type CompetitionCreateInput = {
+    totalSoal: number
+    currentSoal?: number
+    status?: string
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    group: GroupCreateNestedOneWithoutCompetitionsInput
+    rounds?: RoundCreateNestedManyWithoutCompetitionInput
+  }
+
+  export type CompetitionUncheckedCreateInput = {
+    id?: number
+    groupId: number
+    totalSoal: number
+    currentSoal?: number
+    status?: string
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    rounds?: RoundUncheckedCreateNestedManyWithoutCompetitionInput
+  }
+
+  export type CompetitionUpdateInput = {
+    totalSoal?: IntFieldUpdateOperationsInput | number
+    currentSoal?: IntFieldUpdateOperationsInput | number
+    status?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    group?: GroupUpdateOneRequiredWithoutCompetitionsNestedInput
+    rounds?: RoundUpdateManyWithoutCompetitionNestedInput
+  }
+
+  export type CompetitionUncheckedUpdateInput = {
+    id?: IntFieldUpdateOperationsInput | number
+    groupId?: IntFieldUpdateOperationsInput | number
+    totalSoal?: IntFieldUpdateOperationsInput | number
+    currentSoal?: IntFieldUpdateOperationsInput | number
+    status?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    rounds?: RoundUncheckedUpdateManyWithoutCompetitionNestedInput
+  }
+
+  export type CompetitionCreateManyInput = {
+    id?: number
+    groupId: number
+    totalSoal: number
+    currentSoal?: number
+    status?: string
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type CompetitionUpdateManyMutationInput = {
+    totalSoal?: IntFieldUpdateOperationsInput | number
+    currentSoal?: IntFieldUpdateOperationsInput | number
+    status?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type CompetitionUncheckedUpdateManyInput = {
+    id?: IntFieldUpdateOperationsInput | number
+    groupId?: IntFieldUpdateOperationsInput | number
+    totalSoal?: IntFieldUpdateOperationsInput | number
+    currentSoal?: IntFieldUpdateOperationsInput | number
+    status?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type RoundCreateInput = {
+    soalNumber: number
+    isBidding?: boolean
+    winnerId?: number | null
+    winnerName?: string | null
+    status?: string
+    createdAt?: Date | string
+    competition: CompetitionCreateNestedOneWithoutRoundsInput
+    entries?: RoundEntryCreateNestedManyWithoutRoundInput
+  }
+
+  export type RoundUncheckedCreateInput = {
+    id?: number
+    competitionId: number
+    soalNumber: number
+    isBidding?: boolean
+    winnerId?: number | null
+    winnerName?: string | null
+    status?: string
+    createdAt?: Date | string
+    entries?: RoundEntryUncheckedCreateNestedManyWithoutRoundInput
+  }
+
+  export type RoundUpdateInput = {
+    soalNumber?: IntFieldUpdateOperationsInput | number
+    isBidding?: BoolFieldUpdateOperationsInput | boolean
+    winnerId?: NullableIntFieldUpdateOperationsInput | number | null
+    winnerName?: NullableStringFieldUpdateOperationsInput | string | null
+    status?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    competition?: CompetitionUpdateOneRequiredWithoutRoundsNestedInput
+    entries?: RoundEntryUpdateManyWithoutRoundNestedInput
+  }
+
+  export type RoundUncheckedUpdateInput = {
+    id?: IntFieldUpdateOperationsInput | number
+    competitionId?: IntFieldUpdateOperationsInput | number
+    soalNumber?: IntFieldUpdateOperationsInput | number
+    isBidding?: BoolFieldUpdateOperationsInput | boolean
+    winnerId?: NullableIntFieldUpdateOperationsInput | number | null
+    winnerName?: NullableStringFieldUpdateOperationsInput | string | null
+    status?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    entries?: RoundEntryUncheckedUpdateManyWithoutRoundNestedInput
+  }
+
+  export type RoundCreateManyInput = {
+    id?: number
+    competitionId: number
+    soalNumber: number
+    isBidding?: boolean
+    winnerId?: number | null
+    winnerName?: string | null
+    status?: string
+    createdAt?: Date | string
+  }
+
+  export type RoundUpdateManyMutationInput = {
+    soalNumber?: IntFieldUpdateOperationsInput | number
+    isBidding?: BoolFieldUpdateOperationsInput | boolean
+    winnerId?: NullableIntFieldUpdateOperationsInput | number | null
+    winnerName?: NullableStringFieldUpdateOperationsInput | string | null
+    status?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type RoundUncheckedUpdateManyInput = {
+    id?: IntFieldUpdateOperationsInput | number
+    competitionId?: IntFieldUpdateOperationsInput | number
+    soalNumber?: IntFieldUpdateOperationsInput | number
+    isBidding?: BoolFieldUpdateOperationsInput | boolean
+    winnerId?: NullableIntFieldUpdateOperationsInput | number | null
+    winnerName?: NullableStringFieldUpdateOperationsInput | string | null
+    status?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type RoundEntryCreateInput = {
+    scoreId: number
+    name: string
+    bidAmount?: number
+    pointChange: number
+    scoreAfter?: number
+    result: string
+    createdAt?: Date | string
+    round: RoundCreateNestedOneWithoutEntriesInput
+  }
+
+  export type RoundEntryUncheckedCreateInput = {
+    id?: number
+    roundId: number
+    scoreId: number
+    name: string
+    bidAmount?: number
+    pointChange: number
+    scoreAfter?: number
+    result: string
+    createdAt?: Date | string
+  }
+
+  export type RoundEntryUpdateInput = {
+    scoreId?: IntFieldUpdateOperationsInput | number
+    name?: StringFieldUpdateOperationsInput | string
+    bidAmount?: IntFieldUpdateOperationsInput | number
+    pointChange?: IntFieldUpdateOperationsInput | number
+    scoreAfter?: IntFieldUpdateOperationsInput | number
+    result?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    round?: RoundUpdateOneRequiredWithoutEntriesNestedInput
+  }
+
+  export type RoundEntryUncheckedUpdateInput = {
+    id?: IntFieldUpdateOperationsInput | number
+    roundId?: IntFieldUpdateOperationsInput | number
+    scoreId?: IntFieldUpdateOperationsInput | number
+    name?: StringFieldUpdateOperationsInput | string
+    bidAmount?: IntFieldUpdateOperationsInput | number
+    pointChange?: IntFieldUpdateOperationsInput | number
+    scoreAfter?: IntFieldUpdateOperationsInput | number
+    result?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type RoundEntryCreateManyInput = {
+    id?: number
+    roundId: number
+    scoreId: number
+    name: string
+    bidAmount?: number
+    pointChange: number
+    scoreAfter?: number
+    result: string
+    createdAt?: Date | string
+  }
+
+  export type RoundEntryUpdateManyMutationInput = {
+    scoreId?: IntFieldUpdateOperationsInput | number
+    name?: StringFieldUpdateOperationsInput | string
+    bidAmount?: IntFieldUpdateOperationsInput | number
+    pointChange?: IntFieldUpdateOperationsInput | number
+    scoreAfter?: IntFieldUpdateOperationsInput | number
+    result?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type RoundEntryUncheckedUpdateManyInput = {
+    id?: IntFieldUpdateOperationsInput | number
+    roundId?: IntFieldUpdateOperationsInput | number
+    scoreId?: IntFieldUpdateOperationsInput | number
+    name?: StringFieldUpdateOperationsInput | string
+    bidAmount?: IntFieldUpdateOperationsInput | number
+    pointChange?: IntFieldUpdateOperationsInput | number
+    scoreAfter?: IntFieldUpdateOperationsInput | number
+    result?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
   export type IntFilter<$PrismaModel = never> = {
@@ -4935,7 +9302,17 @@ export namespace Prisma {
     none?: ScoreWhereInput
   }
 
+  export type CompetitionListRelationFilter = {
+    every?: CompetitionWhereInput
+    some?: CompetitionWhereInput
+    none?: CompetitionWhereInput
+  }
+
   export type ScoreOrderByRelationAggregateInput = {
+    _count?: SortOrder
+  }
+
+  export type CompetitionOrderByRelationAggregateInput = {
     _count?: SortOrder
   }
 
@@ -4994,6 +9371,208 @@ export namespace Prisma {
     value?: SortOrder
   }
 
+  export type RoundListRelationFilter = {
+    every?: RoundWhereInput
+    some?: RoundWhereInput
+    none?: RoundWhereInput
+  }
+
+  export type RoundOrderByRelationAggregateInput = {
+    _count?: SortOrder
+  }
+
+  export type CompetitionCountOrderByAggregateInput = {
+    id?: SortOrder
+    groupId?: SortOrder
+    totalSoal?: SortOrder
+    currentSoal?: SortOrder
+    status?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type CompetitionAvgOrderByAggregateInput = {
+    id?: SortOrder
+    groupId?: SortOrder
+    totalSoal?: SortOrder
+    currentSoal?: SortOrder
+  }
+
+  export type CompetitionMaxOrderByAggregateInput = {
+    id?: SortOrder
+    groupId?: SortOrder
+    totalSoal?: SortOrder
+    currentSoal?: SortOrder
+    status?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type CompetitionMinOrderByAggregateInput = {
+    id?: SortOrder
+    groupId?: SortOrder
+    totalSoal?: SortOrder
+    currentSoal?: SortOrder
+    status?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type CompetitionSumOrderByAggregateInput = {
+    id?: SortOrder
+    groupId?: SortOrder
+    totalSoal?: SortOrder
+    currentSoal?: SortOrder
+  }
+
+  export type IntNullableFilter<$PrismaModel = never> = {
+    equals?: number | IntFieldRefInput<$PrismaModel> | null
+    in?: number[] | ListIntFieldRefInput<$PrismaModel> | null
+    notIn?: number[] | ListIntFieldRefInput<$PrismaModel> | null
+    lt?: number | IntFieldRefInput<$PrismaModel>
+    lte?: number | IntFieldRefInput<$PrismaModel>
+    gt?: number | IntFieldRefInput<$PrismaModel>
+    gte?: number | IntFieldRefInput<$PrismaModel>
+    not?: NestedIntNullableFilter<$PrismaModel> | number | null
+  }
+
+  export type CompetitionScalarRelationFilter = {
+    is?: CompetitionWhereInput
+    isNot?: CompetitionWhereInput
+  }
+
+  export type RoundEntryListRelationFilter = {
+    every?: RoundEntryWhereInput
+    some?: RoundEntryWhereInput
+    none?: RoundEntryWhereInput
+  }
+
+  export type RoundEntryOrderByRelationAggregateInput = {
+    _count?: SortOrder
+  }
+
+  export type RoundCountOrderByAggregateInput = {
+    id?: SortOrder
+    competitionId?: SortOrder
+    soalNumber?: SortOrder
+    isBidding?: SortOrder
+    winnerId?: SortOrder
+    winnerName?: SortOrder
+    status?: SortOrder
+    createdAt?: SortOrder
+  }
+
+  export type RoundAvgOrderByAggregateInput = {
+    id?: SortOrder
+    competitionId?: SortOrder
+    soalNumber?: SortOrder
+    winnerId?: SortOrder
+  }
+
+  export type RoundMaxOrderByAggregateInput = {
+    id?: SortOrder
+    competitionId?: SortOrder
+    soalNumber?: SortOrder
+    isBidding?: SortOrder
+    winnerId?: SortOrder
+    winnerName?: SortOrder
+    status?: SortOrder
+    createdAt?: SortOrder
+  }
+
+  export type RoundMinOrderByAggregateInput = {
+    id?: SortOrder
+    competitionId?: SortOrder
+    soalNumber?: SortOrder
+    isBidding?: SortOrder
+    winnerId?: SortOrder
+    winnerName?: SortOrder
+    status?: SortOrder
+    createdAt?: SortOrder
+  }
+
+  export type RoundSumOrderByAggregateInput = {
+    id?: SortOrder
+    competitionId?: SortOrder
+    soalNumber?: SortOrder
+    winnerId?: SortOrder
+  }
+
+  export type IntNullableWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: number | IntFieldRefInput<$PrismaModel> | null
+    in?: number[] | ListIntFieldRefInput<$PrismaModel> | null
+    notIn?: number[] | ListIntFieldRefInput<$PrismaModel> | null
+    lt?: number | IntFieldRefInput<$PrismaModel>
+    lte?: number | IntFieldRefInput<$PrismaModel>
+    gt?: number | IntFieldRefInput<$PrismaModel>
+    gte?: number | IntFieldRefInput<$PrismaModel>
+    not?: NestedIntNullableWithAggregatesFilter<$PrismaModel> | number | null
+    _count?: NestedIntNullableFilter<$PrismaModel>
+    _avg?: NestedFloatNullableFilter<$PrismaModel>
+    _sum?: NestedIntNullableFilter<$PrismaModel>
+    _min?: NestedIntNullableFilter<$PrismaModel>
+    _max?: NestedIntNullableFilter<$PrismaModel>
+  }
+
+  export type RoundScalarRelationFilter = {
+    is?: RoundWhereInput
+    isNot?: RoundWhereInput
+  }
+
+  export type RoundEntryCountOrderByAggregateInput = {
+    id?: SortOrder
+    roundId?: SortOrder
+    scoreId?: SortOrder
+    name?: SortOrder
+    bidAmount?: SortOrder
+    pointChange?: SortOrder
+    scoreAfter?: SortOrder
+    result?: SortOrder
+    createdAt?: SortOrder
+  }
+
+  export type RoundEntryAvgOrderByAggregateInput = {
+    id?: SortOrder
+    roundId?: SortOrder
+    scoreId?: SortOrder
+    bidAmount?: SortOrder
+    pointChange?: SortOrder
+    scoreAfter?: SortOrder
+  }
+
+  export type RoundEntryMaxOrderByAggregateInput = {
+    id?: SortOrder
+    roundId?: SortOrder
+    scoreId?: SortOrder
+    name?: SortOrder
+    bidAmount?: SortOrder
+    pointChange?: SortOrder
+    scoreAfter?: SortOrder
+    result?: SortOrder
+    createdAt?: SortOrder
+  }
+
+  export type RoundEntryMinOrderByAggregateInput = {
+    id?: SortOrder
+    roundId?: SortOrder
+    scoreId?: SortOrder
+    name?: SortOrder
+    bidAmount?: SortOrder
+    pointChange?: SortOrder
+    scoreAfter?: SortOrder
+    result?: SortOrder
+    createdAt?: SortOrder
+  }
+
+  export type RoundEntrySumOrderByAggregateInput = {
+    id?: SortOrder
+    roundId?: SortOrder
+    scoreId?: SortOrder
+    bidAmount?: SortOrder
+    pointChange?: SortOrder
+    scoreAfter?: SortOrder
+  }
+
   export type GroupCreateNestedOneWithoutScoresInput = {
     create?: XOR<GroupCreateWithoutScoresInput, GroupUncheckedCreateWithoutScoresInput>
     connectOrCreate?: GroupCreateOrConnectWithoutScoresInput
@@ -5035,11 +9614,25 @@ export namespace Prisma {
     connect?: ScoreWhereUniqueInput | ScoreWhereUniqueInput[]
   }
 
+  export type CompetitionCreateNestedManyWithoutGroupInput = {
+    create?: XOR<CompetitionCreateWithoutGroupInput, CompetitionUncheckedCreateWithoutGroupInput> | CompetitionCreateWithoutGroupInput[] | CompetitionUncheckedCreateWithoutGroupInput[]
+    connectOrCreate?: CompetitionCreateOrConnectWithoutGroupInput | CompetitionCreateOrConnectWithoutGroupInput[]
+    createMany?: CompetitionCreateManyGroupInputEnvelope
+    connect?: CompetitionWhereUniqueInput | CompetitionWhereUniqueInput[]
+  }
+
   export type ScoreUncheckedCreateNestedManyWithoutGroupInput = {
     create?: XOR<ScoreCreateWithoutGroupInput, ScoreUncheckedCreateWithoutGroupInput> | ScoreCreateWithoutGroupInput[] | ScoreUncheckedCreateWithoutGroupInput[]
     connectOrCreate?: ScoreCreateOrConnectWithoutGroupInput | ScoreCreateOrConnectWithoutGroupInput[]
     createMany?: ScoreCreateManyGroupInputEnvelope
     connect?: ScoreWhereUniqueInput | ScoreWhereUniqueInput[]
+  }
+
+  export type CompetitionUncheckedCreateNestedManyWithoutGroupInput = {
+    create?: XOR<CompetitionCreateWithoutGroupInput, CompetitionUncheckedCreateWithoutGroupInput> | CompetitionCreateWithoutGroupInput[] | CompetitionUncheckedCreateWithoutGroupInput[]
+    connectOrCreate?: CompetitionCreateOrConnectWithoutGroupInput | CompetitionCreateOrConnectWithoutGroupInput[]
+    createMany?: CompetitionCreateManyGroupInputEnvelope
+    connect?: CompetitionWhereUniqueInput | CompetitionWhereUniqueInput[]
   }
 
   export type BoolFieldUpdateOperationsInput = {
@@ -5060,6 +9653,20 @@ export namespace Prisma {
     deleteMany?: ScoreScalarWhereInput | ScoreScalarWhereInput[]
   }
 
+  export type CompetitionUpdateManyWithoutGroupNestedInput = {
+    create?: XOR<CompetitionCreateWithoutGroupInput, CompetitionUncheckedCreateWithoutGroupInput> | CompetitionCreateWithoutGroupInput[] | CompetitionUncheckedCreateWithoutGroupInput[]
+    connectOrCreate?: CompetitionCreateOrConnectWithoutGroupInput | CompetitionCreateOrConnectWithoutGroupInput[]
+    upsert?: CompetitionUpsertWithWhereUniqueWithoutGroupInput | CompetitionUpsertWithWhereUniqueWithoutGroupInput[]
+    createMany?: CompetitionCreateManyGroupInputEnvelope
+    set?: CompetitionWhereUniqueInput | CompetitionWhereUniqueInput[]
+    disconnect?: CompetitionWhereUniqueInput | CompetitionWhereUniqueInput[]
+    delete?: CompetitionWhereUniqueInput | CompetitionWhereUniqueInput[]
+    connect?: CompetitionWhereUniqueInput | CompetitionWhereUniqueInput[]
+    update?: CompetitionUpdateWithWhereUniqueWithoutGroupInput | CompetitionUpdateWithWhereUniqueWithoutGroupInput[]
+    updateMany?: CompetitionUpdateManyWithWhereWithoutGroupInput | CompetitionUpdateManyWithWhereWithoutGroupInput[]
+    deleteMany?: CompetitionScalarWhereInput | CompetitionScalarWhereInput[]
+  }
+
   export type ScoreUncheckedUpdateManyWithoutGroupNestedInput = {
     create?: XOR<ScoreCreateWithoutGroupInput, ScoreUncheckedCreateWithoutGroupInput> | ScoreCreateWithoutGroupInput[] | ScoreUncheckedCreateWithoutGroupInput[]
     connectOrCreate?: ScoreCreateOrConnectWithoutGroupInput | ScoreCreateOrConnectWithoutGroupInput[]
@@ -5072,6 +9679,154 @@ export namespace Prisma {
     update?: ScoreUpdateWithWhereUniqueWithoutGroupInput | ScoreUpdateWithWhereUniqueWithoutGroupInput[]
     updateMany?: ScoreUpdateManyWithWhereWithoutGroupInput | ScoreUpdateManyWithWhereWithoutGroupInput[]
     deleteMany?: ScoreScalarWhereInput | ScoreScalarWhereInput[]
+  }
+
+  export type CompetitionUncheckedUpdateManyWithoutGroupNestedInput = {
+    create?: XOR<CompetitionCreateWithoutGroupInput, CompetitionUncheckedCreateWithoutGroupInput> | CompetitionCreateWithoutGroupInput[] | CompetitionUncheckedCreateWithoutGroupInput[]
+    connectOrCreate?: CompetitionCreateOrConnectWithoutGroupInput | CompetitionCreateOrConnectWithoutGroupInput[]
+    upsert?: CompetitionUpsertWithWhereUniqueWithoutGroupInput | CompetitionUpsertWithWhereUniqueWithoutGroupInput[]
+    createMany?: CompetitionCreateManyGroupInputEnvelope
+    set?: CompetitionWhereUniqueInput | CompetitionWhereUniqueInput[]
+    disconnect?: CompetitionWhereUniqueInput | CompetitionWhereUniqueInput[]
+    delete?: CompetitionWhereUniqueInput | CompetitionWhereUniqueInput[]
+    connect?: CompetitionWhereUniqueInput | CompetitionWhereUniqueInput[]
+    update?: CompetitionUpdateWithWhereUniqueWithoutGroupInput | CompetitionUpdateWithWhereUniqueWithoutGroupInput[]
+    updateMany?: CompetitionUpdateManyWithWhereWithoutGroupInput | CompetitionUpdateManyWithWhereWithoutGroupInput[]
+    deleteMany?: CompetitionScalarWhereInput | CompetitionScalarWhereInput[]
+  }
+
+  export type GroupCreateNestedOneWithoutCompetitionsInput = {
+    create?: XOR<GroupCreateWithoutCompetitionsInput, GroupUncheckedCreateWithoutCompetitionsInput>
+    connectOrCreate?: GroupCreateOrConnectWithoutCompetitionsInput
+    connect?: GroupWhereUniqueInput
+  }
+
+  export type RoundCreateNestedManyWithoutCompetitionInput = {
+    create?: XOR<RoundCreateWithoutCompetitionInput, RoundUncheckedCreateWithoutCompetitionInput> | RoundCreateWithoutCompetitionInput[] | RoundUncheckedCreateWithoutCompetitionInput[]
+    connectOrCreate?: RoundCreateOrConnectWithoutCompetitionInput | RoundCreateOrConnectWithoutCompetitionInput[]
+    createMany?: RoundCreateManyCompetitionInputEnvelope
+    connect?: RoundWhereUniqueInput | RoundWhereUniqueInput[]
+  }
+
+  export type RoundUncheckedCreateNestedManyWithoutCompetitionInput = {
+    create?: XOR<RoundCreateWithoutCompetitionInput, RoundUncheckedCreateWithoutCompetitionInput> | RoundCreateWithoutCompetitionInput[] | RoundUncheckedCreateWithoutCompetitionInput[]
+    connectOrCreate?: RoundCreateOrConnectWithoutCompetitionInput | RoundCreateOrConnectWithoutCompetitionInput[]
+    createMany?: RoundCreateManyCompetitionInputEnvelope
+    connect?: RoundWhereUniqueInput | RoundWhereUniqueInput[]
+  }
+
+  export type GroupUpdateOneRequiredWithoutCompetitionsNestedInput = {
+    create?: XOR<GroupCreateWithoutCompetitionsInput, GroupUncheckedCreateWithoutCompetitionsInput>
+    connectOrCreate?: GroupCreateOrConnectWithoutCompetitionsInput
+    upsert?: GroupUpsertWithoutCompetitionsInput
+    connect?: GroupWhereUniqueInput
+    update?: XOR<XOR<GroupUpdateToOneWithWhereWithoutCompetitionsInput, GroupUpdateWithoutCompetitionsInput>, GroupUncheckedUpdateWithoutCompetitionsInput>
+  }
+
+  export type RoundUpdateManyWithoutCompetitionNestedInput = {
+    create?: XOR<RoundCreateWithoutCompetitionInput, RoundUncheckedCreateWithoutCompetitionInput> | RoundCreateWithoutCompetitionInput[] | RoundUncheckedCreateWithoutCompetitionInput[]
+    connectOrCreate?: RoundCreateOrConnectWithoutCompetitionInput | RoundCreateOrConnectWithoutCompetitionInput[]
+    upsert?: RoundUpsertWithWhereUniqueWithoutCompetitionInput | RoundUpsertWithWhereUniqueWithoutCompetitionInput[]
+    createMany?: RoundCreateManyCompetitionInputEnvelope
+    set?: RoundWhereUniqueInput | RoundWhereUniqueInput[]
+    disconnect?: RoundWhereUniqueInput | RoundWhereUniqueInput[]
+    delete?: RoundWhereUniqueInput | RoundWhereUniqueInput[]
+    connect?: RoundWhereUniqueInput | RoundWhereUniqueInput[]
+    update?: RoundUpdateWithWhereUniqueWithoutCompetitionInput | RoundUpdateWithWhereUniqueWithoutCompetitionInput[]
+    updateMany?: RoundUpdateManyWithWhereWithoutCompetitionInput | RoundUpdateManyWithWhereWithoutCompetitionInput[]
+    deleteMany?: RoundScalarWhereInput | RoundScalarWhereInput[]
+  }
+
+  export type RoundUncheckedUpdateManyWithoutCompetitionNestedInput = {
+    create?: XOR<RoundCreateWithoutCompetitionInput, RoundUncheckedCreateWithoutCompetitionInput> | RoundCreateWithoutCompetitionInput[] | RoundUncheckedCreateWithoutCompetitionInput[]
+    connectOrCreate?: RoundCreateOrConnectWithoutCompetitionInput | RoundCreateOrConnectWithoutCompetitionInput[]
+    upsert?: RoundUpsertWithWhereUniqueWithoutCompetitionInput | RoundUpsertWithWhereUniqueWithoutCompetitionInput[]
+    createMany?: RoundCreateManyCompetitionInputEnvelope
+    set?: RoundWhereUniqueInput | RoundWhereUniqueInput[]
+    disconnect?: RoundWhereUniqueInput | RoundWhereUniqueInput[]
+    delete?: RoundWhereUniqueInput | RoundWhereUniqueInput[]
+    connect?: RoundWhereUniqueInput | RoundWhereUniqueInput[]
+    update?: RoundUpdateWithWhereUniqueWithoutCompetitionInput | RoundUpdateWithWhereUniqueWithoutCompetitionInput[]
+    updateMany?: RoundUpdateManyWithWhereWithoutCompetitionInput | RoundUpdateManyWithWhereWithoutCompetitionInput[]
+    deleteMany?: RoundScalarWhereInput | RoundScalarWhereInput[]
+  }
+
+  export type CompetitionCreateNestedOneWithoutRoundsInput = {
+    create?: XOR<CompetitionCreateWithoutRoundsInput, CompetitionUncheckedCreateWithoutRoundsInput>
+    connectOrCreate?: CompetitionCreateOrConnectWithoutRoundsInput
+    connect?: CompetitionWhereUniqueInput
+  }
+
+  export type RoundEntryCreateNestedManyWithoutRoundInput = {
+    create?: XOR<RoundEntryCreateWithoutRoundInput, RoundEntryUncheckedCreateWithoutRoundInput> | RoundEntryCreateWithoutRoundInput[] | RoundEntryUncheckedCreateWithoutRoundInput[]
+    connectOrCreate?: RoundEntryCreateOrConnectWithoutRoundInput | RoundEntryCreateOrConnectWithoutRoundInput[]
+    createMany?: RoundEntryCreateManyRoundInputEnvelope
+    connect?: RoundEntryWhereUniqueInput | RoundEntryWhereUniqueInput[]
+  }
+
+  export type RoundEntryUncheckedCreateNestedManyWithoutRoundInput = {
+    create?: XOR<RoundEntryCreateWithoutRoundInput, RoundEntryUncheckedCreateWithoutRoundInput> | RoundEntryCreateWithoutRoundInput[] | RoundEntryUncheckedCreateWithoutRoundInput[]
+    connectOrCreate?: RoundEntryCreateOrConnectWithoutRoundInput | RoundEntryCreateOrConnectWithoutRoundInput[]
+    createMany?: RoundEntryCreateManyRoundInputEnvelope
+    connect?: RoundEntryWhereUniqueInput | RoundEntryWhereUniqueInput[]
+  }
+
+  export type NullableIntFieldUpdateOperationsInput = {
+    set?: number | null
+    increment?: number
+    decrement?: number
+    multiply?: number
+    divide?: number
+  }
+
+  export type CompetitionUpdateOneRequiredWithoutRoundsNestedInput = {
+    create?: XOR<CompetitionCreateWithoutRoundsInput, CompetitionUncheckedCreateWithoutRoundsInput>
+    connectOrCreate?: CompetitionCreateOrConnectWithoutRoundsInput
+    upsert?: CompetitionUpsertWithoutRoundsInput
+    connect?: CompetitionWhereUniqueInput
+    update?: XOR<XOR<CompetitionUpdateToOneWithWhereWithoutRoundsInput, CompetitionUpdateWithoutRoundsInput>, CompetitionUncheckedUpdateWithoutRoundsInput>
+  }
+
+  export type RoundEntryUpdateManyWithoutRoundNestedInput = {
+    create?: XOR<RoundEntryCreateWithoutRoundInput, RoundEntryUncheckedCreateWithoutRoundInput> | RoundEntryCreateWithoutRoundInput[] | RoundEntryUncheckedCreateWithoutRoundInput[]
+    connectOrCreate?: RoundEntryCreateOrConnectWithoutRoundInput | RoundEntryCreateOrConnectWithoutRoundInput[]
+    upsert?: RoundEntryUpsertWithWhereUniqueWithoutRoundInput | RoundEntryUpsertWithWhereUniqueWithoutRoundInput[]
+    createMany?: RoundEntryCreateManyRoundInputEnvelope
+    set?: RoundEntryWhereUniqueInput | RoundEntryWhereUniqueInput[]
+    disconnect?: RoundEntryWhereUniqueInput | RoundEntryWhereUniqueInput[]
+    delete?: RoundEntryWhereUniqueInput | RoundEntryWhereUniqueInput[]
+    connect?: RoundEntryWhereUniqueInput | RoundEntryWhereUniqueInput[]
+    update?: RoundEntryUpdateWithWhereUniqueWithoutRoundInput | RoundEntryUpdateWithWhereUniqueWithoutRoundInput[]
+    updateMany?: RoundEntryUpdateManyWithWhereWithoutRoundInput | RoundEntryUpdateManyWithWhereWithoutRoundInput[]
+    deleteMany?: RoundEntryScalarWhereInput | RoundEntryScalarWhereInput[]
+  }
+
+  export type RoundEntryUncheckedUpdateManyWithoutRoundNestedInput = {
+    create?: XOR<RoundEntryCreateWithoutRoundInput, RoundEntryUncheckedCreateWithoutRoundInput> | RoundEntryCreateWithoutRoundInput[] | RoundEntryUncheckedCreateWithoutRoundInput[]
+    connectOrCreate?: RoundEntryCreateOrConnectWithoutRoundInput | RoundEntryCreateOrConnectWithoutRoundInput[]
+    upsert?: RoundEntryUpsertWithWhereUniqueWithoutRoundInput | RoundEntryUpsertWithWhereUniqueWithoutRoundInput[]
+    createMany?: RoundEntryCreateManyRoundInputEnvelope
+    set?: RoundEntryWhereUniqueInput | RoundEntryWhereUniqueInput[]
+    disconnect?: RoundEntryWhereUniqueInput | RoundEntryWhereUniqueInput[]
+    delete?: RoundEntryWhereUniqueInput | RoundEntryWhereUniqueInput[]
+    connect?: RoundEntryWhereUniqueInput | RoundEntryWhereUniqueInput[]
+    update?: RoundEntryUpdateWithWhereUniqueWithoutRoundInput | RoundEntryUpdateWithWhereUniqueWithoutRoundInput[]
+    updateMany?: RoundEntryUpdateManyWithWhereWithoutRoundInput | RoundEntryUpdateManyWithWhereWithoutRoundInput[]
+    deleteMany?: RoundEntryScalarWhereInput | RoundEntryScalarWhereInput[]
+  }
+
+  export type RoundCreateNestedOneWithoutEntriesInput = {
+    create?: XOR<RoundCreateWithoutEntriesInput, RoundUncheckedCreateWithoutEntriesInput>
+    connectOrCreate?: RoundCreateOrConnectWithoutEntriesInput
+    connect?: RoundWhereUniqueInput
+  }
+
+  export type RoundUpdateOneRequiredWithoutEntriesNestedInput = {
+    create?: XOR<RoundCreateWithoutEntriesInput, RoundUncheckedCreateWithoutEntriesInput>
+    connectOrCreate?: RoundCreateOrConnectWithoutEntriesInput
+    upsert?: RoundUpsertWithoutEntriesInput
+    connect?: RoundWhereUniqueInput
+    update?: XOR<XOR<RoundUpdateToOneWithWhereWithoutEntriesInput, RoundUpdateWithoutEntriesInput>, RoundUncheckedUpdateWithoutEntriesInput>
   }
 
   export type NestedIntFilter<$PrismaModel = never> = {
@@ -5223,11 +9978,39 @@ export namespace Prisma {
     _max?: NestedBoolFilter<$PrismaModel>
   }
 
+  export type NestedIntNullableWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: number | IntFieldRefInput<$PrismaModel> | null
+    in?: number[] | ListIntFieldRefInput<$PrismaModel> | null
+    notIn?: number[] | ListIntFieldRefInput<$PrismaModel> | null
+    lt?: number | IntFieldRefInput<$PrismaModel>
+    lte?: number | IntFieldRefInput<$PrismaModel>
+    gt?: number | IntFieldRefInput<$PrismaModel>
+    gte?: number | IntFieldRefInput<$PrismaModel>
+    not?: NestedIntNullableWithAggregatesFilter<$PrismaModel> | number | null
+    _count?: NestedIntNullableFilter<$PrismaModel>
+    _avg?: NestedFloatNullableFilter<$PrismaModel>
+    _sum?: NestedIntNullableFilter<$PrismaModel>
+    _min?: NestedIntNullableFilter<$PrismaModel>
+    _max?: NestedIntNullableFilter<$PrismaModel>
+  }
+
+  export type NestedFloatNullableFilter<$PrismaModel = never> = {
+    equals?: number | FloatFieldRefInput<$PrismaModel> | null
+    in?: number[] | ListFloatFieldRefInput<$PrismaModel> | null
+    notIn?: number[] | ListFloatFieldRefInput<$PrismaModel> | null
+    lt?: number | FloatFieldRefInput<$PrismaModel>
+    lte?: number | FloatFieldRefInput<$PrismaModel>
+    gt?: number | FloatFieldRefInput<$PrismaModel>
+    gte?: number | FloatFieldRefInput<$PrismaModel>
+    not?: NestedFloatNullableFilter<$PrismaModel> | number | null
+  }
+
   export type GroupCreateWithoutScoresInput = {
     name: string
     biddingActive?: boolean
     createdAt?: Date | string
     updatedAt?: Date | string
+    competitions?: CompetitionCreateNestedManyWithoutGroupInput
   }
 
   export type GroupUncheckedCreateWithoutScoresInput = {
@@ -5236,6 +10019,7 @@ export namespace Prisma {
     biddingActive?: boolean
     createdAt?: Date | string
     updatedAt?: Date | string
+    competitions?: CompetitionUncheckedCreateNestedManyWithoutGroupInput
   }
 
   export type GroupCreateOrConnectWithoutScoresInput = {
@@ -5259,6 +10043,7 @@ export namespace Prisma {
     biddingActive?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    competitions?: CompetitionUpdateManyWithoutGroupNestedInput
   }
 
   export type GroupUncheckedUpdateWithoutScoresInput = {
@@ -5267,6 +10052,7 @@ export namespace Prisma {
     biddingActive?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    competitions?: CompetitionUncheckedUpdateManyWithoutGroupNestedInput
   }
 
   export type ScoreCreateWithoutGroupInput = {
@@ -5295,6 +10081,35 @@ export namespace Prisma {
 
   export type ScoreCreateManyGroupInputEnvelope = {
     data: ScoreCreateManyGroupInput | ScoreCreateManyGroupInput[]
+    skipDuplicates?: boolean
+  }
+
+  export type CompetitionCreateWithoutGroupInput = {
+    totalSoal: number
+    currentSoal?: number
+    status?: string
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    rounds?: RoundCreateNestedManyWithoutCompetitionInput
+  }
+
+  export type CompetitionUncheckedCreateWithoutGroupInput = {
+    id?: number
+    totalSoal: number
+    currentSoal?: number
+    status?: string
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    rounds?: RoundUncheckedCreateNestedManyWithoutCompetitionInput
+  }
+
+  export type CompetitionCreateOrConnectWithoutGroupInput = {
+    where: CompetitionWhereUniqueInput
+    create: XOR<CompetitionCreateWithoutGroupInput, CompetitionUncheckedCreateWithoutGroupInput>
+  }
+
+  export type CompetitionCreateManyGroupInputEnvelope = {
+    data: CompetitionCreateManyGroupInput | CompetitionCreateManyGroupInput[]
     skipDuplicates?: boolean
   }
 
@@ -5328,12 +10143,335 @@ export namespace Prisma {
     updatedAt?: DateTimeFilter<"Score"> | Date | string
   }
 
+  export type CompetitionUpsertWithWhereUniqueWithoutGroupInput = {
+    where: CompetitionWhereUniqueInput
+    update: XOR<CompetitionUpdateWithoutGroupInput, CompetitionUncheckedUpdateWithoutGroupInput>
+    create: XOR<CompetitionCreateWithoutGroupInput, CompetitionUncheckedCreateWithoutGroupInput>
+  }
+
+  export type CompetitionUpdateWithWhereUniqueWithoutGroupInput = {
+    where: CompetitionWhereUniqueInput
+    data: XOR<CompetitionUpdateWithoutGroupInput, CompetitionUncheckedUpdateWithoutGroupInput>
+  }
+
+  export type CompetitionUpdateManyWithWhereWithoutGroupInput = {
+    where: CompetitionScalarWhereInput
+    data: XOR<CompetitionUpdateManyMutationInput, CompetitionUncheckedUpdateManyWithoutGroupInput>
+  }
+
+  export type CompetitionScalarWhereInput = {
+    AND?: CompetitionScalarWhereInput | CompetitionScalarWhereInput[]
+    OR?: CompetitionScalarWhereInput[]
+    NOT?: CompetitionScalarWhereInput | CompetitionScalarWhereInput[]
+    id?: IntFilter<"Competition"> | number
+    groupId?: IntFilter<"Competition"> | number
+    totalSoal?: IntFilter<"Competition"> | number
+    currentSoal?: IntFilter<"Competition"> | number
+    status?: StringFilter<"Competition"> | string
+    createdAt?: DateTimeFilter<"Competition"> | Date | string
+    updatedAt?: DateTimeFilter<"Competition"> | Date | string
+  }
+
+  export type GroupCreateWithoutCompetitionsInput = {
+    name: string
+    biddingActive?: boolean
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    scores?: ScoreCreateNestedManyWithoutGroupInput
+  }
+
+  export type GroupUncheckedCreateWithoutCompetitionsInput = {
+    id?: number
+    name: string
+    biddingActive?: boolean
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    scores?: ScoreUncheckedCreateNestedManyWithoutGroupInput
+  }
+
+  export type GroupCreateOrConnectWithoutCompetitionsInput = {
+    where: GroupWhereUniqueInput
+    create: XOR<GroupCreateWithoutCompetitionsInput, GroupUncheckedCreateWithoutCompetitionsInput>
+  }
+
+  export type RoundCreateWithoutCompetitionInput = {
+    soalNumber: number
+    isBidding?: boolean
+    winnerId?: number | null
+    winnerName?: string | null
+    status?: string
+    createdAt?: Date | string
+    entries?: RoundEntryCreateNestedManyWithoutRoundInput
+  }
+
+  export type RoundUncheckedCreateWithoutCompetitionInput = {
+    id?: number
+    soalNumber: number
+    isBidding?: boolean
+    winnerId?: number | null
+    winnerName?: string | null
+    status?: string
+    createdAt?: Date | string
+    entries?: RoundEntryUncheckedCreateNestedManyWithoutRoundInput
+  }
+
+  export type RoundCreateOrConnectWithoutCompetitionInput = {
+    where: RoundWhereUniqueInput
+    create: XOR<RoundCreateWithoutCompetitionInput, RoundUncheckedCreateWithoutCompetitionInput>
+  }
+
+  export type RoundCreateManyCompetitionInputEnvelope = {
+    data: RoundCreateManyCompetitionInput | RoundCreateManyCompetitionInput[]
+    skipDuplicates?: boolean
+  }
+
+  export type GroupUpsertWithoutCompetitionsInput = {
+    update: XOR<GroupUpdateWithoutCompetitionsInput, GroupUncheckedUpdateWithoutCompetitionsInput>
+    create: XOR<GroupCreateWithoutCompetitionsInput, GroupUncheckedCreateWithoutCompetitionsInput>
+    where?: GroupWhereInput
+  }
+
+  export type GroupUpdateToOneWithWhereWithoutCompetitionsInput = {
+    where?: GroupWhereInput
+    data: XOR<GroupUpdateWithoutCompetitionsInput, GroupUncheckedUpdateWithoutCompetitionsInput>
+  }
+
+  export type GroupUpdateWithoutCompetitionsInput = {
+    name?: StringFieldUpdateOperationsInput | string
+    biddingActive?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    scores?: ScoreUpdateManyWithoutGroupNestedInput
+  }
+
+  export type GroupUncheckedUpdateWithoutCompetitionsInput = {
+    id?: IntFieldUpdateOperationsInput | number
+    name?: StringFieldUpdateOperationsInput | string
+    biddingActive?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    scores?: ScoreUncheckedUpdateManyWithoutGroupNestedInput
+  }
+
+  export type RoundUpsertWithWhereUniqueWithoutCompetitionInput = {
+    where: RoundWhereUniqueInput
+    update: XOR<RoundUpdateWithoutCompetitionInput, RoundUncheckedUpdateWithoutCompetitionInput>
+    create: XOR<RoundCreateWithoutCompetitionInput, RoundUncheckedCreateWithoutCompetitionInput>
+  }
+
+  export type RoundUpdateWithWhereUniqueWithoutCompetitionInput = {
+    where: RoundWhereUniqueInput
+    data: XOR<RoundUpdateWithoutCompetitionInput, RoundUncheckedUpdateWithoutCompetitionInput>
+  }
+
+  export type RoundUpdateManyWithWhereWithoutCompetitionInput = {
+    where: RoundScalarWhereInput
+    data: XOR<RoundUpdateManyMutationInput, RoundUncheckedUpdateManyWithoutCompetitionInput>
+  }
+
+  export type RoundScalarWhereInput = {
+    AND?: RoundScalarWhereInput | RoundScalarWhereInput[]
+    OR?: RoundScalarWhereInput[]
+    NOT?: RoundScalarWhereInput | RoundScalarWhereInput[]
+    id?: IntFilter<"Round"> | number
+    competitionId?: IntFilter<"Round"> | number
+    soalNumber?: IntFilter<"Round"> | number
+    isBidding?: BoolFilter<"Round"> | boolean
+    winnerId?: IntNullableFilter<"Round"> | number | null
+    winnerName?: StringNullableFilter<"Round"> | string | null
+    status?: StringFilter<"Round"> | string
+    createdAt?: DateTimeFilter<"Round"> | Date | string
+  }
+
+  export type CompetitionCreateWithoutRoundsInput = {
+    totalSoal: number
+    currentSoal?: number
+    status?: string
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    group: GroupCreateNestedOneWithoutCompetitionsInput
+  }
+
+  export type CompetitionUncheckedCreateWithoutRoundsInput = {
+    id?: number
+    groupId: number
+    totalSoal: number
+    currentSoal?: number
+    status?: string
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type CompetitionCreateOrConnectWithoutRoundsInput = {
+    where: CompetitionWhereUniqueInput
+    create: XOR<CompetitionCreateWithoutRoundsInput, CompetitionUncheckedCreateWithoutRoundsInput>
+  }
+
+  export type RoundEntryCreateWithoutRoundInput = {
+    scoreId: number
+    name: string
+    bidAmount?: number
+    pointChange: number
+    scoreAfter?: number
+    result: string
+    createdAt?: Date | string
+  }
+
+  export type RoundEntryUncheckedCreateWithoutRoundInput = {
+    id?: number
+    scoreId: number
+    name: string
+    bidAmount?: number
+    pointChange: number
+    scoreAfter?: number
+    result: string
+    createdAt?: Date | string
+  }
+
+  export type RoundEntryCreateOrConnectWithoutRoundInput = {
+    where: RoundEntryWhereUniqueInput
+    create: XOR<RoundEntryCreateWithoutRoundInput, RoundEntryUncheckedCreateWithoutRoundInput>
+  }
+
+  export type RoundEntryCreateManyRoundInputEnvelope = {
+    data: RoundEntryCreateManyRoundInput | RoundEntryCreateManyRoundInput[]
+    skipDuplicates?: boolean
+  }
+
+  export type CompetitionUpsertWithoutRoundsInput = {
+    update: XOR<CompetitionUpdateWithoutRoundsInput, CompetitionUncheckedUpdateWithoutRoundsInput>
+    create: XOR<CompetitionCreateWithoutRoundsInput, CompetitionUncheckedCreateWithoutRoundsInput>
+    where?: CompetitionWhereInput
+  }
+
+  export type CompetitionUpdateToOneWithWhereWithoutRoundsInput = {
+    where?: CompetitionWhereInput
+    data: XOR<CompetitionUpdateWithoutRoundsInput, CompetitionUncheckedUpdateWithoutRoundsInput>
+  }
+
+  export type CompetitionUpdateWithoutRoundsInput = {
+    totalSoal?: IntFieldUpdateOperationsInput | number
+    currentSoal?: IntFieldUpdateOperationsInput | number
+    status?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    group?: GroupUpdateOneRequiredWithoutCompetitionsNestedInput
+  }
+
+  export type CompetitionUncheckedUpdateWithoutRoundsInput = {
+    id?: IntFieldUpdateOperationsInput | number
+    groupId?: IntFieldUpdateOperationsInput | number
+    totalSoal?: IntFieldUpdateOperationsInput | number
+    currentSoal?: IntFieldUpdateOperationsInput | number
+    status?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type RoundEntryUpsertWithWhereUniqueWithoutRoundInput = {
+    where: RoundEntryWhereUniqueInput
+    update: XOR<RoundEntryUpdateWithoutRoundInput, RoundEntryUncheckedUpdateWithoutRoundInput>
+    create: XOR<RoundEntryCreateWithoutRoundInput, RoundEntryUncheckedCreateWithoutRoundInput>
+  }
+
+  export type RoundEntryUpdateWithWhereUniqueWithoutRoundInput = {
+    where: RoundEntryWhereUniqueInput
+    data: XOR<RoundEntryUpdateWithoutRoundInput, RoundEntryUncheckedUpdateWithoutRoundInput>
+  }
+
+  export type RoundEntryUpdateManyWithWhereWithoutRoundInput = {
+    where: RoundEntryScalarWhereInput
+    data: XOR<RoundEntryUpdateManyMutationInput, RoundEntryUncheckedUpdateManyWithoutRoundInput>
+  }
+
+  export type RoundEntryScalarWhereInput = {
+    AND?: RoundEntryScalarWhereInput | RoundEntryScalarWhereInput[]
+    OR?: RoundEntryScalarWhereInput[]
+    NOT?: RoundEntryScalarWhereInput | RoundEntryScalarWhereInput[]
+    id?: IntFilter<"RoundEntry"> | number
+    roundId?: IntFilter<"RoundEntry"> | number
+    scoreId?: IntFilter<"RoundEntry"> | number
+    name?: StringFilter<"RoundEntry"> | string
+    bidAmount?: IntFilter<"RoundEntry"> | number
+    pointChange?: IntFilter<"RoundEntry"> | number
+    scoreAfter?: IntFilter<"RoundEntry"> | number
+    result?: StringFilter<"RoundEntry"> | string
+    createdAt?: DateTimeFilter<"RoundEntry"> | Date | string
+  }
+
+  export type RoundCreateWithoutEntriesInput = {
+    soalNumber: number
+    isBidding?: boolean
+    winnerId?: number | null
+    winnerName?: string | null
+    status?: string
+    createdAt?: Date | string
+    competition: CompetitionCreateNestedOneWithoutRoundsInput
+  }
+
+  export type RoundUncheckedCreateWithoutEntriesInput = {
+    id?: number
+    competitionId: number
+    soalNumber: number
+    isBidding?: boolean
+    winnerId?: number | null
+    winnerName?: string | null
+    status?: string
+    createdAt?: Date | string
+  }
+
+  export type RoundCreateOrConnectWithoutEntriesInput = {
+    where: RoundWhereUniqueInput
+    create: XOR<RoundCreateWithoutEntriesInput, RoundUncheckedCreateWithoutEntriesInput>
+  }
+
+  export type RoundUpsertWithoutEntriesInput = {
+    update: XOR<RoundUpdateWithoutEntriesInput, RoundUncheckedUpdateWithoutEntriesInput>
+    create: XOR<RoundCreateWithoutEntriesInput, RoundUncheckedCreateWithoutEntriesInput>
+    where?: RoundWhereInput
+  }
+
+  export type RoundUpdateToOneWithWhereWithoutEntriesInput = {
+    where?: RoundWhereInput
+    data: XOR<RoundUpdateWithoutEntriesInput, RoundUncheckedUpdateWithoutEntriesInput>
+  }
+
+  export type RoundUpdateWithoutEntriesInput = {
+    soalNumber?: IntFieldUpdateOperationsInput | number
+    isBidding?: BoolFieldUpdateOperationsInput | boolean
+    winnerId?: NullableIntFieldUpdateOperationsInput | number | null
+    winnerName?: NullableStringFieldUpdateOperationsInput | string | null
+    status?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    competition?: CompetitionUpdateOneRequiredWithoutRoundsNestedInput
+  }
+
+  export type RoundUncheckedUpdateWithoutEntriesInput = {
+    id?: IntFieldUpdateOperationsInput | number
+    competitionId?: IntFieldUpdateOperationsInput | number
+    soalNumber?: IntFieldUpdateOperationsInput | number
+    isBidding?: BoolFieldUpdateOperationsInput | boolean
+    winnerId?: NullableIntFieldUpdateOperationsInput | number | null
+    winnerName?: NullableStringFieldUpdateOperationsInput | string | null
+    status?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
   export type ScoreCreateManyGroupInput = {
     id?: number
     name: string
     score?: number
     bid?: number
     logoUrl?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type CompetitionCreateManyGroupInput = {
+    id?: number
+    totalSoal: number
+    currentSoal?: number
+    status?: string
     createdAt?: Date | string
     updatedAt?: Date | string
   }
@@ -5365,6 +10503,118 @@ export namespace Prisma {
     logoUrl?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type CompetitionUpdateWithoutGroupInput = {
+    totalSoal?: IntFieldUpdateOperationsInput | number
+    currentSoal?: IntFieldUpdateOperationsInput | number
+    status?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    rounds?: RoundUpdateManyWithoutCompetitionNestedInput
+  }
+
+  export type CompetitionUncheckedUpdateWithoutGroupInput = {
+    id?: IntFieldUpdateOperationsInput | number
+    totalSoal?: IntFieldUpdateOperationsInput | number
+    currentSoal?: IntFieldUpdateOperationsInput | number
+    status?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    rounds?: RoundUncheckedUpdateManyWithoutCompetitionNestedInput
+  }
+
+  export type CompetitionUncheckedUpdateManyWithoutGroupInput = {
+    id?: IntFieldUpdateOperationsInput | number
+    totalSoal?: IntFieldUpdateOperationsInput | number
+    currentSoal?: IntFieldUpdateOperationsInput | number
+    status?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type RoundCreateManyCompetitionInput = {
+    id?: number
+    soalNumber: number
+    isBidding?: boolean
+    winnerId?: number | null
+    winnerName?: string | null
+    status?: string
+    createdAt?: Date | string
+  }
+
+  export type RoundUpdateWithoutCompetitionInput = {
+    soalNumber?: IntFieldUpdateOperationsInput | number
+    isBidding?: BoolFieldUpdateOperationsInput | boolean
+    winnerId?: NullableIntFieldUpdateOperationsInput | number | null
+    winnerName?: NullableStringFieldUpdateOperationsInput | string | null
+    status?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    entries?: RoundEntryUpdateManyWithoutRoundNestedInput
+  }
+
+  export type RoundUncheckedUpdateWithoutCompetitionInput = {
+    id?: IntFieldUpdateOperationsInput | number
+    soalNumber?: IntFieldUpdateOperationsInput | number
+    isBidding?: BoolFieldUpdateOperationsInput | boolean
+    winnerId?: NullableIntFieldUpdateOperationsInput | number | null
+    winnerName?: NullableStringFieldUpdateOperationsInput | string | null
+    status?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    entries?: RoundEntryUncheckedUpdateManyWithoutRoundNestedInput
+  }
+
+  export type RoundUncheckedUpdateManyWithoutCompetitionInput = {
+    id?: IntFieldUpdateOperationsInput | number
+    soalNumber?: IntFieldUpdateOperationsInput | number
+    isBidding?: BoolFieldUpdateOperationsInput | boolean
+    winnerId?: NullableIntFieldUpdateOperationsInput | number | null
+    winnerName?: NullableStringFieldUpdateOperationsInput | string | null
+    status?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type RoundEntryCreateManyRoundInput = {
+    id?: number
+    scoreId: number
+    name: string
+    bidAmount?: number
+    pointChange: number
+    scoreAfter?: number
+    result: string
+    createdAt?: Date | string
+  }
+
+  export type RoundEntryUpdateWithoutRoundInput = {
+    scoreId?: IntFieldUpdateOperationsInput | number
+    name?: StringFieldUpdateOperationsInput | string
+    bidAmount?: IntFieldUpdateOperationsInput | number
+    pointChange?: IntFieldUpdateOperationsInput | number
+    scoreAfter?: IntFieldUpdateOperationsInput | number
+    result?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type RoundEntryUncheckedUpdateWithoutRoundInput = {
+    id?: IntFieldUpdateOperationsInput | number
+    scoreId?: IntFieldUpdateOperationsInput | number
+    name?: StringFieldUpdateOperationsInput | string
+    bidAmount?: IntFieldUpdateOperationsInput | number
+    pointChange?: IntFieldUpdateOperationsInput | number
+    scoreAfter?: IntFieldUpdateOperationsInput | number
+    result?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type RoundEntryUncheckedUpdateManyWithoutRoundInput = {
+    id?: IntFieldUpdateOperationsInput | number
+    scoreId?: IntFieldUpdateOperationsInput | number
+    name?: StringFieldUpdateOperationsInput | string
+    bidAmount?: IntFieldUpdateOperationsInput | number
+    pointChange?: IntFieldUpdateOperationsInput | number
+    scoreAfter?: IntFieldUpdateOperationsInput | number
+    result?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
 

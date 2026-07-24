@@ -145,6 +145,39 @@ exports.Prisma.SettingScalarFieldEnum = {
   value: 'value'
 };
 
+exports.Prisma.CompetitionScalarFieldEnum = {
+  id: 'id',
+  groupId: 'groupId',
+  totalSoal: 'totalSoal',
+  currentSoal: 'currentSoal',
+  status: 'status',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+};
+
+exports.Prisma.RoundScalarFieldEnum = {
+  id: 'id',
+  competitionId: 'competitionId',
+  soalNumber: 'soalNumber',
+  isBidding: 'isBidding',
+  winnerId: 'winnerId',
+  winnerName: 'winnerName',
+  status: 'status',
+  createdAt: 'createdAt'
+};
+
+exports.Prisma.RoundEntryScalarFieldEnum = {
+  id: 'id',
+  roundId: 'roundId',
+  scoreId: 'scoreId',
+  name: 'name',
+  bidAmount: 'bidAmount',
+  pointChange: 'pointChange',
+  scoreAfter: 'scoreAfter',
+  result: 'result',
+  createdAt: 'createdAt'
+};
+
 exports.Prisma.SortOrder = {
   asc: 'asc',
   desc: 'desc'
@@ -164,7 +197,10 @@ exports.Prisma.NullsOrder = {
 exports.Prisma.ModelName = {
   Score: 'Score',
   Group: 'Group',
-  Setting: 'Setting'
+  Setting: 'Setting',
+  Competition: 'Competition',
+  Round: 'Round',
+  RoundEntry: 'RoundEntry'
 };
 
 /**

@@ -603,6 +603,482 @@ function GroupManagerModal({
   );
 }
 
+const getInitials = (name: string) =>
+  name.trim().split(/\s+/).map((w) => w[0]).join("").slice(0, 2).toUpperCase();
+
+const getAvatarColor = (idx: number) => {
+  const variants = [
+    "bg-primary-container/20 text-primary-container",
+    "bg-secondary-container text-on-secondary-container",
+    "bg-tertiary-fixed/30 text-on-tertiary-fixed-variant",
+    "bg-error-container text-on-error-container",
+    "bg-primary-fixed text-on-primary-fixed-variant",
+    "bg-secondary-fixed text-on-secondary-fixed-variant",
+  ];
+  return variants[idx % variants.length] ?? "bg-surface-container text-on-surface-variant";
+};
+
+// ─── Bidding Winner Modal ───────────────────────────────────────────────────────
+function BiddingWinnerModal({
+  open,
+  scores,
+  groupName,
+  hasUnsavedBids,
+  draftBids,
+  onClose,
+  onSaveAllBids,
+  onSelectWinner,
+  onSelectNoWinner,
+  isPending,
+}: {
+  open: boolean;
+  scores: ScoreEntry[];
+  groupName: string;
+  hasUnsavedBids: boolean;
+  draftBids: Record<number, number>;
+  onClose: () => void;
+  onSaveAllBids: () => void;
+  onSelectWinner: (entry: ScoreEntry) => void;
+  onSelectNoWinner: () => void;
+  isPending: boolean;
+}) {
+  if (!open) return null;
+
+  return (
+    <div
+      className="admin-modal-backdrop !z-[100]"
+      onClick={(e) => { if (e.target === e.currentTarget) onClose(); }}
+    >
+      <div className="admin-modal-card max-w-lg w-full max-h-[85vh] flex flex-col p-0 overflow-hidden rounded-2xl shadow-2xl bg-surface border border-outline-variant/30">
+        {/* Header */}
+        <div className="p-5 border-b border-black/5 bg-gradient-to-r from-amber-500/10 via-surface to-amber-500/5 flex items-center justify-between">
+          <div className="flex items-center gap-3">
+            <div className="w-10 h-10 rounded-xl bg-amber-500/20 text-amber-700 flex items-center justify-center flex-shrink-0">
+              <span className="material-symbols-outlined text-[22px]">gavel</span>
+            </div>
+            <div>
+              <h3 className="font-extrabold text-on-surface text-base leading-snug">Penyelesaian Ronde Bidding</h3>
+              <p className="text-xs text-outline font-semibold">Grup: <strong className="text-amber-700">{groupName}</strong></p>
+            </div>
+          </div>
+          <button className="admin-modal-close" onClick={onClose} aria-label="Tutup">
+            <span className="material-symbols-outlined">close</span>
+          </button>
+        </div>
+
+        {/* Content Body */}
+        <div className="p-5 overflow-y-auto space-y-4 flex-1">
+          {hasUnsavedBids && (
+            <div className="p-3.5 bg-amber-500/10 border border-amber-400/40 rounded-xl flex items-start justify-between gap-3 text-amber-900 text-xs">
+              <div className="flex gap-2">
+                <span className="material-symbols-outlined text-amber-600 text-[18px] shrink-0">warning</span>
+                <div>
+                  <p className="font-bold">Ada perubahan taruhan yang belum disimpan!</p>
+                  <p className="opacity-90">Simpan perubahan taruhan terlebih dahulu agar perhitungan poin akurat.</p>
+                </div>
+              </div>
+              <button
+                type="button"
+                onClick={onSaveAllBids}
+                className="bg-amber-500 text-white font-extrabold px-3 py-1.5 rounded-lg shrink-0 text-xs hover:bg-amber-600 transition-colors shadow-sm"
+              >
+                Simpan Sekarang
+              </button>
+            </div>
+          )}
+
+          {/* Option A: No Winner / All Wrong */}
+          <div className="p-4 rounded-xl border-2 border-red-200 bg-red-50/50 hover:bg-red-50 transition-colors">
+            <div className="flex items-start justify-between gap-3">
+              <div className="flex gap-3">
+                <div className="w-10 h-10 rounded-xl bg-red-500/10 text-red-600 flex items-center justify-center flex-shrink-0 font-bold">
+                  ❌
+                </div>
+                <div>
+                  <h4 className="font-black text-red-900 text-sm">Tidak Ada Pemenang (Jawaban Salah Semua)</h4>
+                  <p className="text-xs text-red-700/80 mt-0.5 leading-relaxed">
+                    Semua peserta dalam grup ini akan dipotong poinnya sesuai taruhan (bid) masing-masing, dan taruhan akan direset ke 10.
+                  </p>
+                </div>
+              </div>
+              <button
+                type="button"
+                disabled={hasUnsavedBids || isPending}
+                onClick={onSelectNoWinner}
+                className={`admin-action-btn admin-action-btn--red shrink-0 !py-2 !px-3 font-extrabold text-xs flex items-center gap-1 ${hasUnsavedBids || isPending ? "opacity-50 pointer-events-none" : ""}`}
+              >
+                {isPending ? (
+                  <span className="spinner border-error" style={{ width: 12, height: 12 }} />
+                ) : (
+                  <span className="material-symbols-outlined text-[16px]">do_not_disturb_on</span>
+                )}
+                <span>Potong Poin Semua</span>
+              </button>
+            </div>
+          </div>
+
+          <div className="flex items-center gap-2 my-2">
+            <div className="h-px bg-black/10 flex-1" />
+            <span className="text-[10px] font-black uppercase tracking-wider text-outline">ATAU PILIH INSTANSI PEMENANG</span>
+            <div className="h-px bg-black/10 flex-1" />
+          </div>
+
+          <div className="space-y-2">
+            {scores.length === 0 ? (
+              <p className="text-xs text-outline text-center py-4">Belum ada peserta di grup ini.</p>
+            ) : (
+              [...scores].sort((a, b) => a.id - b.id).map((entry, idx) => {
+                const isEligible = entry.score > 0;
+                const effectiveBid = isEligible
+                  ? (draftBids[entry.id] !== undefined ? draftBids[entry.id]! : Math.min(entry.bid ?? 10, entry.score))
+                  : 0;
+                const isDisabled = hasUnsavedBids || isPending || !isEligible;
+
+                return (
+                  <div
+                    key={entry.id}
+                    className={`p-3.5 rounded-xl border flex items-center justify-between gap-4 transition-colors ${!isEligible ? "bg-surface-container/20 border-black/5 opacity-60" : "bg-white border-black/10 hover:border-amber-400"}`}
+                  >
+                    <div className="flex items-center gap-3 min-w-0 flex-1">
+                      <div className={`w-9 h-9 rounded-full overflow-hidden flex items-center justify-center font-bold text-xs shrink-0 ${entry.logoUrl ? "bg-white border" : getAvatarColor(idx)}`}>
+                        {entry.logoUrl ? (
+                          <img src={entry.logoUrl} alt={entry.name} className="w-full h-full object-cover" />
+                        ) : (
+                          getInitials(entry.name)
+                        )}
+                      </div>
+                      <div className="min-w-0 flex-1">
+                        <p className="font-extrabold text-on-surface text-xs md:text-sm leading-snug break-words">{entry.name}</p>
+                        <div className="flex items-center gap-2 text-[10px] text-outline font-semibold mt-0.5">
+                          <span>Skor: <strong>{entry.score} pts</strong></span>
+                          <span>•</span>
+                          <span className="text-amber-700 font-extrabold">
+                            Bid: {isEligible ? `${effectiveBid} pts` : "0 pts (Bebas Potong)"}
+                          </span>
+                        </div>
+                      </div>
+                    </div>
+
+                    <button
+                      type="button"
+                      disabled={isDisabled}
+                      onClick={() => onSelectWinner(entry)}
+                      className={`admin-action-btn flex items-center gap-1 text-xs shrink-0 !py-2 !px-3.5 font-extrabold ${isDisabled ? "opacity-40 cursor-not-allowed text-outline" : "text-amber-600 border-amber-300 hover:bg-amber-50 shadow-sm"}`}
+                    >
+                      <span className="material-symbols-outlined text-[16px]">military_tech</span>
+                      <span>{isEligible ? `Menangkan (+${effectiveBid})` : "Poin ≤ 0"}</span>
+                    </button>
+                  </div>
+                );
+              })
+            )}
+          </div>
+        </div>
+
+        {/* Footer */}
+        <div className="p-4 border-t border-black/5 bg-surface-container/20 flex justify-end">
+          <button type="button" onClick={onClose} className="admin-action-btn text-xs px-4 py-2">
+            Tutup
+          </button>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+// ─── Competition Modals ───────────────────────────────────────────────────────
+function StartCompetitionModal({
+  open,
+  groupName,
+  onClose,
+  onStart,
+  isPending,
+}: {
+  open: boolean;
+  groupName: string;
+  onClose: () => void;
+  onStart: (totalSoal: number) => void;
+  isPending: boolean;
+}) {
+  const [totalSoal, setTotalSoal] = useState("5");
+  if (!open) return null;
+
+  return (
+    <div className="admin-modal-backdrop !z-[100]" onClick={(e) => { if (e.target === e.currentTarget) onClose(); }}>
+      <div className="admin-modal-card max-w-sm">
+        <div className="admin-modal-header">
+          <h3 className="admin-modal-title flex items-center gap-2">
+            <span>🏁</span> Start Lomba Baru
+          </h3>
+          <button className="admin-modal-close" onClick={onClose} aria-label="Tutup">
+            <span className="material-symbols-outlined">close</span>
+          </button>
+        </div>
+        <form
+          onSubmit={(e) => {
+            e.preventDefault();
+            const n = parseInt(totalSoal, 10);
+            if (n > 0) onStart(n);
+          }}
+          className="admin-modal-form"
+        >
+          <p className="text-xs text-outline font-semibold">
+            Mulai sesi lomba untuk grup: <strong className="text-amber-700">{groupName}</strong>
+          </p>
+          <div className="admin-field">
+            <label className="admin-label">JUMLAH SOAL</label>
+            <div className="admin-input-wrap">
+              <span className="material-symbols-outlined admin-input-icon">quiz</span>
+              <input
+                type="number"
+                min="1"
+                max="50"
+                value={totalSoal}
+                onChange={(e) => setTotalSoal(e.target.value)}
+                className="admin-input"
+                placeholder="Jumlah soal (e.g. 5)"
+              />
+            </div>
+          </div>
+          <button type="submit" disabled={isPending || !totalSoal} className="admin-btn-primary w-full justify-center">
+            {isPending ? (
+              <><span className="spinner border-white" style={{ width: 14, height: 14 }} /><span>Memulai...</span></>
+            ) : (
+              <><span className="material-symbols-outlined">play_arrow</span><span>Mulai Lomba</span></>
+            )}
+          </button>
+        </form>
+      </div>
+    </div>
+  );
+}
+
+function ResolveNormalModal({
+  open,
+  roundNumber,
+  scores,
+  answersMap,
+  onClose,
+  onConfirm,
+  isPending,
+}: {
+  open: boolean;
+  roundNumber: number;
+  scores: ScoreEntry[];
+  answersMap: Record<number, "correct" | "wrong" | "skip">;
+  onClose: () => void;
+  onConfirm: (correctIds: number[], wrongIds: number[]) => void;
+  isPending: boolean;
+}) {
+  if (!open) return null;
+
+  const correctList = scores.filter((s) => answersMap[s.id] === "correct");
+  const wrongList = scores.filter((s) => answersMap[s.id] === "wrong");
+  const skipList = scores.filter((s) => !answersMap[s.id] || answersMap[s.id] === "skip");
+
+  return (
+    <div className="admin-modal-backdrop !z-[100]" onClick={(e) => { if (e.target === e.currentTarget) onClose(); }}>
+      <div className="admin-modal-card max-w-lg w-full p-0 overflow-hidden rounded-2xl bg-surface border border-outline-variant/30">
+        <div className="p-4 border-b border-black/5 bg-emerald-500/10 flex items-center justify-between">
+          <h3 className="font-extrabold text-on-surface text-base flex items-center gap-2">
+            <span>✅</span> Selesaikan Soal {roundNumber} (Biasa)
+          </h3>
+          <button className="admin-modal-close" onClick={onClose} aria-label="Tutup">
+            <span className="material-symbols-outlined">close</span>
+          </button>
+        </div>
+
+        <div className="p-5 space-y-4 max-h-[70vh] overflow-y-auto">
+          <div className="grid grid-cols-3 gap-2 text-center text-xs">
+            <div className="p-2.5 rounded-xl bg-emerald-500/10 border border-emerald-500/30 text-emerald-800">
+              <p className="font-black text-lg text-emerald-600">{correctList.length}</p>
+              <p className="font-extrabold text-[10px] uppercase">✅ Benar (+10)</p>
+            </div>
+            <div className="p-2.5 rounded-xl bg-red-500/10 border border-red-500/30 text-red-800">
+              <p className="font-black text-lg text-red-600">{wrongList.length}</p>
+              <p className="font-extrabold text-[10px] uppercase">❌ Salah (-5)</p>
+            </div>
+            <div className="p-2.5 rounded-xl bg-black/5 border border-black/10 text-outline">
+              <p className="font-black text-lg text-on-surface">{skipList.length}</p>
+              <p className="font-extrabold text-[10px] uppercase">➖ Tidak Jawab (0)</p>
+            </div>
+          </div>
+
+          <div className="space-y-1.5 text-xs">
+            {scores.map((s) => {
+              const ans = answersMap[s.id] || "skip";
+              const badge =
+                ans === "correct"
+                  ? "bg-emerald-500 text-white font-black"
+                  : ans === "wrong"
+                  ? "bg-red-500 text-white font-black"
+                  : "bg-black/10 text-outline font-bold";
+              const pts = ans === "correct" ? "+10" : ans === "wrong" ? "-5" : "0";
+
+              return (
+                <div key={s.id} className="flex items-center justify-between p-2 rounded-lg bg-white border border-black/5">
+                  <span className="font-bold text-on-surface truncate">{s.name}</span>
+                  <div className="flex items-center gap-2">
+                    <span className={`text-[10px] px-2 py-0.5 rounded-full ${badge}`}>
+                      {ans === "correct" ? "BENAR" : ans === "wrong" ? "SALAH" : "TIDAK JAWAB"}
+                    </span>
+                    <span className={`font-black w-10 text-right text-xs ${ans === "correct" ? "text-emerald-600" : ans === "wrong" ? "text-red-600" : "text-outline"}`}>
+                      {pts}
+                    </span>
+                  </div>
+                </div>
+              );
+            })}
+          </div>
+        </div>
+
+        <div className="p-4 border-t border-black/5 bg-surface-container/20 flex items-center justify-end gap-2">
+          <button type="button" onClick={onClose} className="admin-action-btn text-xs px-4 py-2">
+            Batal
+          </button>
+          <button
+            type="button"
+            disabled={isPending}
+            onClick={() => onConfirm(correctList.map((c) => c.id), wrongList.map((w) => w.id))}
+            className="admin-btn-primary text-xs !py-2 !px-4 flex items-center gap-1.5"
+          >
+            {isPending ? (
+              <><span className="spinner border-white" style={{ width: 12, height: 12 }} /><span>Memproses...</span></>
+            ) : (
+              <><span className="material-symbols-outlined text-[16px]">check_circle</span><span>Konfirmasi & Simpan</span></>
+            )}
+          </button>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+function CompetitionHistoryModal({
+  open,
+  groupId,
+  groupName,
+  onClose,
+}: {
+  open: boolean;
+  groupId: number;
+  groupName: string;
+  onClose: () => void;
+}) {
+  const { data: history = [], isLoading } = api.competition.getHistory.useQuery(
+    { groupId },
+    { enabled: open }
+  );
+
+  if (!open) return null;
+
+  return (
+    <div className="admin-modal-backdrop !z-[100]" onClick={(e) => { if (e.target === e.currentTarget) onClose(); }}>
+      <div className="admin-modal-card max-w-2xl w-full max-h-[85vh] flex flex-col p-0 overflow-hidden rounded-2xl bg-surface border border-outline-variant/30">
+        <div className="p-4 border-b border-black/5 bg-amber-500/10 flex items-center justify-between">
+          <div className="flex items-center gap-2">
+            <span className="material-symbols-outlined text-amber-600">equalizer</span>
+            <div>
+              <h3 className="font-extrabold text-on-surface text-base leading-tight">Riwayat Lomba</h3>
+              <p className="text-xs text-outline font-semibold">Grup: <strong className="text-amber-800">{groupName}</strong></p>
+            </div>
+          </div>
+          <button className="admin-modal-close" onClick={onClose} aria-label="Tutup">
+            <span className="material-symbols-outlined">close</span>
+          </button>
+        </div>
+
+        <div className="p-5 overflow-y-auto space-y-6 flex-1">
+          {isLoading ? (
+            <div className="py-10 text-center">
+              <span className="spinner border-primary mx-auto" style={{ width: 24, height: 24 }} />
+              <p className="text-xs text-outline mt-2 font-bold">Memuat riwayat...</p>
+            </div>
+          ) : history.length === 0 ? (
+            <div className="py-12 text-center text-outline text-xs font-bold">
+              <span className="material-symbols-outlined text-[40px] opacity-30 block mb-2">history</span>
+              Belum ada riwayat lomba untuk grup ini.
+            </div>
+          ) : (
+            history.map((comp, idx) => (
+              <div key={comp.id} className="border border-black/10 rounded-xl overflow-hidden bg-white shadow-sm">
+                <div className="p-3 bg-surface-container/30 border-b border-black/5 flex items-center justify-between">
+                  <div className="flex items-center gap-2">
+                    <span className="font-black text-amber-700 text-sm">Lomba #{history.length - idx}</span>
+                    <span className={`text-[10px] font-black px-2 py-0.5 rounded-full uppercase ${comp.status === 'completed' ? 'bg-emerald-500/10 text-emerald-700 border border-emerald-500/20' : 'bg-amber-500/10 text-amber-700 border border-amber-500/20 animate-pulse'}`}>
+                      {comp.status === 'completed' ? 'Selesai' : 'Sedang Berjalan'}
+                    </span>
+                  </div>
+                  <div className="text-[10px] text-outline font-semibold">
+                    Total: {comp.totalSoal} Soal · {new Date(comp.createdAt).toLocaleDateString('id-ID', { day: 'numeric', month: 'short', hour: '2-digit', minute: '2-digit' })}
+                  </div>
+                </div>
+
+                <div className="divide-y divide-black/5">
+                  {comp.rounds.map((round) => (
+                    <div key={round.id} className="p-3 space-y-2">
+                      <div className="flex items-center justify-between text-xs font-bold">
+                        <div className="flex items-center gap-2">
+                          <span className="bg-amber-500 text-white text-[10px] font-black px-2 py-0.5 rounded-md">
+                            Soal {round.soalNumber}
+                          </span>
+                          <span className={`text-[10px] font-extrabold uppercase px-2 py-0.5 rounded-full ${round.isBidding ? 'bg-amber-100 text-amber-800' : 'bg-blue-100 text-blue-800'}`}>
+                            {round.isBidding ? 'Mode Bidding' : 'Soal Biasa'}
+                          </span>
+                        </div>
+                        {round.isBidding && (
+                          <div className="text-[11px] text-outline font-semibold">
+                            {round.winnerName ? (
+                              <span>Pemenang: <strong className="text-emerald-700">🏆 {round.winnerName}</strong></span>
+                            ) : (
+                              <span className="text-red-600 font-bold">❌ Tidak Ada Pemenang</span>
+                            )}
+                          </div>
+                        )}
+                      </div>
+
+                      <div className="grid grid-cols-1 md:grid-cols-2 gap-1.5 text-[11px]">
+                        {[...round.entries].sort((a, b) => a.scoreId - b.scoreId).map((entry) => {
+                          const isPos = entry.pointChange > 0;
+                          const isNeg = entry.pointChange < 0;
+                          const resBadge =
+                            entry.result === 'correct' ? '✅ Benar' :
+                            entry.result === 'wrong' ? '❌ Salah' :
+                            entry.result === 'win' ? '🏆 Menang' :
+                            entry.result === 'lose' ? '❌ Kalah' :
+                            entry.result === 'no_contest' ? '❌ Salah Semua' : '➖ Tidak Jawab';
+
+                          return (
+                            <div key={entry.id} className="flex items-center justify-between p-1.5 rounded bg-surface-container/20 border border-black/5">
+                              <div className="flex items-center gap-2 truncate">
+                                <span className="font-semibold text-on-surface truncate">{entry.name}</span>
+                                <span className="text-[9px] text-outline font-medium">({resBadge})</span>
+                              </div>
+                              <span className={`font-black ml-2 shrink-0 ${isPos ? 'text-emerald-600' : isNeg ? 'text-red-600' : 'text-outline'}`}>
+                                {isPos ? `+${entry.pointChange}` : entry.pointChange}
+                              </span>
+                            </div>
+                          );
+                        })}
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            ))
+          )}
+        </div>
+
+        <div className="p-3 border-t border-black/5 bg-surface-container/20 flex justify-end">
+          <button type="button" onClick={onClose} className="admin-action-btn text-xs px-4 py-1.5">
+            Tutup
+          </button>
+        </div>
+      </div>
+    </div>
+  );
+}
+
 // ─── Toast ────────────────────────────────────────────────────────────────────
 function Toast({ message, onDone }: { message: string; onDone: () => void }) {
   const isError = message.startsWith("❌");
@@ -618,6 +1094,13 @@ export default function AdminPage() {
 
   const [modalOpen, setModalOpen] = useState(false);
   const [groupModalOpen, setGroupModalOpen] = useState(false);
+  const [biddingModalOpen, setBiddingModalOpen] = useState(false);
+  const [startCompModalOpen, setStartCompModalOpen] = useState(false);
+  const [resolveNormalModalOpen, setResolveNormalModalOpen] = useState(false);
+  const [historyModalOpen, setHistoryModalOpen] = useState(false);
+
+  const [answersMap, setAnswersMap] = useState<Record<number, "correct" | "wrong" | "skip">>({});
+
   const [editEntry, setEditEntry] = useState<ScoreEntry | null>(null);
   const [toast, setToast] = useState("");
   const [search, setSearch] = useState("");
@@ -635,6 +1118,7 @@ export default function AdminPage() {
 
   useEffect(() => {
     setDraftBids({});
+    setAnswersMap({});
   }, [activeGroupId]);
 
   useEffect(() => {
@@ -712,16 +1196,92 @@ export default function AdminPage() {
     },
   });
 
-  const { data: biddingActive = false, refetch: refetchBidding } = api.score.isBiddingActive.useQuery(
+  // ── Competition (Lomba) Queries & Mutations ──────────────────────────────────
+  const { data: activeCompetition, refetch: refetchActiveComp } = api.competition.getActive.useQuery(
     { groupId: activeGroupId ?? 0 },
     { enabled: activeGroupId !== null }
   );
+
+  const activeRound = activeCompetition?.rounds.find((r) => r.status === "active") ?? null;
+
+  const startCompetition = api.competition.startCompetition.useMutation({
+    onSuccess: async () => {
+      setToast("🏁 Sesi lomba berhasil dimulai!");
+      setStartCompModalOpen(false);
+      await refetchActiveComp();
+      await utils.score.getAll.invalidate();
+    },
+    onError: (err) => setToast(`❌ Gagal memulai lomba: ${err.message}`),
+  });
+
+  const startNextRound = api.competition.startNextRound.useMutation({
+    onSuccess: async () => {
+      setToast("➡️ Soal berikutnya dimulai");
+      setAnswersMap({});
+      await refetchActiveComp();
+      await utils.score.getAll.invalidate();
+    },
+    onError: (err) => setToast(`❌ Gagal ke soal berikutnya: ${err.message}`),
+  });
+
+  const toggleRoundBidding = api.competition.toggleRoundBidding.useMutation({
+    onSuccess: async () => {
+      await refetchActiveComp();
+      await utils.score.getAll.invalidate();
+    },
+    onError: (err) => setToast(`❌ Gagal mengubah mode soal: ${err.message}`),
+  });
+
+  const resolveNormalRound = api.competition.resolveNormalRound.useMutation({
+    onSuccess: async (data) => {
+      setToast(`✅ Soal ${activeRound?.soalNumber ?? 1} selesai: ${data.correctCount} benar, ${data.wrongCount} salah`);
+      setResolveNormalModalOpen(false);
+      setAnswersMap({});
+      await refetchActiveComp();
+      await utils.score.getAll.invalidate();
+    },
+    onError: (err) => setToast(`❌ Gagal menyelesaikan soal: ${err.message}`),
+  });
+
+  const resolveBiddingRound = api.competition.resolveBiddingRound.useMutation({
+    onSuccess: async (data) => {
+      if (data.hasWinner) {
+        setToast(`🎉 ${data.winnerName} dinyatakan menang bidding round!`);
+      } else {
+        setToast("⚠️ Soal Bidding selesai: Tidak ada pemenang, poin semua peserta dipotong.");
+      }
+      setBiddingModalOpen(false);
+      setWinningId(null);
+      await refetchActiveComp();
+      await utils.score.getAll.invalidate();
+    },
+    onError: (err) => {
+      setToast(`❌ Gagal memproses bidding round: ${err.message}`);
+      setWinningId(null);
+    },
+  });
+
+  const endCompetition = api.competition.endCompetition.useMutation({
+    onSuccess: async () => {
+      setToast("🏁 Sesi Lomba telah diakhiri. Riwayat tersimpan.");
+      await refetchActiveComp();
+      await utils.score.getAll.invalidate();
+    },
+    onError: (err) => setToast(`❌ Gagal mengakhiri lomba: ${err.message}`),
+  });
+
+  const { data: rawBiddingActive = false, refetch: refetchBidding } = api.score.isBiddingActive.useQuery(
+    { groupId: activeGroupId ?? 0 },
+    { enabled: activeGroupId !== null }
+  );
+
+  const biddingActive = rawBiddingActive || (activeRound?.isBidding === true);
 
   const toggleBidding = api.score.setBiddingActive.useMutation({
     onSuccess: async () => {
       await refetchBidding();
       await utils.group.getAll.invalidate();
-      setToast(`✅ Sesi bidding ${!biddingActive ? "diaktifkan" : "dinonaktifkan"}`);
+      setToast(`✅ Sesi bidding ${!rawBiddingActive ? "diaktifkan" : "dinonaktifkan"}`);
     },
     onError: (err) => {
       setToast(`❌ Gagal mengubah sesi bidding: ${err.message}`);
@@ -784,6 +1344,7 @@ export default function AdminPage() {
       await utils.score.getAll.invalidate();
       setToast(`🎉 ${data.name} dinyatakan menang bidding (+${data.pointsWon} poin)!`);
       setWinningId(null);
+      setBiddingModalOpen(false);
     },
     onError: (err) => {
       setToast(`❌ Gagal menentukan pemenang: ${err.message}`);
@@ -791,14 +1352,51 @@ export default function AdminPage() {
     },
   });
 
+  const declareNoWinner = api.score.declareBiddingNoWinner.useMutation({
+    onSuccess: async () => {
+      await utils.score.getAll.invalidate();
+      setToast("⚠️ Ronde Bidding selesai: Tidak ada pemenang, poin semua peserta dipotong.");
+      setBiddingModalOpen(false);
+    },
+    onError: (err) => {
+      setToast(`❌ Gagal memproses ronde bidding: ${err.message}`);
+    },
+  });
+
+  const handleSelectNoWinner = () => {
+    if (activeGroupId === null) return;
+    if (hasUnsavedBids) {
+      setToast("⚠️ Simpan perubahan taruhan terlebih dahulu!");
+      return;
+    }
+    if (
+      !confirm(
+        "Konfirmasi: Tidak ada pemenang untuk ronde ini (jawaban salah semua)?\nSemua peserta akan dipotong poin sesuai taruhan masing-masing."
+      )
+    )
+      return;
+
+    if (activeRound && activeRound.isBidding) {
+      resolveBiddingRound.mutate({ roundId: activeRound.id, winnerId: null });
+    } else {
+      declareNoWinner.mutate({ groupId: activeGroupId });
+    }
+  };
+
   const handleDeclareWinner = (entry: ScoreEntry) => {
     if (hasUnsavedBids) {
       setToast("⚠️ Simpan perubahan taruhan terlebih dahulu sebelum menentukan pemenang!");
       return;
     }
     if (!confirm(`Nyatakan "${entry.name}" sebagai pemenang bidding round? Skor akan bertambah +${entry.bid ?? 10} dan seluruh bid instansi lainnya akan direset ke 10.`)) return;
-    setWinningId(entry.id);
-    declareWinner.mutate({ id: entry.id });
+
+    if (activeRound && activeRound.isBidding) {
+      setWinningId(entry.id);
+      resolveBiddingRound.mutate({ roundId: activeRound.id, winnerId: entry.id });
+    } else {
+      setWinningId(entry.id);
+      declareWinner.mutate({ id: entry.id });
+    }
   };
 
   const resetGroupScores = api.score.resetGroupScores.useMutation({
@@ -862,22 +1460,8 @@ export default function AdminPage() {
     updateScore.mutate({ id: entry.id, name: entry.name, score: entry.score + delta, groupId: entry.groupId });
   }
 
-  const filtered = scores.filter((s) => s.name.toLowerCase().includes(search.toLowerCase()));
-
-  const getInitials = (name: string) =>
-    name.trim().split(/\s+/).map((w) => w[0]).join("").slice(0, 2).toUpperCase();
-
-  const getAvatarColor = (idx: number) => {
-    const variants = [
-      "bg-primary-container/20 text-primary-container",
-      "bg-secondary-container text-on-secondary-container",
-      "bg-tertiary-fixed/30 text-on-tertiary-fixed-variant",
-      "bg-error-container text-on-error-container",
-      "bg-primary-fixed text-on-primary-fixed-variant",
-      "bg-secondary-fixed text-on-secondary-fixed-variant",
-    ];
-    return variants[idx % variants.length] ?? "bg-surface-container text-on-surface-variant";
-  };
+  const staticScores = [...scores].sort((a, b) => a.id - b.id);
+  const filtered = staticScores.filter((s) => s.name.toLowerCase().includes(search.toLowerCase()));
 
   const topScore = scores[0]?.score ?? 0;
 
@@ -978,6 +1562,17 @@ export default function AdminPage() {
           </div>
 
           <div className="admin-sidebar-divider" />
+
+          <button
+            onClick={() => router.push(`/admin/lomba?groupId=${activeGroupId}`)}
+            className="w-full flex items-center justify-between bg-gradient-to-r from-amber-500 to-amber-600 text-white font-extrabold px-3 py-2.5 rounded-xl text-xs shadow-sm hover:brightness-110 transition-all mb-2"
+          >
+            <div className="flex items-center gap-2">
+              <span className="material-symbols-outlined text-[18px]">sports_esports</span>
+              <span>Arena Control Lomba</span>
+            </div>
+            <span className="material-symbols-outlined text-[16px]">chevron_right</span>
+          </button>
 
           <button
             onClick={() => setGroupModalOpen(true)}
@@ -1107,6 +1702,8 @@ export default function AdminPage() {
             </div>
           )}
 
+
+
           {/* ── Stat Cards ───────────────────────────────────── */}
           <div className="admin-stats-grid">
             <div className="admin-stat-card">
@@ -1151,6 +1748,39 @@ export default function AdminPage() {
             </div>
           </div>
 
+          {/* ── Active Competition Banner ── */}
+          {activeCompetition && (
+            <div className="bg-gradient-to-r from-amber-500/20 via-amber-500/10 to-surface border-2 border-amber-500/40 rounded-2xl p-4 mb-6 shadow-sm flex flex-col md:flex-row md:items-center justify-between gap-4">
+              <div className="flex items-center gap-3">
+                <div className="w-10 h-10 rounded-xl bg-amber-500 text-white font-black text-lg flex items-center justify-center shadow-sm shrink-0">
+                  ⚡
+                </div>
+                <div>
+                  <div className="flex items-center gap-2 mb-0.5">
+                    <span className="text-[10px] font-black uppercase tracking-wider text-amber-800 bg-amber-100 px-2.5 py-0.5 rounded-full border border-amber-300">
+                      ⚡ LOMBA SEDANG AKTIF (Soal {activeCompetition.currentSoal} dari {activeCompetition.totalSoal})
+                    </span>
+                  </div>
+                  <h3 className="text-sm font-black text-on-surface mt-1">
+                    Sesi Lomba sedang berlangsung untuk grup {groups.find((g) => g.id === activeGroupId)?.name}.
+                  </h3>
+                  <p className="text-xs text-outline font-semibold">
+                    Gunakan Arena Control Lomba untuk mengendalikan mode soal & bidding secara live.
+                  </p>
+                </div>
+              </div>
+
+              <button
+                type="button"
+                onClick={() => router.push(`/admin/lomba?groupId=${activeGroupId}`)}
+                className="admin-btn-primary !bg-amber-600 hover:!bg-amber-700 !text-white flex items-center gap-1.5 !text-xs !py-2.5 !px-4 shadow-md shrink-0 font-extrabold"
+              >
+                <span className="material-symbols-outlined text-[18px]">sports_esports</span>
+                <span>🎮 Lanjutkan Control Lomba →</span>
+              </button>
+            </div>
+          )}
+
           {/* ── Bidding Session Switch Banner ── */}
           <div className="admin-bidding-banner mb-lg">
             <div className="flex items-center gap-3">
@@ -1165,6 +1795,21 @@ export default function AdminPage() {
               </div>
             </div>
             <div className="flex items-center gap-3">
+              {biddingActive && (
+                <button
+                  type="button"
+                  onClick={() => {
+                    if (hasUnsavedBids) {
+                      setToast("⚠️ Simpan perubahan taruhan terlebih dahulu!");
+                    }
+                    setBiddingModalOpen(true);
+                  }}
+                  className="admin-btn-primary !py-2 !px-3.5 text-xs flex items-center gap-1.5 shadow-md bg-amber-600 hover:bg-amber-700 text-white border-0 font-extrabold"
+                >
+                  <span className="material-symbols-outlined text-[18px]">emoji_events</span>
+                  <span>Tentukan Pemenang Bidding</span>
+                </button>
+              )}
               <span className={`admin-bidding-status-label ${biddingActive ? "admin-bidding-status-label--active" : ""}`}>
                 {biddingActive ? "SESI AKTIF" : "SESI NONAKTIF"}
               </span>
@@ -1172,7 +1817,7 @@ export default function AdminPage() {
                 id="btn-toggle-bidding"
                 onClick={() => {
                   if (activeGroupId !== null) {
-                    toggleBidding.mutate({ groupId: activeGroupId, active: !biddingActive });
+                    toggleBidding.mutate({ groupId: activeGroupId, active: !rawBiddingActive });
                   }
                 }}
                 disabled={toggleBidding.isPending || activeGroupId === null}
@@ -1206,6 +1851,30 @@ export default function AdminPage() {
                 </button>
               )}
             </div>
+
+            {activeGroupId !== null && (
+              <button
+                type="button"
+                onClick={() => router.push(`/admin/lomba?groupId=${activeGroupId}`)}
+                className="admin-btn-primary !bg-amber-600 hover:!bg-amber-700 !text-white flex items-center gap-1.5 !text-xs !py-2 !px-3.5 shadow-sm font-extrabold"
+              >
+                <span className="material-symbols-outlined text-[18px]">sports_esports</span>
+                <span>Arena Control Lomba</span>
+              </button>
+            )}
+
+            {activeGroupId !== null && (
+              <button
+                type="button"
+                onClick={() => window.open(`/admin/riwayat?groupId=${activeGroupId}`, "_blank")}
+                className="admin-action-btn flex items-center gap-1.5 !text-xs !py-2 !px-3 text-amber-700 border-amber-300 hover:bg-amber-50 font-extrabold"
+                title="Lihat Riwayat Lomba (New Window)"
+              >
+                <span className="material-symbols-outlined text-[18px]">history</span>
+                <span>Riwayat Lomba (New Window)</span>
+              </button>
+            )}
+
             {activeGroupId !== null && (
               <div className="flex items-center gap-2 mr-2">
                 <button
@@ -1293,7 +1962,7 @@ export default function AdminPage() {
                     </thead>
                     <tbody>
                       {filtered.map((entry, idx) => {
-                        const rank = scores.findIndex((s) => s.score === entry.score) + 1;
+                        const rank = scores.findIndex((s) => s.id === entry.id) + 1;
                         const isTop3 = rank <= 3;
                         const isLoading = loadingId === entry.id;
                         const rankGrad =
@@ -1439,7 +2108,7 @@ export default function AdminPage() {
                 {/* Mobile card list */}
                 <div className="admin-mobile-list">
                   {filtered.map((entry, idx) => {
-                    const rank = scores.findIndex((s) => s.score === entry.score) + 1;
+                    const rank = scores.findIndex((s) => s.id === entry.id) + 1;
                     const isLoading = loadingId === entry.id;
                     return (
                       <div key={entry.id} className="admin-mobile-card">
@@ -1463,6 +2132,8 @@ export default function AdminPage() {
                             <p className="text-[9px] text-outline font-bold uppercase tracking-widest">Skor</p>
                           </div>
                         </div>
+
+
                         {/* Mobile Bid input row */}
                         {biddingActive && entry.score > 0 && (
                           <div className="admin-mobile-card-bid flex items-center justify-between border-t border-black/5 pt-2 mt-2 px-1">
@@ -1571,6 +2242,48 @@ export default function AdminPage() {
         activeGroupId={activeGroupId}
         setActiveGroupId={handleGroupChange}
         onClose={() => setGroupModalOpen(false)}
+      />
+      <BiddingWinnerModal
+        open={biddingModalOpen}
+        scores={scores}
+        groupName={groups.find((g) => g.id === activeGroupId)?.name ?? ""}
+        hasUnsavedBids={hasUnsavedBids}
+        draftBids={draftBids}
+        onClose={() => setBiddingModalOpen(false)}
+        onSaveAllBids={handleSaveAllBids}
+        onSelectWinner={(entry) => handleDeclareWinner(entry)}
+        onSelectNoWinner={handleSelectNoWinner}
+        isPending={declareWinner.isPending || declareNoWinner.isPending || resolveBiddingRound.isPending}
+      />
+      <StartCompetitionModal
+        open={startCompModalOpen}
+        groupName={groups.find((g) => g.id === activeGroupId)?.name ?? ""}
+        onClose={() => setStartCompModalOpen(false)}
+        onStart={(total) => {
+          if (activeGroupId !== null) {
+            startCompetition.mutate({ groupId: activeGroupId, totalSoal: total });
+          }
+        }}
+        isPending={startCompetition.isPending}
+      />
+      <ResolveNormalModal
+        open={resolveNormalModalOpen}
+        roundNumber={activeRound?.soalNumber ?? 1}
+        scores={scores}
+        answersMap={answersMap}
+        onClose={() => setResolveNormalModalOpen(false)}
+        onConfirm={(correctIds, wrongIds) => {
+          if (activeRound) {
+            resolveNormalRound.mutate({ roundId: activeRound.id, correctIds, wrongIds });
+          }
+        }}
+        isPending={resolveNormalRound.isPending}
+      />
+      <CompetitionHistoryModal
+        open={historyModalOpen}
+        groupId={activeGroupId ?? 0}
+        groupName={groups.find((g) => g.id === activeGroupId)?.name ?? ""}
+        onClose={() => setHistoryModalOpen(false)}
       />
       {toast && <Toast message={toast} onDone={() => setToast("")} />}
     </div>

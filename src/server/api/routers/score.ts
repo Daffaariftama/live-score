@@ -189,17 +189,23 @@ export const scoreRouter = createTRPCRouter({
             where: { id: p.id },
             data: {
               score: p.score + winnerBid,
-              bid: 10, // Reset bid to default for next round
+              bid: 10,
             },
           });
+        } else if (p.score <= 0) {
+          // Ineligible for bidding (score <= 0) -> no deduction
+          return ctx.db.score.update({
+            where: { id: p.id },
+            data: { bid: 10 },
+          });
         } else {
-          // Losers: score - their own bid (clamped to minimum 0)
+          // Eligible losers: score - their own bid
           const currentBid = Math.min(p.bid ?? 10, p.score);
           return ctx.db.score.update({
             where: { id: p.id },
             data: {
-              score: p.score - currentBid,
-              bid: 10, // Reset bid to default for next round
+              score: Math.max(0, p.score - currentBid),
+              bid: 10,
             },
           });
         }
@@ -233,5 +239,42 @@ export const scoreRouter = createTRPCRouter({
       scoreEmitter.emit("update", `update:${input.groupId}`);
 
       return { success: true };
+    }),
+
+  // Admin: declare NO winner in bidding round (all participants lose their bid points)
+  declareBiddingNoWinner: protectedProcedure
+    .input(z.object({ groupId: z.number().int() }))
+    .mutation(async ({ ctx, input }) => {
+      const groupParticipants = await ctx.db.score.findMany({
+        where: { groupId: input.groupId },
+      });
+
+      if (groupParticipants.length === 0) {
+        throw new Error("Tidak ada peserta dalam grup ini");
+      }
+
+      const updates = groupParticipants.map((p) => {
+        if (p.score <= 0) {
+          // Ineligible for bidding (score <= 0) -> no deduction
+          return ctx.db.score.update({
+            where: { id: p.id },
+            data: { bid: 10 },
+          });
+        }
+        const currentBid = Math.min(p.bid ?? 10, p.score);
+        return ctx.db.score.update({
+          where: { id: p.id },
+          data: {
+            score: Math.max(0, p.score - currentBid),
+            bid: 10, // Reset bid to default for next round
+          },
+        });
+      });
+
+      await ctx.db.$transaction(updates);
+
+      scoreEmitter.emit("update", `update:${input.groupId}`);
+
+      return { success: true, count: groupParticipants.length };
     }),
 });

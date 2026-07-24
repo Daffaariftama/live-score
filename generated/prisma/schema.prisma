@@ -26,15 +26,61 @@ model Score {
 }
 
 model Group {
-  id            Int      @id @default(autoincrement())
-  name          String   @unique
-  biddingActive Boolean  @default(false)
+  id            Int           @id @default(autoincrement())
+  name          String        @unique
+  biddingActive Boolean       @default(false)
   scores        Score[]
-  createdAt     DateTime @default(now())
-  updatedAt     DateTime @updatedAt
+  competitions  Competition[]
+  createdAt     DateTime      @default(now())
+  updatedAt     DateTime      @updatedAt
 }
 
 model Setting {
   key   String @id
   value String
+}
+
+// ─── Competition (Lomba) ──────────────────────────────────────────────────────
+model Competition {
+  id          Int      @id @default(autoincrement())
+  groupId     Int
+  group       Group    @relation(fields: [groupId], references: [id], onDelete: Cascade)
+  totalSoal   Int
+  currentSoal Int      @default(0)
+  status      String   @default("active") // "active" | "completed"
+  rounds      Round[]
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  @@index([groupId, status])
+}
+
+model Round {
+  id            Int          @id @default(autoincrement())
+  competitionId Int
+  competition   Competition  @relation(fields: [competitionId], references: [id], onDelete: Cascade)
+  soalNumber    Int
+  isBidding     Boolean      @default(false)
+  winnerId      Int?
+  winnerName    String?
+  status        String       @default("active") // "active" | "completed"
+  entries       RoundEntry[]
+  createdAt     DateTime     @default(now())
+
+  @@index([competitionId, soalNumber])
+}
+
+model RoundEntry {
+  id          Int      @id @default(autoincrement())
+  roundId     Int
+  round       Round    @relation(fields: [roundId], references: [id], onDelete: Cascade)
+  scoreId     Int
+  name        String
+  bidAmount   Int      @default(0)
+  pointChange Int
+  scoreAfter  Int      @default(0)
+  result      String // "correct" | "wrong" | "skip" | "win" | "lose" | "no_contest" | "ineligible"
+  createdAt   DateTime @default(now())
+
+  @@index([roundId])
 }
