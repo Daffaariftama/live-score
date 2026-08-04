@@ -168,6 +168,8 @@ export const competitionRouter = createTRPCRouter({
         roundId: z.number().int(),
         correctIds: z.array(z.number().int()), // IDs of participants who answered correctly
         wrongIds: z.array(z.number().int()),   // IDs of participants who answered wrong
+        correctPoints: z.number().int().default(10), // Points for correct answer
+        wrongPoints: z.number().int().default(-5),   // Points for wrong answer
       })
     )
     .mutation(async ({ ctx, input }) => {
@@ -197,12 +199,14 @@ export const competitionRouter = createTRPCRouter({
         let result = "skip";
 
         if (correctSet.has(p.id)) {
-          pointChange = 10;
+          pointChange = input.correctPoints;
           result = "correct";
         } else if (wrongSet.has(p.id)) {
-          pointChange = -5;
+          pointChange = input.wrongPoints;
           result = "wrong";
         }
+
+        const newScore = p.score; // Score is already updated in DB by handleAnswerClick
 
         entryData.push({
           roundId: input.roundId,
@@ -210,7 +214,7 @@ export const competitionRouter = createTRPCRouter({
           name: p.name,
           bidAmount: 0,
           pointChange,
-          scoreAfter: p.score,
+          scoreAfter: newScore,
           result,
         });
       }

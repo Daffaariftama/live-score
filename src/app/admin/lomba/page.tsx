@@ -177,6 +177,8 @@ function ResolveNormalModal({
   roundNumber,
   scores,
   answersMap,
+  correctPoints,
+  wrongPoints,
   onClose,
   onConfirm,
   isPending,
@@ -185,6 +187,8 @@ function ResolveNormalModal({
   roundNumber: number;
   scores: ScoreEntry[];
   answersMap: Record<number, "correct" | "wrong" | "skip">;
+  correctPoints: number;
+  wrongPoints: number;
   onClose: () => void;
   onConfirm: (correctIds: number[], wrongIds: number[]) => void;
   isPending: boolean;
@@ -211,11 +215,11 @@ function ResolveNormalModal({
           <div className="grid grid-cols-3 gap-2 text-center text-xs">
             <div className="p-2.5 rounded-xl bg-emerald-500/10 border border-emerald-500/30 text-emerald-800">
               <p className="font-black text-lg text-emerald-600">{correctList.length}</p>
-              <p className="font-extrabold text-[10px] uppercase">✅ Benar (+10)</p>
+              <p className="font-extrabold text-[10px] uppercase">✅ Benar ({correctPoints >= 0 ? `+${correctPoints}` : correctPoints})</p>
             </div>
             <div className="p-2.5 rounded-xl bg-red-500/10 border border-red-500/30 text-red-800">
               <p className="font-black text-lg text-red-600">{wrongList.length}</p>
-              <p className="font-extrabold text-[10px] uppercase">❌ Salah (-5)</p>
+              <p className="font-extrabold text-[10px] uppercase">❌ Salah ({wrongPoints >= 0 ? `+${wrongPoints}` : wrongPoints})</p>
             </div>
             <div className="p-2.5 rounded-xl bg-black/5 border border-black/10 text-outline">
               <p className="font-black text-lg text-on-surface">{skipList.length}</p>
@@ -232,7 +236,7 @@ function ResolveNormalModal({
                   : ans === "wrong"
                   ? "bg-red-500 text-white font-black"
                   : "bg-black/10 text-outline font-bold";
-              const pts = ans === "correct" ? "+10" : ans === "wrong" ? "-5" : "0";
+              const pts = ans === "correct" ? (correctPoints >= 0 ? `+${correctPoints}` : correctPoints) : ans === "wrong" ? (wrongPoints >= 0 ? `+${wrongPoints}` : wrongPoints) : "0";
 
               return (
                 <div key={s.id} className="flex items-center justify-between p-2 rounded-lg bg-white border border-black/5">
@@ -583,6 +587,32 @@ export default function AdminLombaPage() {
   const [toast, setToast] = useState("");
   const [search, setSearch] = useState("");
   const [sidebarOpen, setSidebarOpen] = useState(false);
+
+  const [activeCorrectPoints, setActiveCorrectPoints] = useState(10);
+  const [activeWrongPoints, setActiveWrongPoints] = useState(-5);
+  const [draftCorrectPoints, setDraftCorrectPoints] = useState(10);
+  const [draftWrongPoints, setDraftWrongPoints] = useState(-5);
+
+  useEffect(() => {
+    const savedCorrect = localStorage.getItem("correctPoints");
+    const savedWrong = localStorage.getItem("wrongPoints");
+    if (savedCorrect !== null) {
+      setActiveCorrectPoints(parseInt(savedCorrect, 10));
+      setDraftCorrectPoints(parseInt(savedCorrect, 10));
+    }
+    if (savedWrong !== null) {
+      setActiveWrongPoints(parseInt(savedWrong, 10));
+      setDraftWrongPoints(parseInt(savedWrong, 10));
+    }
+  }, []);
+
+  const handleSavePoints = () => {
+    setActiveCorrectPoints(draftCorrectPoints);
+    setActiveWrongPoints(draftWrongPoints);
+    localStorage.setItem("correctPoints", draftCorrectPoints.toString());
+    localStorage.setItem("wrongPoints", draftWrongPoints.toString());
+    setToast("✅ Poin soal berhasil diperbarui!");
+  };
   const [isLoggingOut, setIsLoggingOut] = useState(false);
 
   const [activeGroupId, setActiveGroupId] = useState<number | null>(null);
@@ -656,8 +686,8 @@ export default function AdminLombaPage() {
     const prevAns = answersMap[entry.id] || "skip";
     if (prevAns === newAns) return;
 
-    const prevDelta = prevAns === "correct" ? 10 : prevAns === "wrong" ? -5 : 0;
-    const newDelta = newAns === "correct" ? 10 : newAns === "wrong" ? -5 : 0;
+    const prevDelta = prevAns === "correct" ? activeCorrectPoints : prevAns === "wrong" ? activeWrongPoints : 0;
+    const newDelta = newAns === "correct" ? activeCorrectPoints : newAns === "wrong" ? activeWrongPoints : 0;
     const diff = newDelta - prevDelta;
 
     setAnswersMap((prev) => ({ ...prev, [entry.id]: newAns }));
@@ -1187,7 +1217,7 @@ export default function AdminLombaPage() {
 
           {/* ── Table & Inputs ── */}
           <div className="admin-table-card">
-            <div className="admin-table-header">
+            <div className="admin-table-header flex-col md:flex-row items-start md:items-center gap-4">
               <div className="flex items-center gap-2">
                 <h3 className="admin-table-title">Daftar Instansi & Status Jawaban</h3>
                 <span className="admin-live-badge">
@@ -1195,7 +1225,37 @@ export default function AdminLombaPage() {
                   Live
                 </span>
               </div>
-              <div className="flex items-center gap-2">
+              <div className="flex flex-wrap items-center gap-3">
+                {activeRound && !activeRound.isBidding && (
+                  <div className="flex items-center gap-2 bg-surface-container-low px-3 py-1.5 rounded-lg border border-outline-variant/30 text-xs shadow-sm">
+                    <span className="font-bold text-on-surface">Poin Soal:</span>
+                    <label className="flex items-center gap-1 text-emerald-600 font-bold">
+                      Benar
+                      <input 
+                        type="number" 
+                        value={draftCorrectPoints} 
+                        onChange={(e) => setDraftCorrectPoints(parseInt(e.target.value) || 0)} 
+                        className="w-14 px-1 py-0.5 text-center border border-emerald-300 rounded outline-none focus:border-emerald-500 bg-white"
+                      />
+                    </label>
+                    <label className="flex items-center gap-1 text-red-600 font-bold ml-2">
+                      Salah
+                      <input 
+                        type="number" 
+                        value={draftWrongPoints} 
+                        onChange={(e) => setDraftWrongPoints(parseInt(e.target.value) || 0)} 
+                        className="w-14 px-1 py-0.5 text-center border border-red-300 rounded outline-none focus:border-red-500 bg-white"
+                      />
+                    </label>
+                    <button
+                      type="button"
+                      onClick={handleSavePoints}
+                      className="ml-2 bg-primary hover:bg-primary/90 text-on-primary px-3 py-1 rounded font-bold transition-colors shadow-sm text-[10px] uppercase tracking-wide"
+                    >
+                      Simpan
+                    </button>
+                  </div>
+                )}
                 <div className="admin-search-wrap max-w-xs">
                   <span className="material-symbols-outlined admin-search-icon">search</span>
                   <input
@@ -1280,7 +1340,7 @@ export default function AdminLombaPage() {
                                     }`}
                                   >
                                     <span>✅</span>
-                                    <span className="text-[11px]">Benar (+10)</span>
+                                    <span className="text-[11px]">Benar ({activeCorrectPoints >= 0 ? `+${activeCorrectPoints}` : activeCorrectPoints})</span>
                                   </button>
 
                                   <button
@@ -1293,7 +1353,7 @@ export default function AdminLombaPage() {
                                     }`}
                                   >
                                     <span>❌</span>
-                                    <span className="text-[11px]">Salah (-5)</span>
+                                    <span className="text-[11px]">Salah ({activeWrongPoints >= 0 ? `+${activeWrongPoints}` : activeWrongPoints})</span>
                                   </button>
 
                                   <button
@@ -1487,10 +1547,12 @@ export default function AdminLombaPage() {
         roundNumber={activeRound?.soalNumber ?? 1}
         scores={scores}
         answersMap={answersMap}
+        correctPoints={activeCorrectPoints}
+        wrongPoints={activeWrongPoints}
         onClose={() => setResolveNormalModalOpen(false)}
         onConfirm={(correctIds, wrongIds) => {
           if (activeRound) {
-            resolveNormalRound.mutate({ roundId: activeRound.id, correctIds, wrongIds });
+            resolveNormalRound.mutate({ roundId: activeRound.id, correctIds, wrongIds, correctPoints: activeCorrectPoints, wrongPoints: activeWrongPoints });
           }
         }}
         isPending={resolveNormalRound.isPending}
